@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EduRank — Maktab va To'garaklar Reytingi</title>
+  <title>EduRank Pro — Maktab va To'garaklar Reytingi</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -85,9 +85,9 @@
     .card {
       background: var(--card); border-radius: 22px; padding: 14px 18px; margin-bottom: 10px;
       border: 1px solid var(--border); box-shadow: var(--shadow);
-      display: flex; align-items: center; justify-content: space-between; transition: 0.2s;
+      display: flex; align-items: center; justify-content: space-between; transition: 0.2s; cursor: pointer;
     }
-    .card:hover { transform: translateY(-2px); }
+    .card:hover { transform: translateY(-2px); border-color: var(--accent); }
     .rank {
       width: 36px; height: 36px; border-radius: 12px; background: var(--accent-soft); color: var(--accent);
       display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; margin-right: 14px;
@@ -98,7 +98,9 @@
 
     .student-info { flex: 1; }
     .student-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 6px; }
-    .student-meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+    .student-meta { font-size: 12px; color: var(--muted); margin-top: 3px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .badge-tag { background: var(--accent-soft); color: var(--accent); font-size: 10px; padding: 2px 6px; border-radius: 6px; font-weight: 700; }
+    
     .points { text-align: right; }
     .points-val { font-size: 18px; font-weight: 800; color: var(--accent); }
     .points-growth { font-size: 11px; color: #10b981; font-weight: 700; }
@@ -164,7 +166,7 @@
 
 <header>
   <div class="top-bar">
-    <div class="logo">EduRank 🚀</div>
+    <div class="logo">EduRank Pro 🚀</div>
     <div class="header-actions">
       <button class="action-icon-btn" onclick="openHelpModal()" title="Yo'riqnoma">?</button>
       <button class="action-icon-btn" id="themeBtn" onclick="toggleTheme()" title="Tungi rejim">🌙</button>
@@ -191,7 +193,7 @@
         <h4 id="bannerTitle">🔥 Maktabning Eng Katta O'sishi</h4>
         <p id="topGrowthName">Lobar Karimova (9-A)</p>
       </div>
-      <div class="growth-pill" id="topGrowthVal">+24 ball</div>
+      <div class="growth-pill" id="topGrowthVal">+0 ball</div>
     </div>
 
     <div id="leaderboardList"></div>
@@ -206,7 +208,10 @@
 
     <div class="teacher-card">
       <h3>✨ Ball va Rag'bat Qo'shish</h3>
-      <span class="label">O'quvchini tanlang:</span>
+      
+      <!-- O'quvchini qidirish va tanlash uchun qism -->
+      <span class="label">O'quvchini qidirish va tanlash:</span>
+      <input type="text" id="studentSearchInput" placeholder="🔍 Ism yoki sinf bo'yicha topish..." oninput="populateSelect()" style="margin-bottom: 8px;" />
       <select id="studentSelect" onchange="updatePraiseStatus()"></select>
 
       <span class="label">Tezkor ballar:</span>
@@ -240,19 +245,19 @@
       <button class="act-btn btn-part" style="width: 100%;" onclick="addNewStudent()">Ro'yxatga qo'shish</button>
     </div>
 
-    <!-- OMMAVIY QO'SHISH (700 TA UCHUN) -->
+    <!-- EXCEL YOKI MATNNAN OMMAVIY QO'SHISH -->
     <div class="teacher-card" style="border: 2px dashed var(--accent);">
-      <h3>📂 Ommaviy Ro'yxatdan Qo'shish (700+ o'quvchi)</h3>
-      <span class="label">Quyidagi tanlovlar orqali ismlar qaysi sinf/to'garakka tushishini belgilang:</span>
+      <h3>📂 Excel / Matndan Ommaviy Yuklash</h3>
+      <span class="label">Exceldan nusxalab (Ism, Sinf ustunlarini) yoki quyidagi formatda tashlang (Har bir qator: Ism \t Sinf):</span>
       <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-        <select id="bulkClass" style="width: 50%;"></select>
-        <select id="bulkClub" style="width: 50%;"></select>
+        <select id="bulkClub" style="width: 100%;"></select>
       </div>
-      <textarea id="bulkNames" placeholder="Ismlarni shu yerga nusxalab (paste qilib) tashlang. Har bir ism yangi qatordan bo'lsin:
-Karimov Anvar
-Tursunova Malika
-..."></textarea>
-      <button class="act-btn btn-att" style="width: 100%; margin-top: 8px;" onclick="addBulkStudents()">Hammasini bir yo'la qo'shish 🚀</button>
+      <textarea id="bulkNames" placeholder="Masalan:
+Karimov Anvar	9-A
+Tursunova Malika	9-B
+Yoki shunchaki ismlar yozilsa, quyidagi tanlangan sinfga tushadi:"></textarea>
+      <select id="bulkClass" style="margin-top: 8px; margin-bottom: 8px;"></select>
+      <button class="act-btn btn-att" style="width: 100%;" onclick="addBulkStudents()">Ommaviy Qo'shish 🚀</button>
     </div>
 
     <div class="teacher-card">
@@ -266,7 +271,7 @@ Tursunova Malika
     <div class="teacher-card">
       <h3>⚙️ O'quvchilarni Boshqarish</h3>
       <div id="manageList" style="margin-bottom: 14px;"></div>
-      <button class="act-btn btn-danger" style="width: 100%;" onclick="resetMonthlyGrowth()">🔄 Oylik o'sishni nollash</button>
+      <button class="act-btn btn-danger" style="width: 100%;" onclick="resetMonthlyGrowth()">🔄 Oylik va Umumiy Ballarni Nollash</button>
     </div>
 
     <div class="teacher-card">
@@ -289,10 +294,21 @@ Tursunova Malika
 
 <div class="modal" id="helpModal">
   <div class="modal-content" style="text-align: left;">
-    <h3>📖 EduRank Haqida</h3>
-    <p><b>1. Maktab Reytingi:</b> Barcha o'quvchilarning umumiy reytingi.</p>
-    <p><b>2. To'garaklar Reytingi:</b> Faqat to'garak a'zolari o'rtasidagi musobaqa.</p>
+    <h3>📖 EduRank Pro Haqida</h3>
+    <p><b>1. Maktab va To'garak Reytingi:</b> O'quvchilarning umumiy natijalari.</p>
+    <p><b>2. Qidiruv funksiyasi:</b> Ustoz panelida o'quvchini ismini yozib tezda topish imkoni.</p>
+    <p><b>3. Nollash:</b> Oylik o'sish va umumiy ballarni noldan boshlash imkoniyati.</p>
     <button class="modal-btn" onclick="closeHelpModal()">Tushunarli 👍</button>
+  </div>
+</div>
+
+<!-- O'QUVCHI SHAXSIY KARTASI MODALI -->
+<div class="modal" id="studentModal">
+  <div class="modal-content" style="text-align: center;">
+    <h3 id="modalStudentName" style="color: var(--accent);">O'quvchi Ismi</h3>
+    <p id="modalStudentDetails" style="text-align: center; font-size: 14px; margin-bottom: 10px;"></p>
+    <div id="modalBadgeContainer" style="margin: 15px 0; display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;"></div>
+    <button class="modal-btn" onclick="closeStudentModal()">Yopish</button>
   </div>
 </div>
 
@@ -301,7 +317,6 @@ Tursunova Malika
 <script>
   const todayStr = new Date().toISOString().slice(0, 10);
   
-  // Barcha sinflar (A, B, C bilan to'liq)
   const allClasses = [];
   for(let i=1; i<=11; i++) {
     allClasses.push(`${i}-A`, `${i}-B`, `${i}-C`);
@@ -345,6 +360,14 @@ Tursunova Malika
     t.textContent = msg;
     t.style.display = "block";
     setTimeout(() => { t.style.display = "none"; }, 2400);
+  }
+
+  function getBadge(points) {
+    if (points >= 80) return "🌟 Maktab Lideri";
+    if (points >= 50) return "🔥 Zukko O'quvchi";
+    if (points >= 30) return "💡 Iqtidorli";
+    if (points >= 15) return "⭐ Faol ishtirokchi";
+    return "🌱 Boshlang'ich";
   }
 
   function populateDropdowns() {
@@ -427,12 +450,16 @@ Tursunova Malika
       const rClass = idx === 0 ? "rank-1" : idx === 1 ? "rank-2" : idx === 2 ? "rank-3" : "";
       const crown = idx === 0 ? "👑" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : "";
       const clubInfo = (s.club && s.club !== "NONE") ? ` • ${s.club}` : "";
+      const badgeText = getBadge(s.points);
       return `
-        <div class="card">
+        <div class="card" onclick="openStudentModal(${s.id})">
           <div class="rank ${rClass}">${idx + 1}</div>
           <div class="student-info">
             <div class="student-name">${s.name} ${crown}</div>
-            <div class="student-meta">${s.cls}${clubInfo} • ${Math.floor(s.points / 15) + 1}-bosqich</div>
+            <div class="student-meta">
+              <span>${s.cls}${clubInfo}</span>
+              <span class="badge-tag">${badgeText}</span>
+            </div>
           </div>
           <div class="points">
             <div class="points-val">${s.points}</div>
@@ -441,6 +468,26 @@ Tursunova Malika
         </div>
       `;
     }).join("");
+  }
+
+  function openStudentModal(id) {
+    const s = students.find(st => st.id === id);
+    if (!s) return;
+    document.getElementById("modalStudentName").textContent = s.name;
+    const stage = Math.floor(s.points / 15) + 1;
+    const badge = getBadge(s.points);
+    document.getElementById("modalStudentDetails").innerHTML = `
+      <b>Sinf:</b> ${s.cls} <br>
+      <b>To'garak:</b> ${s.club && s.club !== "NONE" ? s.club : "Yo'q"} <br>
+      <b>Umumiy ball:</b> ${s.points} ball <br>
+      <b>Bosqich:</b> ${stage}-bosqich
+    `;
+    document.getElementById("modalBadgeContainer").innerHTML = `<span class="badge-tag" style="font-size: 13px; padding: 6px 12px;">${badge}</span>`;
+    document.getElementById("studentModal").classList.add("open");
+  }
+
+  function closeStudentModal() {
+    document.getElementById("studentModal").classList.remove("open");
   }
 
   function openTeacherLogin() {
@@ -491,9 +538,16 @@ Tursunova Malika
 
   function populateSelect() {
     const sel = document.getElementById("studentSelect");
+    const searchVal = document.getElementById("studentSearchInput").value.trim().toLowerCase();
     const prev = sel.value;
-    sel.innerHTML = students.map(s => `<option value="${s.id}">${s.name} (${s.cls}) — ${s.points} ball</option>`).join("");
-    if (prev && students.some(s => String(s.id) === prev)) sel.value = prev;
+
+    let listToRender = students;
+    if (searchVal) {
+      listToRender = students.filter(s => s.name.toLowerCase().includes(searchVal) || s.cls.toLowerCase().includes(searchVal));
+    }
+
+    sel.innerHTML = listToRender.map(s => `<option value="${s.id}">${s.name} (${s.cls}) — ${s.points} ball</option>`).join("");
+    if (prev && listToRender.some(s => String(s.id) === prev)) sel.value = prev;
     updatePraiseStatus();
   }
 
@@ -555,24 +609,27 @@ Tursunova Malika
     showToast(`${name} ro'yxatga qo'shildi!`);
   }
 
-  // OMMAVIY QO'SHISH FUNKSIYASI
   function addBulkStudents() {
     const rawText = document.getElementById("bulkNames").value.trim();
-    const cls = document.getElementById("bulkClass").value;
+    const defaultCls = document.getElementById("bulkClass").value;
     const club = document.getElementById("bulkClub").value;
 
-    if (!rawText) return showToast("Ismlarni kiriting!");
+    if (!rawText) return showToast("Matn yoki Exceldan nusxalangan ma'lumotni kiriting!");
 
     const lines = rawText.split("\n");
     let addedCount = 0;
 
     lines.forEach(line => {
-      const name = line.trim();
+      if (!line.trim()) return;
+      let parts = line.split("\t");
+      let name = parts[0] ? parts[0].trim() : "";
+      let cls = parts[1] ? parts[1].trim() : defaultCls;
+
       if (name.length > 2) {
         students.push({
           id: Date.now() + Math.random(),
           name: name,
-          cls: cls,
+          cls: cls || defaultCls,
           club: club,
           points: 0,
           monthGrowth: 0,
@@ -585,7 +642,7 @@ Tursunova Malika
     document.getElementById("bulkNames").value = "";
     saveData();
     populateSelect();
-    showToast(`${addedCount} ta o'quvchi ${cls} sinfiga qo'shildi! 🎉`);
+    showToast(`${addedCount} ta o'quvchi muvaffaqiyatli qo'shildi! 🎉`);
   }
 
   function renderManageList() {
@@ -630,14 +687,21 @@ Tursunova Malika
     }
   }
 
+  // Oylik va Umumiy ballarni birga nollash funksiyasi
   function resetMonthlyGrowth() {
-    if (confirm("Oylik reyting nollansinmi?")) {
-      students.forEach(s => s.monthGrowth = 0);
-      logs.unshift("🔄 Oylik o'sish ballari yangilandi");
+    if (confirm("Barcha o'quvchilarning oylik o'sishi va umumiy ballari 0 ga tushirilsinmi?")) {
+      students.forEach(s => {
+        s.points = 0;
+        s.monthGrowth = 0;
+        s.lastPraiseDate = "";
+      });
+      logs.unshift("🔄 Barcha ballar va oylik o'sish nollashtirildi");
       saveData();
+      populateSelect();
       renderManageList();
       renderLogs();
-      showToast("Oylik reyting nollashtirildi!");
+      renderLeaderboard();
+      showToast("Barcha reyting va ballar noldan boshlandi!");
     }
   }
 
