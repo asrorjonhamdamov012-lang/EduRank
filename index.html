@@ -227,22 +227,38 @@ Tursunova Malika	9-B"></textarea>
 
 <div class="toast" id="toast"></div>
 
-<script>
-  // ====== SUPER ADMIN PIN: shu yerga o'zingizning uzun PIN kodingizni yozing ======
-  const SUPER_PIN = "";
-  // =================================================================================
+<!-- Firebase Kutubxonalari -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
+<script>
+  // ====== FIREBASE SOZLAMALARI ======
+  const firebaseConfig = {
+    apiKey: "AIzaSyAQlUWYH30sCfu8IkVkwpL9f9rKN2Blb0U",
+    authDomain: "edurank-22313.firebaseapp.com",
+    databaseURL: "https://edurank-22313-default-rtdb.firebaseio.com",
+    projectId: "edurank-22313",
+    storageBucket: "edurank-22313.appspot.com",
+    messagingSenderId: "134523019435",
+    appId: "1:134523019435:web:13b9db65ead4753f7717ee"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // ====== ASOSIY SKRIPT VA FUNKSIYALAR ======
+  const SUPER_PIN = "";
   const todayStr = new Date().toISOString().slice(0, 10);
   const allClasses = [];
   for (let i = 1; i <= 11; i++) allClasses.push(`${i}-A`, `${i}-B`, `${i}-C`);
 
   const defaultClubs = ["Matematika", "Ingliz tili", "IT va Dasturlash", "Fizika"];
-  let clubs = JSON.parse(localStorage.getItem("edurank_pro_clubs")) || defaultClubs;
-  let students = JSON.parse(localStorage.getItem("edurank_pro_students")) || [
+  let clubs = defaultClubs;
+  let students = [
     { id: 1, name: "Lobar Karimova", cls: "9-A", club: "Matematika", points: 52, monthGrowth: 24, lastPraiseDate: "" },
     { id: 2, name: "Behruz Alimov", cls: "9-B", club: "IT va Dasturlash", points: 48, monthGrowth: 18, lastPraiseDate: "" }
   ];
-  let logs = JSON.parse(localStorage.getItem("edurank_pro_logs")) || ["Lobar Karimova — Vazifa a'lo (+5 ball)"];
+  let logs = ["Lobar Karimova — Vazifa a'lo (+5 ball)"];
 
   let currentMainTab = 'school';
   let isTeacherLoggedIn = false;
@@ -261,10 +277,17 @@ Tursunova Malika	9-B"></textarea>
     localStorage.setItem("edurank_theme", d ? "dark" : "light");
   }
 
+  // Ma'lumotlarni ham mahalliy, ham Firebase bazasiga saqlash
   function saveData() {
     localStorage.setItem("edurank_pro_students", JSON.stringify(students));
     localStorage.setItem("edurank_pro_clubs", JSON.stringify(clubs));
     localStorage.setItem("edurank_pro_logs", JSON.stringify(logs));
+
+    db.ref("edurank_data").set({
+      students: students,
+      clubs: clubs,
+      logs: logs
+    });
   }
 
   function showToast(msg) {
@@ -285,10 +308,10 @@ Tursunova Malika	9-B"></textarea>
   function populateDropdowns() {
     const classOpts = allClasses.map(c => `<option value="${c}">${c} sinf</option>`).join("");
     const clubOpts = `<option value="NONE">To'garaksiz (Faqat maktab)</option>` + clubs.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
-    $("newClass").innerHTML = classOpts;
-    $("newClub").innerHTML = clubOpts;
-    $("bulkClass").innerHTML = classOpts;
-    $("bulkClub").innerHTML = clubOpts;
+    if($("newClass")) $("newClass").innerHTML = classOpts;
+    if($("newClub")) $("newClub").innerHTML = clubOpts;
+    if($("bulkClass")) $("bulkClass").innerHTML = classOpts;
+    if($("bulkClub")) $("bulkClub").innerHTML = clubOpts;
   }
 
   function addNewClub() {
@@ -312,18 +335,19 @@ Tursunova Malika	9-B"></textarea>
 
   function updateFilterOptions() {
     const f = $("filterSelect");
+    if (!f) return;
     if (currentMainTab === 'school') {
       f.innerHTML = `<option value="ALL">Barcha sinflar</option>` + allClasses.map(c => `<option value="${c}">${c} sinf</option>`).join("");
-      $("bannerTitle").textContent = "🔥 Maktabning Eng Katta O'sishi";
+      if($("bannerTitle")) $("bannerTitle").textContent = "🔥 Maktabning Eng Katta O'sishi";
     } else {
       f.innerHTML = `<option value="ALL">Barcha to'garaklar</option>` + clubs.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
-      $("bannerTitle").textContent = "🎯 To'garak Yulduzi (Eng Faol)";
+      if($("bannerTitle")) $("bannerTitle").textContent = "🎯 To'garak Yulduzi (Eng Faol)";
     }
   }
 
   function renderLeaderboard() {
-    const filterVal = $("filterSelect").value;
-    const query = $("searchInput").value.trim().toLowerCase();
+    const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
+    const query = $("searchInput") ? $("searchInput").value.trim().toLowerCase() : "";
     let filtered = [...students];
     if (currentMainTab === 'school') {
       if (filterVal !== "ALL") filtered = filtered.filter(s => s.cls === filterVal);
@@ -337,14 +361,15 @@ Tursunova Malika	9-B"></textarea>
     if (filtered.length > 0) {
       const topG = [...filtered].sort((a, b) => b.monthGrowth - a.monthGrowth)[0];
       const sub = currentMainTab === 'school' ? topG.cls : topG.club;
-      $("topGrowthName").textContent = `${topG.name} (${sub})`;
-      $("topGrowthVal").textContent = `+${topG.monthGrowth} ball`;
+      if($("topGrowthName")) $("topGrowthName").textContent = `${topG.name} (${sub})`;
+      if($("topGrowthVal")) $("topGrowthVal").textContent = `+${topG.monthGrowth} ball`;
     } else {
-      $("topGrowthName").textContent = "Ma'lumot yo'q";
-      $("topGrowthVal").textContent = "0 ball";
+      if($("topGrowthName")) $("topGrowthName").textContent = "Ma'lumot yo'q";
+      if($("topGrowthVal")) $("topGrowthVal").textContent = "0 ball";
     }
 
     const list = $("leaderboardList");
+    if (!list) return;
     if (filtered.length === 0) {
       list.innerHTML = `<div style="text-align:center;color:var(--muted);padding:30px;font-size:13px">O'quvchi topilmadi.</div>`;
       return;
@@ -407,7 +432,7 @@ Tursunova Malika	9-B"></textarea>
     showToast("Paneldan chiqildi.");
   }
 
-  // ===== SUPER ADMIN (yashirin: sarlavhani 5 marta tez bosing) =====
+  // ===== SUPER ADMIN =====
   let tapCount = 0, tapTimer;
   $("logo").addEventListener("click", () => {
     tapCount++;
@@ -458,6 +483,7 @@ Tursunova Malika	9-B"></textarea>
 
   function populateSelect() {
     const sel = $("studentSelect");
+    if (!sel) return;
     const q = $("studentSearchInput").value.trim().toLowerCase();
     const prev = sel.value;
     const list = q ? students.filter(s => s.name.toLowerCase().includes(q) || s.cls.toLowerCase().includes(q)) : students;
@@ -534,6 +560,7 @@ Tursunova Malika	9-B"></textarea>
 
   function renderManageList() {
     const box = $("manageList");
+    if (!box) return;
     if (students.length === 0) {
       box.innerHTML = `<div style="font-size:12px;color:var(--muted)">Ro'yxat bo'sh</div>`;
       return;
@@ -579,29 +606,22 @@ Tursunova Malika	9-B"></textarea>
   }
 
   function renderLogs() {
-    $("activityLog").innerHTML = logs.slice(0, 8).map(l => `<div class="log-item">${esc(l)}</div>`).join("");
+    if($("activityLog")) {
+      $("activityLog").innerHTML = logs.slice(0, 8).map(l => `<div class="log-item">${esc(l)}</div>`).join("");
+    }
   }
 
-  updateFilterOptions();
-  renderLeaderboard();
-</script>
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAQlUWYH30sCfu8IkVkwpL9f9rKN2Blb0U",
-  authDomain: "edurank-22313.firebaseapp.com",
-  projectId: "edurank-22313",
-  storageBucket: "edurank-22313.firebasestorage.app",
-  messagingSenderId: "134523019435",
-  appId: "1:134523019435:web:13b9db65ead4753f7717ee"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+  // Sahifa ochilganda Firebase bazasidan ma'lumotlarni yuklab olish
+  db.ref("edurank_data").once("value", (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      if (data.students) students = data.students;
+      if (data.clubs) clubs = data.clubs;
+      if (data.logs) logs = data.logs;
+    }
+    updateFilterOptions();
+    renderLeaderboard();
+  });
 </script>
 </body>
 </html>
