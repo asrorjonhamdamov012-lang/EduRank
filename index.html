@@ -229,7 +229,7 @@ Tursunova Malika	9-B"></textarea>
 
 <script>
   // ====== SUPER ADMIN PIN: shu yerga o'zingizning uzun PIN kodingizni yozing ======
-  const SUPER_PIN = "Behruz0912";
+  const SUPER_PIN = "";
   // =================================================================================
 
   const todayStr = new Date().toISOString().slice(0, 10);
@@ -584,6 +584,24 @@ Tursunova Malika	9-B"></textarea>
 
   updateFilterOptions();
   renderLeaderboard();
+</script>
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAQlUWYH30sCfu8IkVkwpL9f9rKN2Blb0U",
+  authDomain: "edurank-22313.firebaseapp.com",
+  projectId: "edurank-22313",
+  storageBucket: "edurank-22313.firebasestorage.app",
+  messagingSenderId: "134523019435",
+  appId: "1:134523019435:web:13b9db65ead4753f7717ee"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 </script>
 </body>
 </html>
