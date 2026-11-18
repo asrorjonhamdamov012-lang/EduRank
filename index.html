@@ -497,9 +497,31 @@ Yoki shunchaki ismlar yozilsa, quyidagi tanlangan sinfga tushadi:"></textarea>
 
   function closeTeacherLogin() { document.getElementById("loginModal").classList.remove("open"); }
 
+  // --- DİNAMİK PAROL TIZIMI ---
+  const DEFAULT_TEACHER_PASSWORD = "3333";
+
+  function getTeacherPassword() {
+    return localStorage.getItem("teacher_password") || DEFAULT_TEACHER_PASSWORD;
+  }
+
+  function changeTeacherPassword() {
+    const adminPin = prompt("Super Admin PIN-kodini kiriting:");
+    if (adminPin === "9999") { // O'zingiz biladigan maxfiy PIN
+      const newPassword = prompt("Yangi ustoz parolini kiriting:");
+      if (newPassword && newPassword.trim() !== "") {
+        localStorage.setItem("teacher_password", newPassword);
+        alert("Ustoz paroli muvaffaqiyatli o'zgartirildi! Yangi parol: " + newPassword);
+      }
+    } else {
+      alert("Ruxsat yo'q! Noto'g'ri Admin PIN.");
+    }
+  }
+
   function verifyTeacher() {
     const pass = document.getElementById("teacherPass").value;
-    if (pass === "3333" || pass === "admin") {
+    const currentPassword = getTeacherPassword();
+    
+    if (pass === currentPassword || pass === "admin") {
       isTeacherLoggedIn = true;
       closeTeacherLogin();
       document.getElementById("teacherPass").value = "";
@@ -687,7 +709,6 @@ Yoki shunchaki ismlar yozilsa, quyidagi tanlangan sinfga tushadi:"></textarea>
     }
   }
 
-  // Oylik va Umumiy ballarni birga nollash funksiyasi
   function resetMonthlyGrowth() {
     if (confirm("Barcha o'quvchilarning oylik o'sishi va umumiy ballari 0 ga tushirilsinmi?")) {
       students.forEach(s => {
