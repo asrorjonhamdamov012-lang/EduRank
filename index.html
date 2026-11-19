@@ -113,14 +113,14 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 <div class="container">
   <div id="viewLeaderboard">
     
-    <!-- Taymer faqat yoqilganda chiqadi -->
+    <!-- Taymer faqat tegishli qatlam/sinf uchun tanlanganda chiqadi -->
     <div class="timer-box" id="timerBox" style="display:none;">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.9" id="timerTitleDisplay">🏆 Liderlik uchun kurash</div>
       <div class="timer-digits" id="timerDigitsDisplay">00 kun, 00 soat, 00 minut</div>
       <div class="timer-subtext" id="timerSubtextDisplay">Shuncha vaqtingiz qoldi, davom eting! 🚀</div>
     </div>
     
-    <!-- E'lonlar taxtasi faqat matn yozilganda chiqadi -->
+    <!-- E'lonlar taxtasi faqat tegishli sinfga/maktabga yozilganda chiqadi -->
     <div class="notice-board" id="noticeBoardBanner" style="display:none;">
       <h4>📢 Maktab E'lonlar Taxtasi</h4>
       <p id="noticeBoardText" style="font-size:13px;font-weight:700;margin-top:4px;"></p>
@@ -155,10 +155,10 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <h3>⏳ Liderlik Taymerini Sozlash (Maktab yoki Har bir sinf uchun)</h3>
       <span class="label">Taymer qaysi qatlam uchun mo'ljallanganini tanlang:</span>
       <select id="timerScope" style="margin-bottom:8px"></select>
-      <span class="label">Taymer sarlavhasi (Masalan: Maktab Lideri uchun):</span>
-      <input type="text" id="timerTitleInput" placeholder="Masalan: 9-A sinf musobaqasi" style="margin-bottom:8px" />
-      <span class="label">Taymer tagidagi izoh / matn (Masalan: Shuncha vaqt qoldi, davom eting!):</span>
-      <input type="text" id="timerSubtextInput" placeholder="Masalan: G'olibga maxsus sovg'a beriladi! 🎁" style="margin-bottom:8px" />
+      <span class="label">Taymer sarlavhasi:</span>
+      <input type="text" id="timerTitleInput" placeholder="Masalan: 5-sinflar musobaqasi" style="margin-bottom:8px" />
+      <span class="label">Taymer tagidagi izoh / matn:</span>
+      <input type="text" id="timerSubtextInput" placeholder="Masalan: G'olibga maxsus sovg'a! 🎁" style="margin-bottom:8px" />
       <span class="label">Tugash vaqtini belgilang:</span>
       <input type="datetime-local" id="teacherTimerInput" style="margin-bottom:8px" />
       <div style="display:flex;gap:8px">
@@ -177,10 +177,10 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     <div class="teacher-card">
       <h3>📢 E'lonlar Taxtasiga Yozish</h3>
-      <span class="label">Barcha o'quvchilarga yoki ma'lum sinfga e'lon qoldiring (Bo'sh qoldirib yuborilsa taxta yopiladi):</span>
+      <span class="label">Barcha o'quvchilarga yoki ma'lum sinfga e'lon qoldiring:</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <select id="noticeScope"></select>
-        <textarea id="noticeInputText" placeholder="Masalan: Ertadan boshlab yangi IT to'garagi ochiladi..."></textarea>
+        <textarea id="noticeInputText" placeholder="Masalan: Ertadan boshlab 5-sinflar uchun tanlov boshlanadi..."></textarea>
       </div>
       <button class="act-btn btn-part" style="width:100%" onclick="publishNotice()">E'lonni chiqarish 🚀</button>
     </div>
@@ -190,7 +190,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <span class="label">Sovrin qaysi sinf yoki qatlam uchun mo'ljallanganini tanlang:</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <select id="targetScope"></select>
-        <input type="text" id="targetRewardTitle" placeholder="Sovrin nomi (Masalan: Kitob yoki 5-baho)" />
+        <input type="text" id="targetRewardTitle" placeholder="Sovrin nomi (Masalan: Kitob)" />
         <input type="number" id="targetRewardPoints" placeholder="Kerakli ball (Masalan: 50)" />
       </div>
       <button class="act-btn btn-part" style="width:100%" onclick="addCustomTargetReward()">Marra va Sovrin Qo'shish 🎁</button>
@@ -223,7 +223,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     <div class="teacher-card">
       <h3>🚀 Sinflarga Ommaviy Ball Berish</h3>
-      <span class="label">Butun sinfga bir yo'la ball qo'shish (Masalan: To'liq darsga qatnashdi):</span>
+      <span class="label">Butun sinfga bir yo'la ball qo'shish:</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <select id="bulkClassTarget"></select>
         <input type="number" id="bulkClassPointsVal" placeholder="Beriladigan ball (Masalan: 2)" />
@@ -320,7 +320,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 <div class="modal" id="helpModal">
   <div class="modal-content" style="text-align:left">
     <h3>📖 EduRank Pro Haqida</h3>
-    <p><b>1. E'lon qilingan sovrinlar:</b> Ustozlar qaysi sinfga belgilagan bo'lsa, faqat o'sha sinfda ko'rinadi.</p>
+    <p><b>1. E'lon va Taymerlar:</b> Faqat o'sha sinf yoki qatlam uchun sozlangan bo'lsa, mos ekranda ko'rinadi.</p>
     <p><b>2. Shaxsiy profil va statistikalar:</b> O'quvchi o'z profilida maktab, sinf va parallel bo'yicha o'rnini ko'radi.</p>
     <button class="modal-btn" onclick="closeHelpModal()">Tushunarli 👍</button>
   </div>
@@ -468,6 +468,19 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     return "🌱 Boshlang'ich";
   }
 
+  // Sinf mosligini aniqlovchi yordamchi funksiya
+  function isScopeMatchedForFilter(scope, filterVal) {
+    if (scope === "SCHOOL") return true;
+    if (filterVal === "ALL") return true; // Agar barcha sinflar tanlangan bo'lsa, umumiy ko'rinish
+    if (filterVal === scope) return true;
+    if (scope.startsWith("GRADE_") && filterVal.startsWith("GRADE_") && scope === filterVal) return true;
+    if (scope.startsWith("GRADE_") && !filterVal.startsWith("GRADE_")) {
+      const gNum = scope.replace("GRADE_", "");
+      if (filterVal.startsWith(gNum + "-")) return true;
+    }
+    return false;
+  }
+
   function updateTimerDisplay() {
     const timerBox = $("timerBox");
     if(!timerBox) return;
@@ -479,12 +492,10 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
     
-    // Sinf mosligini tekshirish
-    if (timerData.scope !== "SCHOOL") {
-      if (currentMainTab === 'club' || (filterVal !== "ALL" && filterVal !== timerData.scope && !filterVal.startsWith("GRADE_"))) {
-        timerBox.style.display = "none";
-        return;
-      }
+    // Agar to'garaklar tabida bo'lsa yoki tanlangan sinf taymer mo'ljallangan sinfga mos kelmasa, ko'rsatilmaydi
+    if (currentMainTab === 'club' || !isScopeMatchedForFilter(timerData.scope, filterVal)) {
+      timerBox.style.display = "none";
+      return;
     }
 
     timerBox.style.display = "block";
@@ -606,13 +617,19 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function renderActiveRewardsBanner() {
     const box = $("rewardsBroadcastList");
     const banner = $("activeRewardsBanner");
+    const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
+
     if(!box || !banner) return;
-    if(!customTargets || customTargets.length === 0) {
+    
+    // Faqat joriy filtrga (sinfga) mos keladigan sovrinlarni filtrlab chiqarish
+    const matchedTargets = customTargets.filter(t => isScopeMatchedForFilter(t.scope, filterVal));
+
+    if(currentMainTab === 'club' || matchedTargets.length === 0) {
       banner.style.display = "none";
       return;
     }
     banner.style.display = "block";
-    box.innerHTML = customTargets.map(t => `
+    box.innerHTML = matchedTargets.map(t => `
       <div class="reward-item-row">
         <span>🏆 ${esc(t.title)} (${esc(t.scope)})</span>
         <span>🎯 ${t.points} ball</span>
@@ -634,9 +651,12 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function renderNoticeBoard() {
     const banner = $("noticeBoardBanner");
     const textElem = $("noticeBoardText");
+    const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
+
     if(!banner || !textElem) return;
     
-    if(!noticeBoardData || !noticeBoardData.text || noticeBoardData.text.trim() === "") {
+    // Agar matn bo'sh bo'lsa yoki tanlangan sinf e'lon doirasiga to'g'ri kelmasa yashiriladi
+    if(!noticeBoardData || !noticeBoardData.text || noticeBoardData.text.trim() === "" || currentMainTab === 'club' || !isScopeMatchedForFilter(noticeBoardData.scope, filterVal)) {
       banner.style.display = "none";
       return;
     }
