@@ -82,7 +82,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 .mini-btn{padding:5px 10px;border-radius:8px;border:none;font-size:12px;font-weight:700;cursor:pointer}
 .log-item{font-size:12px;padding:9px 0;border-bottom:1px solid var(--border);color:var(--muted)}
 
-/* Oddiy modallar */
+/* Umumiy modallar */
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:.2s}
 .modal.open{opacity:1;pointer-events:auto}
 .modal-content{background:var(--card);width:90%;max-width:380px;padding:24px;border-radius:24px;box-shadow:0 20px 40px rgba(0,0,0,.3);position:relative;text-align:center}
@@ -90,14 +90,13 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 .modal-content p{font-size:13px;line-height:1.5;color:var(--muted);margin-bottom:16px;text-align:left}
 .modal-btn{width:100%;margin-top:12px;background:var(--accent);color:#fff;padding:12px;border-radius:14px;border:none;font-weight:700;cursor:pointer}
 
-/* Custom Select Modal eng tepada turishi shart */
+/* Custom Select Modal har qanday modal ustida turishi uchun */
 #customSelectModal {
     z-index: 99999 !important;
-    background: rgba(0,0,0,0.75);
 }
 
 /* Custom Selection Sheet ichki ro'yxat stili */
-.select-sheet-list{max-height:300px;overflow-y:auto;text-align:left;margin-top:10px}
+.select-sheet-list{max-height:280px;overflow-y:auto;text-align:left;margin-top:10px}
 .select-sheet-item{padding:12px 14px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;transition:.15s;margin-bottom:4px;border:1px solid transparent}
 .select-sheet-item:hover{background:var(--accent-soft);color:var(--accent)}
 .select-sheet-item.selected{background:var(--accent);color:#fff}
@@ -324,7 +323,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 </div>
 
 <div class="modal" id="loginModal">
-  <div class="modal-content">
+  <div class="modal-content" style="position:relative;">
     <h3>🔐 Ustoz Sifatida Kirish</h3>
     <span class="label" style="text-align:left">Ism-sharifingizni ro'yxatdan tanlang:</span>
     <input type="text" id="teacherSearchBox" placeholder="🔍 Ism bo'yicha qidirish..." oninput="filterTeacherDropdown()" style="margin-bottom:6px" />
@@ -449,7 +448,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   </div>
 </div>
 
-<!-- ENG PASTGA KO'CHIRILGAN CUSTOM SELECT MODAL -->
+<!-- Custom Select Modal (Eng oxirida va eng baland z-index bilan) -->
 <div class="modal" id="customSelectModal">
   <div class="modal-content">
     <h3 id="customSelectTitle">Tanlang</h3>
