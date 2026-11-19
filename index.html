@@ -10,11 +10,11 @@
 body.dark{--bg:#0b0f19;--card:#131826;--text:#f8fafc;--muted:#94a3b8;--border:#1e293b;--accent:#6366f1;--accent-soft:#1e1b4b;--mint:#064e3b;--mint-text:#a7f3d0;--lavender:#4c1d95;--lavender-text:#e9d5ff;--shadow:0 10px 30px rgba(0,0,0,.4)}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans',sans-serif}
 body{background:var(--bg);color:var(--text);padding-bottom:60px;transition:.3s}
-header{background:linear-gradient(135deg,#6366f1,#8b5cf6 50%,#ec4899);color:#fff;padding:26px 20px 30px;border-radius:0 0 32px 32px;box-shadow:0 12px 35px rgba(99,102,241,.3)}
+header{background:linear-gradient(135deg,#6366f1,#8b5cf6 50%,#ec4899);color:#fff;padding:22px 16px 26px;border-radius:0 0 28px 28px;box-shadow:0 12px 35px rgba(99,102,241,.3)}
 .top-bar{display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:24px;font-weight:800;letter-spacing:-.5px;user-select:none}
-.header-actions{display:flex;gap:8px;align-items:center}
-.action-icon-btn{width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:#fff;transition:.2s}
+.logo{font-size:22px;font-weight:800;letter-spacing:-.5px;user-select:none;cursor:pointer}
+.header-actions{display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:60%}
+.action-icon-btn{width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,.2);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:#fff;transition:.2s}
 .action-icon-btn:hover{background:rgba(255,255,255,.35);transform:scale(1.05)}
 .subtitle{font-size:13px;opacity:.9;margin-top:6px;font-weight:600}
 .tabs{display:flex;gap:8px;padding:18px 16px 8px;max-width:540px;margin:0 auto}
@@ -88,9 +88,9 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
 <header>
   <div class="top-bar">
-    <div class="logo" id="logo">EduRank Pro 🚀</div>
+    <div class="logo" id="logo" onclick="handleLogoClick()">EduRank Pro 🚀</div>
     <div class="header-actions">
-      <!-- Til almashtirish tugmasi -->
+      <button class="action-icon-btn" onclick="openBadgesModal()" title="Unvonlar va Ballar">🏅</button>
       <button class="action-icon-btn" onclick="openLangModal()" title="Tilni o'zgartirish">🌐</button>
       <button class="action-icon-btn" onclick="openParentReadModal()" title="Ota-ona uchun kuzatish">👁️‍🗨️</button>
       <button class="action-icon-btn" onclick="openHelpModal()" title="Yo'riqnoma">?</button>
@@ -273,7 +273,23 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
 <!-- MODALLAR -->
 
-<!-- O'qituvchilar uchun qulay ism tanlash va qidirish bilan kirish oynasi -->
+<div class="modal" id="badgesModal">
+  <div class="modal-content" style="text-align:left">
+    <h3>🏅 Maktab Unvonlari va Ballar</h3>
+    <p style="margin-bottom:10px">Quyidagi ballarga yetib, yangi unvonlarni qo'lga kiriting:</p>
+    <div style="font-size:13px; line-height:1.7; color:var(--text);">
+      • <b>🌱 Boshlang'ich</b> — 0 balldan boshlanadi<br>
+      • <b>⭐ Faol ishtirokchi</b> — 20 ball<br>
+      • <b>💡 Iqtidorli</b> — 60 ball<br>
+      • <b>📈 Zukko O'quvchi</b> — 100 ball<br>
+      • <b>🔥 Fan bilimdoni</b> — 150 ball<br>
+      • <b>🚀 Maktab Lideri</b> — 200 ball<br>
+      • <b>👑 Super Chempion</b> — 300+ ball
+    </div>
+    <button class="modal-btn" style="margin-top:14px" onclick="closeBadgesModal()">Tushunarli 👍</button>
+  </div>
+</div>
+
 <div class="modal" id="loginModal">
   <div class="modal-content">
     <h3>🔐 Ustoz Sifatida Kirish</h3>
@@ -288,7 +304,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   </div>
 </div>
 
-<!-- Til almashtirish modali -->
 <div class="modal" id="langModal">
   <div class="modal-content">
     <h3>🌐 Tilni Tanlang / Язык / Language</h3>
@@ -322,18 +337,24 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   </div>
 </div>
 
+<!-- Kengaytirilgan va oson boshqariladigan Super Admin Paneli -->
 <div class="modal" id="adminModal">
   <div class="modal-content">
-    <h3>🛡️ Super Admin</h3>
+    <h3>🛡️ Super Admin Boshqaruvi</h3>
     <div id="adminStep1">
-      <input type="password" id="adminPin" placeholder="Super admin PIN" />
+      <p style="text-align:center;font-size:12px;margin-bottom:10px">Admin huquqi uchun PIN kodni kiriting:</p>
+      <input type="password" id="adminPin" placeholder="Super admin PIN" style="margin-bottom:8px" />
       <button class="modal-btn" onclick="verifyAdmin()">Kirish</button>
     </div>
     <div id="adminStep2" class="hidden">
-      <input type="text" id="newTeacherCode" placeholder="Yangi o'qituvchi kodi" />
-      <button class="modal-btn" onclick="saveTeacherCode()">Saqlash</button>
+      <span class="label" style="text-align:left">O'qituvchilar parol kodini o'zgartirish:</span>
+      <input type="text" id="newTeacherCode" placeholder="Yangi o'qituvchi kodi (masalan: 3333)" style="margin-bottom:10px" />
+      <button class="modal-btn" onclick="saveTeacherCode()" style="margin-bottom:8px">Kodini Yangilash ✅</button>
+      
+      <span class="label" style="text-align:left">Tezkor Boshqaruv:</span>
+      <button class="modal-btn" style="background:#ef4444;margin-top:4px" onclick="adminResetAllPoints()">🔄 Barcha Ballarni Noldan Boshlash</button>
     </div>
-    <button class="modal-btn" style="background:var(--muted);margin-top:6px" onclick="closeAdmin()">Yopish</button>
+    <button class="modal-btn" style="background:var(--muted);margin-top:10px" onclick="closeAdmin()">Yopish</button>
   </div>
 </div>
 
@@ -415,10 +436,9 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  const SUPER_PIN = "";
+  const SUPER_PIN = "1234"; // Super admin uchun maxsus PIN kod
   const todayStr = new Date().toISOString().slice(0, 10);
   
-  // 66 ta o'qituvchining tozalangan ism va familiyasi ro'yxati
   const teachersList = [
     "Bekzodjon Abdullayev", "Shoxista Abdurayimova", "Nilufarxon Abdurashidova", "To'tixon Abdusalomova",
     "Feruza Abduvaxobova", "Nilufar Axmadaliyeva", "Iroda Axmedova", "Durdonaxon A'zamova",
@@ -447,8 +467,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   const defaultClubs = ["Matematika", "Ingliz tili", "IT va Dasturlash", "Fizika"];
   let clubs = defaultClubs;
   let students = [
-    { id: 1, name: "Lobar Karimova", cls: "9-A", club: "Matematika", pointsWeek: 12, pointsMonth: 35, pointsYear: 120, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "" },
-    { id: 2, name: "Behruz Alimov", cls: "9-D", club: "IT va Dasturlash", pointsWeek: 10, pointsMonth: 28, pointsYear: 95, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "" }
+    { id: 1, name: "Lobar Karimova", cls: "9-A", club: "Matematika", pointsWeek: 12, pointsMonth: 35, pointsYear: 120, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "", currentLevelBadge: "Faol ishtirokchi" },
+    { id: 2, name: "Behruz Alimov", cls: "9-D", club: "IT va Dasturlash", pointsWeek: 10, pointsMonth: 28, pointsYear: 95, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "", currentLevelBadge: "Faol ishtirokchi" }
   ];
   let customTargets = [{ id: 1, scope: "SCHOOL", title: "Maktab Super Chempioni 🏆", points: 100 }];
   let requests = [];
@@ -496,31 +516,44 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     setTimeout(() => { t.style.display = "none"; }, 2400);
   }
 
+  function getBadgeAndCheckLevel(p, student) {
+    const val = Number(p) || 0;
+    let badgeName = "🌱 Boshlang'ich";
+    if (val >= 300) badgeName = "👑 Super Chempion";
+    else if (val >= 200) badgeName = "🚀 Maktab Lideri";
+    else if (val >= 150) badgeName = "🔥 Fan bilimdoni";
+    else if (val >= 100) badgeName = "📈 Zukko O'quvchi";
+    else if (val >= 60) badgeName = "💡 Iqtidorli";
+    else if (val >= 20) badgeName = "⭐ Faol ishtirokchi";
+
+    if (student && student.currentLevelBadge !== badgeName) {
+      student.currentLevelBadge = badgeName;
+      $("congratsText").textContent = `${student.name}, tabriklaymiz! Siz "${badgeName}" darajasiga chiqdingiz! Maktab bo'yicha reytingda shunday davom eting! 🚀`;
+      $("congratsModal").classList.add("open");
+    }
+    return badgeName;
+  }
+
   function getBadge(p) {
     const val = Number(p) || 0;
-    if (val >= 200) return "🌟 Maktab Lideri";
-    if (val >= 120) return "🔥 Zukko O'quvchi";
+    if (val >= 300) return "👑 Super Chempion";
+    if (val >= 200) return "🚀 Maktab Lideri";
+    if (val >= 150) return "🔥 Fan bilimdoni";
+    if (val >= 100) return "📈 Zukko O'quvchi";
     if (val >= 60) return "💡 Iqtidorli";
     if (val >= 20) return "⭐ Faol ishtirokchi";
     return "🌱 Boshlang'ich";
   }
 
-  // Tilni almashtirish funksiyasi (Lotin, Kirill, Ruscha, Inglizcha)
+  function openBadgesModal() { $("badgesModal").classList.add("open"); }
+  function closeBadgesModal() { $("badgesModal").classList.remove("open"); }
+
   function changeLanguage(lang) {
     closeLangModal();
-    if(lang === 'uz_lat') {
-      $("txtSubtitle").textContent = "33-Maktab Reyting va Motivatsiya Tizimi";
-      showToast("O'zbekcha (Lotin) tanlandi ✅");
-    } else if(lang === 'uz_kir') {
-      $("txtSubtitle").textContent = "33-Мактаб Рейтинг ва Мотивация Тизими";
-      showToast("Ўзбекча (Кирилл) танланди ✅");
-    } else if(lang === 'ru') {
-      $("txtSubtitle").textContent = "Школьная система рейтинга и мотивации №33";
-      showToast("Русский язык выбран ✅");
-    } else if(lang === 'en') {
-      $("txtSubtitle").textContent = "School Rating & Motivation System #33";
-      showToast("English selected ✅");
-    }
+    if(lang === 'uz_lat') { $("txtSubtitle").textContent = "33-Maktab Reyting va Motivatsiya Tizimi"; showToast("O'zbekcha (Lotin) tanlandi ✅"); }
+    else if(lang === 'uz_kir') { $("txtSubtitle").textContent = "33-Мактаб Рейтинг ва Мотивация Тизими"; showToast("Ўзбекча (Кирилл) танланди ✅"); }
+    else if(lang === 'ru') { $("txtSubtitle").textContent = "Школьная система рейтинга и мотивации №33"; showToast("Русский язык выбран ✅"); }
+    else if(lang === 'en') { $("txtSubtitle").textContent = "School Rating & Motivation System #33"; showToast("English selected ✅"); }
   }
 
   function openLangModal() { $("langModal").classList.add("open"); }
@@ -565,7 +598,10 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     const now = new Date().getTime();
     const distance = timerData.endTime - now;
-    if (distance < 0) { $("timerDigitsDisplay").textContent = "Vaqt tugadi!"; return; }
+    if (distance < 0) { 
+      $("timerDigitsDisplay").textContent = "Musobaqa o'z nihoyasiga yetdi!"; 
+      return; 
+    }
 
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -663,9 +699,10 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const text = $("noticeInputText").value.trim();
     noticeBoardData = { scope, text }; 
     $("noticeInputText").value = "";
-    saveData(); renderNoticeBoard();
+    saveData(); 
+    renderNoticeBoard();
     if(text) showToast("E'lon muvaffaqiyatli chiqarildi! 📢");
-    else showToast("E'lon taxtasi tozalandi va yopildi.");
+    else showToast("E'lon taxtasi tozalandi va o'chirildi ❌");
   }
 
   function renderNoticeBoard() {
@@ -673,6 +710,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const textElem = $("noticeBoardText");
     const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
     if(!banner || !textElem) return;
+    
     if(!noticeBoardData || !noticeBoardData.text || noticeBoardData.text.trim() === "" || currentMainTab === 'club' || !isScopeMatchedForFilter(noticeBoardData.scope, filterVal)) {
       banner.style.display = "none";
       return;
@@ -706,6 +744,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function closeReportModal() { $("reportModal").classList.remove("open"); }
 
   function checkCustomTargetsUnlock(st) {
+    getBadgeAndCheckLevel(currentTimeTab === 'week' ? st.pointsWeek : currentTimeTab === 'month' ? st.pointsMonth : st.pointsYear, st);
+
     if(!st.rewards) st.rewards = [];
     customTargets.forEach(t => {
       let currentPoints = currentTimeTab === 'week' ? (st.pointsWeek || 0) : currentTimeTab === 'month' ? (st.pointsMonth || 0) : (st.pointsYear || 0);
@@ -842,7 +882,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if(s.anonPraise) { anonBox.style.display = "block"; $("studentAnonPraiseText").textContent = s.anonPraise; }
     else { anonBox.style.display = "none"; }
 
-    $("modalBadgeContainer").innerHTML = `<span class="badge-tag" style="font-size:13px;padding:6px 12px">${getBadge(s.pointsMonth || 0)}</span>`;
+    $("modalBadgeContainer").innerHTML = `<span class="badge-tag" style="font-size:13px;padding:6px 12px">${getBadge(getStudentPoints(s))}</span>`;
     
     const maxP = Math.max(s.pointsWeek || 0, s.pointsMonth || 0, s.pointsYear || 1, 10);
     $("barWeek").style.height = `${Math.min(60, Math.max(15, ((s.pointsWeek||0) / maxP) * 60))}px`;
@@ -919,33 +959,53 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     showToast("Paneldan chiqildi.");
   }
 
+  // Logo ustiga 5 marta bosganda Super Admin ochilishi
   let tapCount = 0, tapTimer;
-  $("logo").addEventListener("click", () => {
+  function handleLogoClick() {
     tapCount++;
     clearTimeout(tapTimer);
     tapTimer = setTimeout(() => { tapCount = 0; }, 1500);
-    if (tapCount >= 5) { tapCount = 0; $("adminModal").classList.add("open"); }
-  });
+    if (tapCount >= 5) {
+      tapCount = 0;
+      $("adminModal").classList.add("open");
+    }
+  }
 
   function verifyAdmin() {
-    if (!SUPER_PIN) return showToast("PIN kiritilmagan!");
-    if ($("adminPin").value === SUPER_PIN) { $("adminStep1").classList.add("hidden"); $("adminStep2").classList.remove("hidden"); }
-    else { showToast("PIN noto'g'ri!"); }
+    const pin = $("adminPin").value.trim();
+    if (pin === SUPER_PIN) {
+      $("adminStep1").classList.add("hidden");
+      $("adminStep2").classList.remove("hidden");
+      showToast("Super Admin tasdiqlandi ✅");
+    } else {
+      showToast("PIN kod noto'g'ri ❌");
+    }
   }
 
   function saveTeacherCode() {
     const c = $("newTeacherCode").value.trim();
     if (c.length < 4) return showToast("Kod kamida 4 belgi bo'lsin!");
     localStorage.setItem("edurank_teacher_code", c);
-    isTeacherLoggedIn = false;
     closeAdmin();
     showToast("O'qituvchi kodi yangilandi ✅");
   }
 
+  function adminResetAllPoints() {
+    if(confirm("Haqiqatan ham barcha o'quvchilar ballarini nollashtirmoqchimisiz?")) {
+      students.forEach(s => { s.pointsWeek = 0; s.pointsMonth = 0; s.pointsYear = 0; s.rewards = []; });
+      saveData();
+      renderLeaderboard();
+      closeAdmin();
+      showToast("Barcha ballar noldan boshlandi 🔄");
+    }
+  }
+
   function closeAdmin() {
     $("adminModal").classList.remove("open");
-    $("adminPin").value = ""; $("newTeacherCode").value = "";
-    $("adminStep1").classList.remove("hidden"); $("adminStep2").classList.add("hidden");
+    $("adminPin").value = ""; 
+    $("newTeacherCode").value = "";
+    $("adminStep1").classList.remove("hidden"); 
+    $("adminStep2").classList.add("hidden");
   }
 
   function showView(view) {
@@ -1077,7 +1137,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function addNewStudent() {
     const name = $("newName").value.trim();
     if (!name) return showToast("O'quvchining ismini kiriting!");
-    students.push({ id: Date.now() + Math.random(), name, cls: $("newClass").value, club: $("newClub").value, pointsWeek: 0, pointsMonth: 0, pointsYear: 0, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "" });
+    students.push({ id: Date.now() + Math.random(), name, cls: $("newClass").value, club: $("newClub").value, pointsWeek: 0, pointsMonth: 0, pointsYear: 0, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "", currentLevelBadge: "🌱 Boshlang'ich" });
     $("newName").value = "";
     saveData(); populateSelect(); populateAnonSelect(); renderManageList();
     showToast(`${name} ro'yxatga qo'shildi!`);
@@ -1153,7 +1213,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
   function resetMonthlyGrowth() {
     if (confirm("Barcha ballar noldan boshlansinmi?")) {
-      students.forEach(s => { s.pointsWeek = 0; s.pointsMonth = 0; s.pointsYear = 0; s.praiseRecords = {}; s.quickCounts = {}; s.rewards = []; s.anonPraise = ""; });
+      students.forEach(s => { s.pointsWeek = 0; s.pointsMonth = 0; s.pointsYear = 0; s.praiseRecords = {}; s.quickCounts = {}; s.rewards = []; s.anonPraise = ""; s.currentLevelBadge = "🌱 Boshlang'ich"; });
       logs.unshift("🔄 Barcha ballar nollashtirildi");
       saveData(); populateSelect(); populateAnonSelect(); renderManageList(); renderLogs(); renderLeaderboard();
       showToast("Ballar noldan boshlandi!");
