@@ -81,12 +81,19 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 .manage-actions{display:flex;gap:6px}
 .mini-btn{padding:5px 10px;border-radius:8px;border:none;font-size:12px;font-weight:700;cursor:pointer}
 .log-item{font-size:12px;padding:9px 0;border-bottom:1px solid var(--border);color:var(--muted)}
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:.2s}
+
+/* Modal qatlamlari to'g'rilandi: z-index baland qilindi */
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:900;opacity:0;pointer-events:none;transition:.2s}
 .modal.open{opacity:1;pointer-events:auto}
 .modal-content{background:var(--card);width:90%;max-width:380px;padding:24px;border-radius:24px;box-shadow:0 20px 40px rgba(0,0,0,.3);position:relative;text-align:center}
 .modal-content h3{font-size:18px;font-weight:800;margin-bottom:10px;color:var(--accent)}
 .modal-content p{font-size:13px;line-height:1.5;color:var(--muted);margin-bottom:16px;text-align:left}
 .modal-btn{width:100%;margin-top:12px;background:var(--accent);color:#fff;padding:12px;border-radius:14px;border:none;font-weight:700;cursor:pointer}
+
+/* Maxsus Tanlash Oynasi (Custom Select Modal) boshqa modallardan ham ustun turishi uchun z-index oshirildi */
+#customSelectModal {
+    z-index: 9999 !important;
+}
 
 /* Custom Selection Sheet ichki ro'yxat stili */
 .select-sheet-list{max-height:300px;overflow-y:auto;text-align:left;margin-top:10px}
@@ -94,7 +101,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 .select-sheet-item:hover{background:var(--accent-soft);color:var(--accent)}
 .select-sheet-item.selected{background:var(--accent);color:#fff}
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 22px;border-radius:99px;font-size:13px;font-weight:600;display:none;z-index:300;box-shadow:0 10px 25px rgba(0,0,0,.25)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 22px;border-radius:99px;font-size:13px;font-weight:600;display:none;z-index:10000;box-shadow:0 10px 25px rgba(0,0,0,.25)}
 .hidden{display:none}
 </style>
 </head>
@@ -513,7 +520,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   let isTeacherLoggedIn = false;
   let currentTeacherName = "";
   let activeStudentIdModal = null;
-  let activeSelectId = null; // Qaysi custom select ochiqligini saqlash uchun
+  let activeSelectId = null;
 
   const translations = {
     uz_lat: {
@@ -569,7 +576,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   const $ = id => document.getElementById(id);
   const esc = s => String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  // CUSTOM SELECT MANTIG'I
   function openCustomSelect(id) {
     activeSelectId = id;
     const modal = $("customSelectModal");
@@ -626,7 +632,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if(trigger) trigger.textContent = text;
     closeCustomSelect();
     
-    // Trigger onchange if exists
     if(hiddenInput.onchange) hiddenInput.onchange();
   }
 
@@ -780,7 +785,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function populateDropdowns() {
-    // Default qiymatlarni o'rnatish
     selectCustomOption('timerScope', 'SCHOOL', 'Butun Maktab miqyosida');
     selectCustomOption('noticeScope', 'SCHOOL', 'Butun Maktab miqyosida');
     selectCustomOption('targetScope', 'SCHOOL', 'Butun Maktab miqyosida');
