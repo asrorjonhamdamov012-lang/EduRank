@@ -105,7 +105,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
 <div class="container">
   <div id="viewLeaderboard">
-    <!-- E'LON QILINGAN SOVRINLAR (REYTING YUQORIGA) -->
     <div class="rewards-broadcast" id="activeRewardsBanner" style="display:none;">
       <h4>🎁 E'lon qilingan Faol Sovrinlar & Marralar</h4>
       <div id="rewardsBroadcastList"></div>
@@ -131,7 +130,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <button class="mini-btn btn-danger" onclick="teacherLogout()">Chiqish 🔓</button>
     </div>
 
-    <!-- HISOBOT MODALI OCHISH -->
     <div class="teacher-card">
       <h3>📊 Umumiy Baholash va Nazorat</h3>
       <span class="label">Maktab yoki sinflar bo'yicha umumiy o'quv faolligi va statistika hisoboti.</span>
@@ -144,20 +142,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <h3>🎯 Maxsus Sovrin va Marra Belgilash</h3>
       <span class="label">Xohlagan miqyosda ball marrasi va sovg'ani belgilang:</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
-        <select id="targetScope">
-          <option value="SCHOOL">Butun Maktab miqyosida</option>
-          <option value="GRADE_1">1-sinflar paralleli</option>
-          <option value="GRADE_2">2-sinflar paralleli</option>
-          <option value="GRADE_3">3-sinflar paralleli</option>
-          <option value="GRADE_4">4-sinflar paralleli</option>
-          <option value="GRADE_5">5-sinflar paralleli</option>
-          <option value="GRADE_6">6-sinflar paralleli</option>
-          <option value="GRADE_7">7-sinflar paralleli</option>
-          <option value="GRADE_8">8-sinflar paralleli</option>
-          <option value="GRADE_9">9-sinflar paralleli</option>
-          <option value="GRADE_10">10-sinflar paralleli</option>
-          <option value="GRADE_11">11-sinflar paralleli</option>
-        </select>
+        <select id="targetScope"></select>
         <input type="text" id="targetRewardTitle" placeholder="Sovrin nomi (Masalan: Kitob yoki 5-baho)" />
         <input type="number" id="targetRewardPoints" placeholder="Kerakli ball (Masalan: 50)" />
       </div>
@@ -246,7 +231,6 @@ Tursunova Malika	9-D"></textarea>
   </div>
 </div>
 
-<!-- HISOBOT MODALI -->
 <div class="modal" id="reportModal">
   <div class="modal-content" style="text-align:left">
     <h3>📊 Maktab Umumiy Hisoboti</h3>
@@ -257,7 +241,6 @@ Tursunova Malika	9-D"></textarea>
   </div>
 </div>
 
-<!-- OTA-ONA READ KABINET MODALI -->
 <div class="modal" id="parentReadModal">
   <div class="modal-content" style="text-align:left">
     <h3>👁️‍🗨️ Ota-ona uchun Farzandni Kuzatish</h3>
@@ -292,7 +275,6 @@ Tursunova Malika	9-D"></textarea>
   </div>
 </div>
 
-<!-- O'QUVCHI PROFILI GRAFIK BILAN -->
 <div class="modal" id="studentModal">
   <div class="modal-content">
     <h3 id="modalStudentName">O'quvchi Ismi</h3>
@@ -423,6 +405,25 @@ Tursunova Malika	9-D"></textarea>
   function populateDropdowns() {
     const classOpts = allClasses.map(c => `<option value="${c}">${c} sinf</option>`).join("");
     const clubOpts = `<option value="NONE">To'garaksiz (Faqat maktab)</option>` + clubs.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+    
+    // Barcha parallellar va alohida sinflarni targetScope ga to'liq qo'shish
+    const targetSel = $("targetScope");
+    if(targetSel) {
+      let parallelGroup = "";
+      for(let i=1; i<=11; i++) {
+        parallelGroup += `<option value="GRADE_${i}">${i}-sinflar paralleli</option>`;
+      }
+      targetSel.innerHTML = `
+        <option value="SCHOOL">Butun Maktab miqyosida</option>
+        <optgroup label="📊 Parallellar">
+          ${parallelGroup}
+        </optgroup>
+        <optgroup label="🎓 Alohida Sinflar">
+          ${classOpts}
+        </optgroup>
+      `;
+    }
+
     if($("newClass")) $("newClass").innerHTML = classOpts;
     if($("newClub")) $("newClub").innerHTML = clubOpts;
     if($("bulkClass")) $("bulkClass").innerHTML = classOpts;
@@ -463,7 +464,7 @@ Tursunova Malika	9-D"></textarea>
     }
     box.innerHTML = customTargets.map(t => `
       <div class="manage-item">
-        <div><strong>${esc(t.title)}</strong> (${t.scope}) — <b>${t.points} ball</b></div>
+        <div><strong>${esc(t.title)}</strong> (${esc(t.scope)}) — <b>${t.points} ball</b></div>
         <button class="mini-btn btn-danger" onclick="deleteTarget(${t.id})">🗑️</button>
       </div>`).join("");
   }
