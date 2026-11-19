@@ -113,12 +113,14 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 <div class="container">
   <div id="viewLeaderboard">
     
-    <div class="timer-box" id="timerBox">
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.9">🏆 Maktab Lideri uchun kurash</div>
+    <!-- Taymer faqat yoqilganda chiqadi -->
+    <div class="timer-box" id="timerBox" style="display:none;">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.9" id="timerTitleDisplay">🏆 Liderlik uchun kurash</div>
       <div class="timer-digits" id="timerDigitsDisplay">00 kun, 00 soat, 00 minut</div>
-      <div class="timer-subtext">Shuncha vaqtingiz qoldi, davom eting, sz maktab lideri bo'lasiz! 🚀</div>
+      <div class="timer-subtext" id="timerSubtextDisplay">Shuncha vaqtingiz qoldi, davom eting! 🚀</div>
     </div>
     
+    <!-- E'lonlar taxtasi faqat matn yozilganda chiqadi -->
     <div class="notice-board" id="noticeBoardBanner" style="display:none;">
       <h4>📢 Maktab E'lonlar Taxtasi</h4>
       <p id="noticeBoardText" style="font-size:13px;font-weight:700;margin-top:4px;"></p>
@@ -150,12 +152,19 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     </div>
 
     <div class="teacher-card">
-      <h3>⏳ Liderlik Taymerini Sozlash</h3>
-      <span class="label">O'quvchilar uchun oyi/davr tugash vaqtini belgilang:</span>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
-        <input type="datetime-local" id="teacherTimerInput" />
+      <h3>⏳ Liderlik Taymerini Sozlash (Maktab yoki Har bir sinf uchun)</h3>
+      <span class="label">Taymer qaysi qatlam uchun mo'ljallanganini tanlang:</span>
+      <select id="timerScope" style="margin-bottom:8px"></select>
+      <span class="label">Taymer sarlavhasi (Masalan: Maktab Lideri uchun):</span>
+      <input type="text" id="timerTitleInput" placeholder="Masalan: 9-A sinf musobaqasi" style="margin-bottom:8px" />
+      <span class="label">Taymer tagidagi izoh / matn (Masalan: Shuncha vaqt qoldi, davom eting!):</span>
+      <input type="text" id="timerSubtextInput" placeholder="Masalan: G'olibga maxsus sovg'a beriladi! 🎁" style="margin-bottom:8px" />
+      <span class="label">Tugash vaqtini belgilang:</span>
+      <input type="datetime-local" id="teacherTimerInput" style="margin-bottom:8px" />
+      <div style="display:flex;gap:8px">
+        <button class="act-btn btn-part" style="flex:1" onclick="saveTeacherTimer()">Taymerni Ishga Tushirish ⏰</button>
+        <button class="act-btn btn-danger" style="flex:1" onclick="stopTeacherTimer()">Taymerni O'chirish ❌</button>
       </div>
-      <button class="act-btn btn-part" style="width:100%" onclick="saveTeacherTimer()">Taymerni Ishga Tushirish ⏰</button>
     </div>
 
     <div class="teacher-card">
@@ -168,7 +177,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     <div class="teacher-card">
       <h3>📢 E'lonlar Taxtasiga Yozish</h3>
-      <span class="label">Barcha o'quvchilarga yoki ma'lum sinfga e'lon qoldiring:</span>
+      <span class="label">Barcha o'quvchilarga yoki ma'lum sinfga e'lon qoldiring (Bo'sh qoldirib yuborilsa taxta yopiladi):</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <select id="noticeScope"></select>
         <textarea id="noticeInputText" placeholder="Masalan: Ertadan boshlab yangi IT to'garagi ochiladi..."></textarea>
@@ -405,8 +414,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   ];
   let requests = [];
   let logs = ["Lobar Karimova — Vazifa a'lo (+5 ball)"];
-  let noticeBoardData = { scope: "SCHOOL", text: "EduRank Pro tizimiga xush kelibsiz! Barcha o'quvchilarga omad tilaymiz." };
-  let targetTimerEndTime = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).getTime();
+  let noticeBoardData = { scope: "SCHOOL", text: "" }; 
+  let timerData = { scope: "SCHOOL", title: "", subtext: "", endTime: null }; 
 
   let currentMainTab = 'school';
   let currentTimeTab = 'week';
@@ -436,10 +445,10 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     localStorage.setItem("edurank_pro_requests", JSON.stringify(requests));
     localStorage.setItem("edurank_pro_logs", JSON.stringify(logs));
     localStorage.setItem("edurank_pro_notice", JSON.stringify(noticeBoardData));
-    localStorage.setItem("edurank_pro_timer", targetTimerEndTime);
+    localStorage.setItem("edurank_pro_timer", JSON.stringify(timerData));
 
     db.ref("edurank_data").set({
-      students, clubs, targets: customTargets, requests, logs, notice: noticeBoardData, timerEnd: targetTimerEndTime
+      students, clubs, targets: customTargets, requests, logs, notice: noticeBoardData, timer: timerData
     });
   }
 
@@ -460,11 +469,33 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function updateTimerDisplay() {
+    const timerBox = $("timerBox");
+    if(!timerBox) return;
+
+    if (!timerData.endTime) {
+      timerBox.style.display = "none";
+      return;
+    }
+
+    const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
+    
+    // Sinf mosligini tekshirish
+    if (timerData.scope !== "SCHOOL") {
+      if (currentMainTab === 'club' || (filterVal !== "ALL" && filterVal !== timerData.scope && !filterVal.startsWith("GRADE_"))) {
+        timerBox.style.display = "none";
+        return;
+      }
+    }
+
+    timerBox.style.display = "block";
+    if($("timerTitleDisplay")) $("timerTitleDisplay").textContent = timerData.title || "🏆 Liderlik uchun kurash";
+    if($("timerSubtextDisplay")) $("timerSubtextDisplay").textContent = timerData.subtext || "Shuncha vaqtingiz qoldi, davom eting! 🚀";
+
     const now = new Date().getTime();
-    const distance = targetTimerEndTime - now;
+    const distance = timerData.endTime - now;
 
     if (distance < 0) {
-      if($("timerDigitsDisplay")) $("timerDigitsDisplay").textContent = "Vaqt tugadi!";
+      $("timerDigitsDisplay").textContent = "Vaqt tugadi!";
       return;
     }
 
@@ -472,19 +503,35 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-    if($("timerDigitsDisplay")) {
-      $("timerDigitsDisplay").textContent = `${days} kun, ${hours} soat, ${minutes} minut`;
-    }
+    $("timerDigitsDisplay").textContent = `${days} kun, ${hours} soat, ${minutes} minut`;
   }
   setInterval(updateTimerDisplay, 1000);
 
   function saveTeacherTimer() {
+    const scope = $("timerScope").value;
+    const title = $("timerTitleInput").value.trim();
+    const subtext = $("timerSubtextInput").value.trim();
     const val = $("teacherTimerInput").value;
-    if(!val) return showToast("Sanani va vaqtni tanlang!");
-    targetTimerEndTime = new Date(val).getTime();
+    
+    if(!val) return showToast("Tugash sanasi va vaqtini tanlang!");
+    
+    timerData = { 
+      scope, 
+      title: title || "🏆 Liderlik uchun kurash", 
+      subtext: subtext || "Shuncha vaqtingiz qoldi, davom eting! 🚀", 
+      endTime: new Date(val).getTime() 
+    };
+    
     saveData();
     updateTimerDisplay();
-    showToast("Liderlik taymeri yangilandi! ⏳");
+    showToast("Liderlik taymeri ishga tushirildi! ⏰");
+  }
+
+  function stopTeacherTimer() {
+    timerData = { scope: "SCHOOL", title: "", subtext: "", endTime: null };
+    saveData();
+    updateTimerDisplay();
+    showToast("Liderlik taymeri o'chirildi! ❌");
   }
 
   function populateDropdowns() {
@@ -503,6 +550,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     if($("targetScope")) $("targetScope").innerHTML = scopeOptions;
     if($("noticeScope")) $("noticeScope").innerHTML = scopeOptions;
+    if($("timerScope")) $("timerScope").innerHTML = scopeOptions;
     if($("bulkClassTarget")) $("bulkClassTarget").innerHTML = `<option value="SCHOOL">Butun Maktab</option>` + classOpts;
 
     if($("newClass")) $("newClass").innerHTML = classOpts;
@@ -517,17 +565,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const q = $("anonStudentSearch") ? $("anonStudentSearch").value.trim().toLowerCase() : "";
     const list = q ? students.filter(s => (s.name || "").toLowerCase().includes(q) || (s.cls || "").toLowerCase().includes(q)) : students;
     sel.innerHTML = list.map(s => `<option value="${s.id}">${esc(s.name)} (${esc(s.cls)})</option>`).join("");
-  }
-
-  function addNewClub() {
-    const name = $("newClubName").value.trim();
-    if (!name) return showToast("To'garak nomini kiriting!");
-    if (clubs.includes(name)) return showToast("Bu to'garak allaqachon bor!");
-    clubs.push(name);
-    $("newClubName").value = "";
-    saveData();
-    populateDropdowns();
-    showToast(`"${name}" to'garagi qo'shildi! 🎯`);
   }
 
   function addCustomTargetReward() {
@@ -586,19 +623,20 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function publishNotice() {
     const scope = $("noticeScope").value;
     const text = $("noticeInputText").value.trim();
-    if(!text) return showToast("E'lon matnini kiriting!");
-    noticeBoardData = { scope, text };
+    noticeBoardData = { scope, text }; 
     $("noticeInputText").value = "";
     saveData();
     renderNoticeBoard();
-    showToast("E'lon muvaffaqiyatli chiqarildi! 📢");
+    if(text) showToast("E'lon muvaffaqiyatli chiqarildi! 📢");
+    else showToast("E'lon taxtasi tozalandi va yopildi.");
   }
 
   function renderNoticeBoard() {
     const banner = $("noticeBoardBanner");
     const textElem = $("noticeBoardText");
     if(!banner || !textElem) return;
-    if(!noticeBoardData.text) {
+    
+    if(!noticeBoardData || !noticeBoardData.text || noticeBoardData.text.trim() === "") {
       banner.style.display = "none";
       return;
     }
@@ -606,13 +644,11 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     textElem.textContent = noticeBoardData.text;
   }
 
-  // Umumiy Hisobot (Eng faol va eng passiv sinflar bilan)
   function openReportModal() {
     const totalStudents = students.length;
     const topStudent = [...students].sort((a,b) => (b.pointsMonth||0) - (a.pointsMonth||0))[0];
     const topName = topStudent ? `${topStudent.name} (${topStudent.cls}) - ${topStudent.pointsMonth || 0}b` : "Yo'q";
     
-    // Sinf ballarini hisoblash
     const classPointsMap = {};
     allClasses.forEach(c => classPointsMap[c] = 0);
     students.forEach(s => {
@@ -621,13 +657,10 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       }
     });
 
-    // Sinflarni tartiblash (> 10 ball sharti bilan passiv sinf uchun)
     const classEntries = Object.entries(classPointsMap);
     classEntries.sort((a, b) => b[1] - a[1]);
 
     const bestClass = classEntries.length > 0 && classEntries[0][1] > 0 ? `${classEntries[0][0]} (${classEntries[0][1]}b)` : "Ma'lumot yo'q";
-    
-    // 10 balldan ko'p to'plagan va balli 0 dan katta bo'lgan eng pastki sinf passiv hisoblanadi
     const activeClasses = classEntries.filter(item => item[1] >= 10);
     const worstClass = activeClasses.length > 0 ? `${activeClasses[activeClasses.length - 1][0]} (${activeClasses[activeClasses.length - 1][1]}b)` : "Passiv sinf yo'q (hali 10+ ball yig'ilmagan)";
 
@@ -756,6 +789,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     renderActiveRewardsBanner();
     renderNoticeBoard();
+    updateTimerDisplay();
 
     const list = $("leaderboardList");
     if (!list) return;
@@ -949,7 +983,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     document.querySelector(".tabs").style.display = view === 'teacher' ? 'none' : 'flex';
     document.querySelector(".sub-tabs").style.display = view === 'teacher' ? 'none' : 'flex';
     $("growthCard").style.display = view === 'teacher' ? 'none' : 'flex';
-    $("timerBox").style.display = view === 'teacher' ? 'none' : 'flex';
+    $("timerBox").style.display = (view === 'teacher' || !timerData.endTime) ? 'none' : 'block';
     if (view === 'leaderboard') { updateFilterOptions(); renderLeaderboard(); renderActiveRewardsBanner(); renderNoticeBoard(); }
     if (view === 'teacher') { populateDropdowns(); populateSelect(); populateAnonSelect(); renderManageList(); renderRequests(); renderLogs(); renderTeacherTargets(); }
   }
@@ -1189,7 +1223,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       if (data.requests) requests = data.requests;
       if (data.logs) logs = data.logs;
       if (data.notice) noticeBoardData = data.notice;
-      if (data.timerEnd) targetTimerEndTime = data.timerEnd;
+      if (data.timer) timerData = data.timer;
     }
     updateFilterOptions();
     renderLeaderboard();
