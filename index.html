@@ -166,6 +166,33 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <button class="mini-btn btn-danger" onclick="teacherLogout()" id="txtLogoutBtn">Chiqish 🔓</button>
     </div>
 
+    <!-- BITTA O'QUVCHI QO'SHISH -->
+    <div class="teacher-card">
+      <h3 id="txtAddStudentCardTitle">➕ Bitta O'quvchi Qo'shish</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
+        <input type="text" id="newName" placeholder="To'liq ismi (Familiya Ism)" />
+        <div style="display:flex;gap:8px">
+          <div class="custom-select-trigger" id="newClassTrigger" onclick="openCustomSelect('newClass')" style="width:40%">1-A</div>
+          <input type="hidden" id="newClass" value="1-A">
+          <div class="custom-select-trigger" id="newClubTrigger" onclick="openCustomSelect('newClub')" style="width:60%">Matematika</div>
+          <input type="hidden" id="newClub" value="Matematika">
+        </div>
+      </div>
+      <button class="act-btn btn-part" style="width:100%" onclick="addNewStudent()" id="txtAddStudentBtn">Ro'yxatga qo'shish</button>
+    </div>
+
+    <!-- EXCEL / MATNDAN OMMAVIY YUKLASH -->
+    <div class="teacher-card" style="border: 2px dashed var(--accent);">
+      <h3>📁 Excel / Matndan Ommaviy Yuklash</h3>
+      <span class="label">Exceldan nusxalab (Ism, Sinf ustunlari) tashlang. Agar faqat ismlar yozilsa, quyidagi sinfga tushadi:</span>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
+        <div class="custom-select-trigger" id="bulkDefaultClassTrigger" onclick="openCustomSelect('bulkDefaultClass')">1-A sinf</div>
+        <input type="hidden" id="bulkDefaultClass" value="1-A">
+        <textarea id="bulkStudentsInput" placeholder="Karimov Anvar 9-A&#10;Tursunova Malika 9-D&#10;Bekzod Rahimov"></textarea>
+      </div>
+      <button class="act-btn btn-att" style="width:100%; background:var(--mint); color:var(--mint-text);" onclick="addBulkStudents()">Ommaviy Qo'shish 🚀</button>
+    </div>
+
     <div class="teacher-card">
       <h3 id="txtTimerCardTitle">⏳ Liderlik Taymerini Sozlash</h3>
       <span class="label" id="txtTimerScopeLabel">Taymer qaysi qatlam uchun mo'ljallanganini tanlang:</span>
@@ -265,20 +292,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     <div class="teacher-card">
       <h3 id="txtRequestCardTitle">📥 To'garakka Kelib Tushgan Arizalar</h3>
       <div id="requestsList"><div style="font-size:12px;color:var(--muted)">Hozircha arizalar yo'q.</div></div>
-    </div>
-
-    <div class="teacher-card">
-      <h3 id="txtAddStudentCardTitle">➕ Bitta O'quvchi Qo'shish</h3>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
-        <input type="text" id="newName" placeholder="To'liq ismi (Familiya Ism)" />
-        <div style="display:flex;gap:8px">
-          <div class="custom-select-trigger" id="newClassTrigger" onclick="openCustomSelect('newClass')" style="width:40%">1-A</div>
-          <input type="hidden" id="newClass" value="1-A">
-          <div class="custom-select-trigger" id="newClubTrigger" onclick="openCustomSelect('newClub')" style="width:60%">Matematika</div>
-          <input type="hidden" id="newClub" value="Matematika">
-        </div>
-      </div>
-      <button class="act-btn btn-part" style="width:100%" onclick="addNewStudent()" id="txtAddStudentBtn">Ro'yxatga qo'shish</button>
     </div>
 
     <div class="teacher-card">
@@ -386,10 +399,20 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   </div>
 </div>
 
+<!-- O'QUVCHI PROFILI MODAL (KUNLIK O'SISHI VA FOIZ BILAN) -->
 <div class="modal" id="studentModal">
   <div class="modal-content">
     <h3 id="modalStudentName">O'quvchi Ismi</h3>
     <p id="modalStudentDetails" style="text-align:center;font-size:13px;margin-bottom:6px"></p>
+    
+    <!-- KUNLIK O'SISHDAGI STATISTIKA BLOKI -->
+    <div style="background:linear-gradient(135deg,var(--accent-soft),var(--card)); border:1px solid var(--accent); padding:12px; border-radius:14px; font-size:12px; text-align:left; margin-bottom:8px;">
+      📈 <b>Bugungi o'sish dinamikasi:</b><br>
+      • Kecha yakunida: <b id="statYesterdayPoints">0</b> ball<br>
+      • Bugun oldingiz: <b id="statTodayPoints" style="color:#10b981;">+0</b> ball<br>
+      • O'sish ko'rsatkichi: <b id="statGrowthPercent" style="color:var(--accent);">0%</b> 🚀
+    </div>
+
     <div style="background:var(--accent-soft);padding:10px;border-radius:12px;font-size:12px;text-align:left;margin-bottom:8px">
       📊 <b>Sizning o'rinlaringiz:</b><br>
       • Maktab bo'yicha o'rin: <b id="statSchoolRank">-</b><br>
@@ -400,15 +423,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       💌 <b>Ustozlardan anonim xabar:</b> <span id="studentAnonPraiseText"></span>
     </div>
     <div id="modalBadgeContainer" style="margin:6px 0;display:flex;justify-content:center;gap:6px;flex-wrap:wrap"></div>
+    
     <div style="text-align:left; margin-top:8px; border-top:1px solid var(--border); padding-top:8px;">
-      <span class="label" style="margin-top:0">📈 O'sish Grafik Dinamikasi:</span>
-      <div style="background:var(--accent-soft);padding:10px;border-radius:12px;display:flex;justify-content:space-around;align-items:flex-end;height:80px;margin-top:6px;">
-        <div style="text-align:center"><div id="barWeek" style="background:var(--accent);width:20px;border-radius:4px;height:20px;"></div><span style="font-size:10px;color:var(--muted)">Hafta</span></div>
-        <div style="text-align:center"><div id="barMonth" style="background:#10b981;width:20px;border-radius:4px;height:35px;"></div><span style="font-size:10px;color:var(--muted)">Oy</span></div>
-        <div style="text-align:center"><div id="barYear" style="background:#f59e0b;width:20px;border-radius:4px;height:60px;"></div><span style="font-size:10px;color:var(--muted)">Yil</span></div>
-      </div>
-    </div>
-    <div style="text-align:left; margin-top:10px; border-top:1px solid var(--border); padding-top:8px;">
       <span class="label" style="margin-top:0">🏆 Shaxsiy Yutuqlar:</span>
       <div id="modalUnlockedRewards" style="font-size:12px; color:var(--muted); margin-bottom:6px;">Hozircha yutuqlar yo'q.</div>
     </div>
@@ -488,8 +504,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   const defaultClubs = ["Matematika", "Ingliz tili", "IT va Dasturlash", "Fizika"];
   let clubs = defaultClubs;
   let students = [
-    { id: 1, name: "Lobar Karimova", cls: "9-A", club: "Matematika", pointsWeek: 12, pointsMonth: 35, pointsYear: 120, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "", currentLevelBadge: "Faol ishtirokchi" },
-    { id: 2, name: "Behruz Alimov", cls: "9-D", club: "IT va Dasturlash", pointsWeek: 10, pointsMonth: 28, pointsYear: 95, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "", currentLevelBadge: "Faol ishtirokchi" }
+    { id: 1, name: "Lobar Karimova", cls: "9-A", club: "Matematika", pointsWeek: 12, pointsMonth: 35, pointsYear: 120, dailyDate: todayStr, dailyPoints: 5, yesterdayPoints: 30, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "", currentLevelBadge: "Faol ishtirokchi" },
+    { id: 2, name: "Behruz Alimov", cls: "9-D", club: "IT va Dasturlash", pointsWeek: 10, pointsMonth: 28, pointsYear: 95, dailyDate: todayStr, dailyPoints: 3, yesterdayPoints: 25, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "", currentLevelBadge: "Faol ishtirokchi" }
   ];
   let customTargets = [];
   let requests = [];
@@ -504,7 +520,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   let activeStudentIdModal = null;
   let activeSelectId = null;
 
-  // TO'LIQ TARJIMALAR RO'YXATI (Ustoz paneli ham qo'shildi)
   const translations = {
     uz_lat: {
       subtitle: "33-Maktab Reyting va Motivatsiya Tizimi",
@@ -553,155 +568,23 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       manageCardTitle: "⚙️ O'quvchilarni Boshqarish",
       resetBtn: "🔄 Ballarni Nollash",
       logCardTitle: "📜 Oxirgi Harakatlar"
-    },
-    uz_kir: {
-      subtitle: "33-Мактаб Рейтинг ва Мотивация Тизими",
-      tabSchool: "🏫 Мактаб Рейтинги",
-      tabClub: "🎯 Тўгараклар Рейтинги",
-      subWeek: "📅 Ҳафталик",
-      subMonth: "🗓️ Ойлик",
-      subYear: "📊 Йиллик",
-      searchPlaceholder: "🔍 Исм бўйича қидириш...",
-      bannerTitle: "🔥 Энг Катта Ўсиш",
-      noticeTitle: "📢 Мактаб Эълонлар Тахтаси",
-      rewardTitle: "🎁 Эълон қилинган Фаол Совринлар & Марралар",
-      teacherPanelTitle: "👨‍🏫 Устоз Бошқарув Панели",
-      logoutBtn: "Чиқиш 🔓",
-      timerCardTitle: "⏳ Лидерлик Таймерини Созлаш",
-      timerScopeLabel: "Таймер қайси қатлам учун мўлжалланганини танланг:",
-      timerTitleLabel: "Таймер сарлавҳаси:",
-      timerSubLabel: "Таймер тагидаги изоҳ / матн:",
-      timerDateLabel: "Тугаш вақтини белгиланг:",
-      startTimerBtn: "Таймерни Ишга Тушириш ⏰",
-      stopTimerBtn: "Таймерни Ўчириш ❌",
-      reportCardTitle: "📊 Умумий Баҳолаш ва Назорат",
-      reportDesc: "Мактаб ёки синфлар бўйича умумий ўқув фаоллиги ва статистика ҳисоботи.",
-      viewReportBtn: "📊 Ҳисоботни кўриш",
-      noticeCardTitle: "📢 Эълонлар Тахтасига Ёзиш",
-      noticeDesc: "Барча ўқувчиларга ёки маълум синфга эълон қолдиринг:",
-      publishNoticeBtn: "Эълонни чиқариш 🚀",
-      rewardCardTitle: "🎯 Махсус Соврин ва Ўйин Белгилаш",
-      rewardScopeLabel: "Соврин қайси синф ёки қатлам учун мўлжалланганини танланг:",
-      addRewardBtn: "Марра ва Соврин Қўшиш 🎁",
-      praiseCardTitle: "✨ Балл ва Рағбат Қўшиш",
-      studentSearchLabel: "Ўқувчини қидириш ва танлаш:",
-      quickPointsLabel: "Тезкор баллар (Ҳар бир ўқувчига чекланган — макс 2 мартагача):",
-      quickTime: "⏰ Вақтида келди (+2)",
-      quickActive: "💡 Фаол қатнашди (+3)",
-      quickProject: "⭐ Вазифа / Лойиҳа аъло (+5)",
-      bulkCardTitle: "🚀 Синфларга Оммавий Балл Бериш",
-      bulkDesc: "Бутун синфга бир йўла балл қўшиш:",
-      bulkBtn: "Синфга Балл Тарқатиш ⚡",
-      anonCardTitle: "💌 Ўқувчига Аноним Мақтов Юбориш",
-      anonDesc: "Ўқувчини исм ёки синф бўйича қидириб топинг:",
-      anonBtn: "Аноним Мақтов Юбориш 💌",
-      requestCardTitle: "📥 Тўгаракка Келиб Тушган Аризалар",
-      addStudentCardTitle: "➕ Битта Ўқувчи Қўшиш",
-      addStudentBtn: "Рўйхатга қўшиш",
-      manageCardTitle: "⚙️ Ўқувчиларни Бошқариш",
-      resetBtn: "🔄 Балларни Ноллаш",
-      logCardTitle: "📜 Охирги Ҳаракатлар"
-    },
-    ru: {
-      subtitle: "Школьная система рейтинга и мотивации №33",
-      tabSchool: "🏫 Школьный рейтинг",
-      tabClub: "🎯 Рейтинг кружков",
-      subWeek: "📅 Недельный",
-      subMonth: "🗓️ Месячный",
-      subYear: "📊 Годовой",
-      searchPlaceholder: "🔍 Поиск по имени...",
-      bannerTitle: "🔥 Наибольший рост",
-      noticeTitle: "📢 Школьная доска объявлений",
-      rewardTitle: "🎁 Активные призы и цели",
-      teacherPanelTitle: "👨‍🏫 Панель управления учителя",
-      logoutBtn: "Выйти 🔓",
-      timerCardTitle: "⏳ Настройка таймера лидерства",
-      timerScopeLabel: "Выберите категорию для таймера:",
-      timerTitleLabel: "Заголовок таймера:",
-      timerSubLabel: "Текст / подпись под таймером:",
-      timerDateLabel: "Установите время окончания:",
-      startTimerBtn: "Запустить таймер ⏰",
-      stopTimerBtn: "Удалить таймер ❌",
-      reportCardTitle: "📊 Общая оценка и контроль",
-      reportDesc: "Отчет по общей активности учащихся и статистике.",
-      viewReportBtn: "📊 Посмотреть отчет",
-      noticeCardTitle: "📢 Написать на доску объявлений",
-      noticeDesc: "Оставьте объявление для всех или определенного класса:",
-      publishNoticeBtn: "Опубликовать объявление 🚀",
-      rewardCardTitle: "🎯 Назначить специальный приз и цель",
-      rewardScopeLabel: "Выберите класс или категорию для приза:",
-      addRewardBtn: "Добавить цель и приз 🎁",
-      praiseCardTitle: "✨ Добавить баллы и похвалу",
-      studentSearchLabel: "Поиск и выбор ученика:",
-      quickPointsLabel: "Быстрые баллы (лимит — макс 2 раза на ученика):",
-      quickTime: "⏰ Вовремя (+2)",
-      quickActive: "💡 Активен (+3)",
-      quickProject: "⭐ Задание / Проект отличный (+5)",
-      bulkCardTitle: "🚀 Массовая выдача баллов классу",
-      bulkDesc: "Добавить баллы всему классу сразу:",
-      bulkBtn: "Раздать баллы классу ⚡",
-      anonCardTitle: "💌 Анонимная похвала ученику",
-      anonDesc: "Найдите ученика по имени или классу:",
-      anonBtn: "Отправить анонимную похвалу 💌",
-      requestCardTitle: "📥 Заявки в кружки",
-      addStudentCardTitle: "➕ Добавить ученика",
-      addStudentBtn: "Добавить в список",
-      manageCardTitle: "⚙️ Управление учениками",
-      resetBtn: "🔄 Обнулить баллы",
-      logCardTitle: "📜 Последние действия"
-    },
-    en: {
-      subtitle: "School Rating & Motivation System #33",
-      tabSchool: "🏫 School Rating",
-      tabClub: "🎯 Club Rating",
-      subWeek: "📅 Weekly",
-      subMonth: "🗓️ Monthly",
-      subYear: "📊 Yearly",
-      searchPlaceholder: "🔍 Search by name...",
-      bannerTitle: "🔥 Highest Growth",
-      noticeTitle: "📢 School Notice Board",
-      rewardTitle: "🎁 Active Rewards & Milestones",
-      teacherPanelTitle: "👨‍🏫 Teacher Dashboard",
-      logoutBtn: "Logout 🔓",
-      timerCardTitle: "⏳ Leaderboard Timer Setup",
-      timerScopeLabel: "Select target scope for timer:",
-      timerTitleLabel: "Timer Title:",
-      timerSubLabel: "Timer Subtext / Note:",
-      timerDateLabel: "Set End Time:",
-      startTimerBtn: "Start Timer ⏰",
-      stopTimerBtn: "Remove Timer ❌",
-      reportCardTitle: "📊 General Evaluation & Control",
-      reportDesc: "Activity report and statistics by school or classes.",
-      viewReportBtn: "📊 View Report",
-      noticeCardTitle: "📢 Write to Notice Board",
-      noticeDesc: "Leave an announcement for all or a specific class:",
-      publishNoticeBtn: "Publish Notice 🚀",
-      rewardCardTitle: "🎯 Set Special Reward & Milestone",
-      rewardScopeLabel: "Select target scope for reward:",
-      addRewardBtn: "Add Milestone & Reward 🎁",
-      praiseCardTitle: "✨ Add Points & Praise",
-      studentSearchLabel: "Search and select student:",
-      quickPointsLabel: "Quick points (limit — max 2 times per student):",
-      quickTime: "⏰ On Time (+2)",
-      quickActive: "💡 Active (+3)",
-      quickProject: "⭐ Project Excellent (+5)",
-      bulkCardTitle: "🚀 Bulk Points to Class",
-      bulkDesc: "Give points to the entire class at once:",
-      bulkBtn: "Distribute Points ⚡",
-      anonCardTitle: "💌 Send Anonymous Praise",
-      anonDesc: "Find student by name or class:",
-      anonBtn: "Send Anonymous Praise 💌",
-      requestCardTitle: "📥 Club Join Requests",
-      addStudentCardTitle: "➕ Add a Student",
-      addStudentBtn: "Add to List",
-      manageCardTitle: "⚙️ Manage Students",
-      resetBtn: "🔄 Reset Points",
-      logCardTitle: "📜 Recent Logs"
     }
   };
 
   const $ = id => document.getElementById(id);
   const esc = s => String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // 00:00 KUNLIK YANGILANISHNI TEKSHIRISH FUNKSIYASI
+  function checkDailyResetForStudents() {
+    students.forEach(st => {
+      if (st.dailyDate !== todayStr) {
+        // Yangi kun boshlandi: kechagiga oylik/umumiy ballarni bazaviy saqlaymiz, bugungini 0 dan boshlaymiz
+        st.yesterdayPoints = (st.yesterdayPoints || 0) + (st.dailyPoints || 0);
+        st.dailyPoints = 0;
+        st.dailyDate = todayStr;
+      }
+    });
+  }
 
   function openCustomSelect(id) {
     activeSelectId = id;
@@ -741,7 +624,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       const q = $("teacherSearchBox").value.trim();
       const filtered = q ? teachersList.filter(t => t.toLowerCase().includes(q.toLowerCase())) : teachersList;
       optionsHTML = filtered.map(t => `<div class="select-sheet-item ${hiddenInput.value === t ? 'selected' : ''}" onclick="selectCustomOption('${id}', '${esc(t)}', '${esc(t)}')">👨‍🏫 ${esc(t)}</div>`).join("");
-    } else if (id === 'newClass') {
+    } else if (id === 'newClass' || id === 'bulkDefaultClass') {
       optionsHTML = allClasses.map(c => `<div class="select-sheet-item ${hiddenInput.value === c ? 'selected' : ''}" onclick="selectCustomOption('${id}', '${c}', '${c} sinf')">🎓 ${c} sinf</div>`).join("");
     } else if (id === 'newClub' || id === 'modalClubSelect') {
       optionsHTML += `<div class="select-sheet-item ${hiddenInput.value === 'NONE' ? 'selected' : ''}" onclick="selectCustomOption('${id}', 'NONE', 'To\'garaksiz')">To'garaksiz</div>`;
@@ -829,7 +712,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function openBadgesModal() { $("badgesModal").classList.add("open"); }
   function closeBadgesModal() { $("badgesModal").classList.remove("open"); }
 
-  // TILNI TO'LIQ O'ZGARTIRISH (Asosiy ekran + Ustoz paneli)
   function changeLanguage(lang) {
     closeLangModal();
     const t = translations[lang] || translations.uz_lat;
@@ -845,7 +727,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if($("txtNoticeTitle")) $("txtNoticeTitle").textContent = t.noticeTitle;
     if($("txtRewardTitle")) $("txtRewardTitle").textContent = t.rewardTitle;
 
-    // Ustoz paneli tarjimalari
     if($("txtTeacherPanelTitle")) $("txtTeacherPanelTitle").textContent = t.teacherPanelTitle;
     if($("txtLogoutBtn")) $("txtLogoutBtn").textContent = t.logoutBtn;
     if($("txtTimerCardTitle")) $("txtTimerCardTitle").textContent = t.timerCardTitle;
@@ -955,6 +836,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     selectCustomOption('targetScope', 'SCHOOL', 'Butun Maktab miqyosida');
     selectCustomOption('bulkClassTarget', 'SCHOOL', 'Butun Maktab');
     selectCustomOption('newClass', '1-A', '1-A sinf');
+    selectCustomOption('bulkDefaultClass', '1-A', '1-A sinf');
     selectCustomOption('newClub', 'Matematika', 'Matematika');
     
     populateAnonSelect();
@@ -1111,6 +993,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function renderLeaderboard() {
+    checkDailyResetForStudents();
     const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
     const query = $("searchInput") ? $("searchInput").value.trim().toLowerCase() : "";
     let filtered = [...students];
@@ -1119,6 +1002,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       if(s.pointsWeek === undefined) s.pointsWeek = 0;
       if(s.pointsMonth === undefined) s.pointsMonth = 0;
       if(s.pointsYear === undefined) s.pointsYear = 0;
+      if(s.dailyPoints === undefined) s.dailyPoints = 0;
+      if(s.yesterdayPoints === undefined) s.yesterdayPoints = 0;
     });
 
     if (currentMainTab === 'school') {
@@ -1170,12 +1055,27 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function openStudentModal(id) {
+    checkDailyResetForStudents();
     const s = students.find(st => st.id === id);
     if (!s) return;
     activeStudentIdModal = id;
     $("modalStudentName").textContent = s.name || "";
     $("modalStudentDetails").innerHTML = `<b>Sinf:</b> ${esc(s.cls)} | <b>To'garak:</b> ${s.club && s.club !== "NONE" ? esc(s.club) : "Yo'q"}<br><b>Haftalik:</b> ${s.pointsWeek || 0} | <b>Oylik:</b> ${s.pointsMonth || 0} | <b>Yillik:</b> ${s.pointsYear || 0}`;
     
+    // Kunlik ballar va foizli o'sishni hisoblash
+    const yest = Number(s.yesterdayPoints) || 0;
+    const today = Number(s.dailyPoints) || 0;
+    let growthPercent = 0;
+    if (yest > 0) {
+      growthPercent = Math.round((today / yest) * 100);
+    } else if (today > 0) {
+      growthPercent = 100;
+    }
+
+    $("statYesterdayPoints").textContent = yest;
+    $("statTodayPoints").textContent = `+${today}`;
+    $("statGrowthPercent").textContent = `${growthPercent >= 0 ? '+' : ''}${growthPercent}%`;
+
     const schoolSorted = [...students].sort((a,b) => getStudentPoints(b) - getStudentPoints(a));
     const schoolRank = schoolSorted.findIndex(st => st.id === s.id) + 1;
     const classStudents = students.filter(st => st.cls === s.cls).sort((a,b) => getStudentPoints(b) - getStudentPoints(a));
@@ -1193,11 +1093,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     else { anonBox.style.display = "none"; }
 
     $("modalBadgeContainer").innerHTML = `<span class="badge-tag" style="font-size:13px;padding:6px 12px">${getBadge(getStudentPoints(s))}</span>`;
-    
-    const maxP = Math.max(s.pointsWeek || 0, s.pointsMonth || 0, s.pointsYear || 1, 10);
-    $("barWeek").style.height = `${Math.min(60, Math.max(15, ((s.pointsWeek||0) / maxP) * 60))}px`;
-    $("barMonth").style.height = `${Math.min(60, Math.max(15, ((s.pointsMonth||0) / maxP) * 60))}px`;
-    $("barYear").style.height = `${Math.min(60, Math.max(15, ((s.pointsYear||0) / maxP) * 60))}px`;
 
     if(s.rewards && s.rewards.length > 0) {
       $("modalUnlockedRewards").innerHTML = s.rewards.map(rw => `<span class="badge-tag" style="background:var(--mint);color:var(--mint-text);margin-right:4px;">🎁 ${esc(rw)}</span>`).join("");
@@ -1301,7 +1196,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
   function adminResetAllPoints() {
     if(confirm("Haqiqatan ham barcha o'quvchilar ballarini nollashtirmoqchimisiz?")) {
-      students.forEach(s => { s.pointsWeek = 0; s.pointsMonth = 0; s.pointsYear = 0; s.rewards = []; });
+      students.forEach(s => { s.pointsWeek = 0; s.pointsMonth = 0; s.pointsYear = 0; s.dailyPoints = 0; s.yesterdayPoints = 0; s.rewards = []; });
       saveData();
       renderLeaderboard();
       closeAdmin();
@@ -1369,6 +1264,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function addQuickPoints(type, pts, reason) {
+    checkDailyResetForStudents();
     const st = students.find(s => s.id === Number($("studentSelect").value));
     if (!st) return;
     if(!st.quickCounts) st.quickCounts = {};
@@ -1381,6 +1277,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     st.pointsWeek = (Number(st.pointsWeek) || 0) + pts;
     st.pointsMonth = (Number(st.pointsMonth) || 0) + pts;
     st.pointsYear = (Number(st.pointsYear) || 0) + pts;
+    st.dailyPoints = (Number(st.dailyPoints) || 0) + pts; // Kunlik ballga qo'shiladi
     
     logs.unshift(`${currentTeacherName}: ${st.name} — ${reason} (+${pts} ball)`);
     checkCustomTargetsUnlock(st);
@@ -1389,6 +1286,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function givePraise(stars) {
+    checkDailyResetForStudents();
     const st = students.find(s => s.id === Number($("studentSelect").value));
     if (!st) return;
     if(!st.praiseRecords) st.praiseRecords = {};
@@ -1399,6 +1297,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     st.pointsWeek = (Number(st.pointsWeek) || 0) + stars;
     st.pointsMonth = (Number(st.pointsMonth) || 0) + stars;
     st.pointsYear = (Number(st.pointsYear) || 0) + stars;
+    st.dailyPoints = (Number(st.dailyPoints) || 0) + stars; // Kunlik ballga qo'shiladi
     st.praiseRecords[teacherPraiseKey] = true;
     $("praiseNote").value = "";
 
@@ -1409,6 +1308,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function applyBulkClassPoints() {
+    checkDailyResetForStudents();
     const targetCls = $("bulkClassTarget").value;
     const pts = Number($("bulkClassPointsVal").value);
     const reason = $("bulkClassReason").value.trim() || "Ommaviy ball";
@@ -1420,6 +1320,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
         st.pointsWeek = (Number(st.pointsWeek) || 0) + pts;
         st.pointsMonth = (Number(st.pointsMonth) || 0) + pts;
         st.pointsYear = (Number(st.pointsYear) || 0) + pts;
+        st.dailyPoints = (Number(st.dailyPoints) || 0) + pts;
         checkCustomTargetsUnlock(st);
         count++;
       }
@@ -1446,10 +1347,68 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function addNewStudent() {
     const name = $("newName").value.trim();
     if (!name) return showToast("O'quvchining ismini kiriting!");
-    students.push({ id: Date.now() + Math.random(), name, cls: $("newClass").value, club: $("newClub").value, pointsWeek: 0, pointsMonth: 0, pointsYear: 0, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "", currentLevelBadge: "🌱 Boshlang'ich" });
+    students.push({ id: Date.now() + Math.random(), name, cls: $("newClass").value, club: "NONE", pointsWeek: 0, pointsMonth: 0, pointsYear: 0, dailyDate: todayStr, dailyPoints: 0, yesterdayPoints: 0, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "", currentLevelBadge: "🌱 Boshlang'ich" });
     $("newName").value = "";
     saveData(); populateSelect(); populateAnonSelect(); renderManageList();
     showToast(`${name} ro'yxatga qo'shildi!`);
+  }
+
+  function addBulkStudents() {
+    checkDailyResetForStudents();
+    const rawText = $("bulkStudentsInput").value.trim();
+    const defaultCls = $("bulkDefaultClass").value;
+    if (!rawText) return showToast("Iltimos, o'quvchilar ro'yxatini kiriting!");
+
+    const lines = rawText.split('\n');
+    let addedCount = 0;
+
+    lines.forEach(line => {
+      let cleanLine = line.trim();
+      if (!cleanLine) return;
+
+      let matchedCls = defaultCls;
+      let namePart = cleanLine;
+
+      const words = cleanLine.split(/\s+/);
+      const lastWord = words[words.length - 1];
+      if (/^\d{1,2}-[A-D]$/i.test(lastWord)) {
+        matchedCls = lastWord.toUpperCase();
+        words.pop();
+        namePart = words.join(' ');
+      }
+
+      if (namePart) {
+        students.push({
+          id: Date.now() + Math.random() + addedCount,
+          name: namePart,
+          cls: matchedCls,
+          club: "NONE",
+          pointsWeek: 0,
+          pointsMonth: 0,
+          pointsYear: 0,
+          dailyDate: todayStr,
+          dailyPoints: 0,
+          yesterdayPoints: 0,
+          praiseRecords: {},
+          quickCounts: {},
+          rewards: [],
+          anonPraise: "",
+          currentLevelBadge: "🌱 Boshlang'ich"
+        });
+        addedCount++;
+      }
+    });
+
+    if (addedCount > 0) {
+      $("bulkStudentsInput").value = "";
+      saveData();
+      populateSelect();
+      populateAnonSelect();
+      renderManageList();
+      showToast(`Muvaffaqiyatli ${addedCount} ta o'quvchi qo'shildi! 🚀`);
+    } else {
+      showToast("Qo'shish uchun yaroqli ma'lumot topilmadi.");
+    }
   }
 
   function renderRequests() {
@@ -1522,7 +1481,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
   function resetMonthlyGrowth() {
     if (confirm("Barcha ballar noldan boshlansinmi?")) {
-      students.forEach(s => { s.pointsWeek = 0; s.pointsMonth = 0; s.pointsYear = 0; s.praiseRecords = {}; s.quickCounts = {}; s.rewards = []; s.anonPraise = ""; s.currentLevelBadge = "🌱 Boshlang'ich"; });
+      students.forEach(s => { s.pointsWeek = 0; s.pointsMonth = 0; s.pointsYear = 0; s.dailyPoints = 0; s.yesterdayPoints = 0; s.praiseRecords = {}; s.quickCounts = {}; s.rewards = []; s.anonPraise = ""; s.currentLevelBadge = "🌱 Boshlang'ich"; });
       logs.unshift("🔄 Barcha ballar nollashtirildi");
       saveData(); populateSelect(); populateAnonSelect(); renderManageList(); renderLogs(); renderLeaderboard();
       showToast("Ballar noldan boshlandi!");
@@ -1544,6 +1503,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       if (data.notice) noticeBoardData = data.notice;
       if (data.timer) timerData = data.timer;
     }
+    checkDailyResetForStudents();
     updateFilterOptions(); renderLeaderboard(); renderActiveRewardsBanner(); renderNoticeBoard(); updateTimerDisplay();
   });
 </script>
