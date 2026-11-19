@@ -32,7 +32,6 @@ textarea{resize:vertical;min-height:80px}
 .growth-banner h4{font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.9}
 .growth-banner p{font-size:16px;font-weight:800;margin-top:3px}
 .growth-pill{background:rgba(255,255,255,.25);padding:7px 12px;border-radius:14px;font-weight:800;font-size:13px}
-/* E'LON Qilingan Sovrinlar Banneri */
 .rewards-broadcast{background:linear-gradient(135deg,#6366f1,#ec4899);color:#fff;padding:14px 18px;border-radius:22px;margin-bottom:16px;box-shadow:0 8px 20px rgba(99,102,241,.25)}
 .rewards-broadcast h4{font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.9;margin-bottom:4px}
 .reward-item-row{font-size:13px;font-weight:700;margin-top:2px;display:flex;justify-content:space-between}
@@ -106,10 +105,10 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
 <div class="container">
   <div id="viewLeaderboard">
-    <!-- E'LON QILINGAN SOVRINLAR (REYTING YUQORIGA CHIQARILDI) -->
-    <div class="rewards-broadcast" id="activeRewardsBanner">
+    <!-- E'LON QILINGAN SOVRINLAR (REYTING YUQORIGA) -->
+    <div class="rewards-broadcast" id="activeRewardsBanner" style="display:none;">
       <h4>🎁 E'lon qilingan Faol Sovrinlar & Marralar</h4>
-      <div id="rewardsBroadcastList">Yuklanmoqda...</div>
+      <div id="rewardsBroadcastList"></div>
     </div>
 
     <div class="filter-box">
@@ -143,13 +142,21 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     <div class="teacher-card">
       <h3>🎯 Maxsus Sovrin va Marra Belgilash</h3>
-      <span class="label">Xohlagan miqyosda ball marrasi va sovg'ani belgilang (o'quvchilarga ko'rinadi):</span>
+      <span class="label">Xohlagan miqyosda ball marrasi va sovg'ani belgilang:</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <select id="targetScope">
           <option value="SCHOOL">Butun Maktab miqyosida</option>
+          <option value="GRADE_1">1-sinflar paralleli</option>
+          <option value="GRADE_2">2-sinflar paralleli</option>
+          <option value="GRADE_3">3-sinflar paralleli</option>
+          <option value="GRADE_4">4-sinflar paralleli</option>
           <option value="GRADE_5">5-sinflar paralleli</option>
+          <option value="GRADE_6">6-sinflar paralleli</option>
+          <option value="GRADE_7">7-sinflar paralleli</option>
+          <option value="GRADE_8">8-sinflar paralleli</option>
           <option value="GRADE_9">9-sinflar paralleli</option>
-          <option value="9-A">Alohida sinf (9-A)</option>
+          <option value="GRADE_10">10-sinflar paralleli</option>
+          <option value="GRADE_11">11-sinflar paralleli</option>
         </select>
         <input type="text" id="targetRewardTitle" placeholder="Sovrin nomi (Masalan: Kitob yoki 5-baho)" />
         <input type="number" id="targetRewardPoints" placeholder="Kerakli ball (Masalan: 50)" />
@@ -292,7 +299,6 @@ Tursunova Malika	9-D"></textarea>
     <p id="modalStudentDetails" style="text-align:center;font-size:14px;margin-bottom:6px"></p>
     <div id="modalBadgeContainer" style="margin:6px 0;display:flex;justify-content:center;gap:6px;flex-wrap:wrap"></div>
     
-    <!-- GRAFIK QISMI -->
     <div style="text-align:left; margin-top:8px; border-top:1px solid var(--border); padding-top:8px;">
       <span class="label" style="margin-top:0">📈 O'sish Grafik Dinamikasi:</span>
       <div style="background:var(--accent-soft);padding:10px;border-radius:12px;display:flex;justify-content:space-around;align-items:flex-end;height:80px;margin-top:6px;">
@@ -472,15 +478,16 @@ Tursunova Malika	9-D"></textarea>
 
   function renderActiveRewardsBanner() {
     const box = $("rewardsBroadcastList");
-    if(!box) return;
-    if(customTargets.length === 0) {
-      $("activeRewardsBanner").style.display = "none";
+    const banner = $("activeRewardsBanner");
+    if(!box || !banner) return;
+    if(!customTargets || customTargets.length === 0) {
+      banner.style.display = "none";
       return;
     }
-    $("activeRewardsBanner").style.display = "block";
+    banner.style.display = "block";
     box.innerHTML = customTargets.map(t => `
       <div class="reward-item-row">
-        <span>🏆 ${esc(t.title)}</span>
+        <span>🏆 ${esc(t.title)} (${esc(t.scope)})</span>
         <span>🎯 ${t.points} ball</span>
       </div>
     `).join("");
@@ -489,7 +496,7 @@ Tursunova Malika	9-D"></textarea>
   function openReportModal() {
     const totalStudents = students.length;
     const topStudent = [...students].sort((a,b) => (b.pointsMonth||0) - (a.pointsMonth||0))[0];
-    const topName = topStudent ? `${topStudent.name} (${topStudent.cls}) - ${topStudent.pointsMonth}b` : "Yo'q";
+    const topName = topStudent ? `${topStudent.name} (${topStudent.cls}) - ${topStudent.pointsMonth || 0}b` : "Yo'q";
     
     $("reportContent").innerHTML = `
       <b>Jami o'quvchilar soni:</b> ${totalStudents} ta<br>
@@ -654,7 +661,6 @@ Tursunova Malika	9-D"></textarea>
       <b>Bosqich:</b> ${Math.floor((s.pointsMonth || 0) / 15) + 1}-bosqich`;
     $("modalBadgeContainer").innerHTML = `<span class="badge-tag" style="font-size:13px;padding:6px 12px">${getBadge(s.pointsMonth || 0)}</span>`;
     
-    // Grafik balandliklarini hisoblash
     const maxP = Math.max(s.pointsWeek || 0, s.pointsMonth || 0, s.pointsYear || 1, 10);
     $("barWeek").style.height = `${Math.min(60, Math.max(15, ((s.pointsWeek||0) / maxP) * 60))}px`;
     $("barMonth").style.height = `${Math.min(60, Math.max(15, ((s.pointsMonth||0) / maxP) * 60))}px`;
@@ -787,7 +793,7 @@ Tursunova Malika	9-D"></textarea>
     document.querySelector(".tabs").style.display = view === 'teacher' ? 'none' : 'flex';
     document.querySelector(".sub-tabs").style.display = view === 'teacher' ? 'none' : 'flex';
     $("growthCard").style.display = view === 'teacher' ? 'none' : 'flex';
-    if (view === 'leaderboard') { updateFilterOptions(); renderLeaderboard(); }
+    if (view === 'leaderboard') { updateFilterOptions(); renderLeaderboard(); renderActiveRewardsBanner(); }
     if (view === 'teacher') { populateDropdowns(); populateSelect(); renderManageList(); renderRequests(); renderLogs(); renderTeacherTargets(); }
   }
 
@@ -979,6 +985,7 @@ Tursunova Malika	9-D"></textarea>
     }
     updateFilterOptions();
     renderLeaderboard();
+    renderActiveRewardsBanner();
   });
 </script>
 </body>
