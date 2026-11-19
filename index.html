@@ -113,14 +113,14 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 <div class="container">
   <div id="viewLeaderboard">
     
-    <!-- Taymer faqat tegishli qatlam/sinf uchun tanlanganda chiqadi -->
+    <!-- Taymer faqat mos sinf yoki parallel tanlanganda chiqadi -->
     <div class="timer-box" id="timerBox" style="display:none;">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.9" id="timerTitleDisplay">🏆 Liderlik uchun kurash</div>
       <div class="timer-digits" id="timerDigitsDisplay">00 kun, 00 soat, 00 minut</div>
       <div class="timer-subtext" id="timerSubtextDisplay">Shuncha vaqtingiz qoldi, davom eting! 🚀</div>
     </div>
     
-    <!-- E'lonlar taxtasi faqat tegishli sinfga/maktabga yozilganda chiqadi -->
+    <!-- E'lonlar taxtasi ham faqat mos sinfga yozilganda chiqadi -->
     <div class="notice-board" id="noticeBoardBanner" style="display:none;">
       <h4>📢 Maktab E'lonlar Taxtasi</h4>
       <p id="noticeBoardText" style="font-size:13px;font-weight:700;margin-top:4px;"></p>
@@ -191,7 +191,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <select id="targetScope"></select>
         <input type="text" id="targetRewardTitle" placeholder="Sovrin nomi (Masalan: Kitob)" />
-        <input type="number" id="targetRewardPoints" placeholder="Kerakli ball (Masalan: 50)" />
+        <input type="number" id="targetRewardPoints" placeholder="Kerakli ball (Masalan: 35)" />
       </div>
       <button class="act-btn btn-part" style="width:100%" onclick="addCustomTargetReward()">Marra va Sovrin Qo'shish 🎁</button>
       <div id="teacherTargetsList" style="margin-top:10px"></div>
@@ -326,6 +326,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   </div>
 </div>
 
+<!-- O'quvchi profili modal oynasi -->
 <div class="modal" id="studentModal">
   <div class="modal-content">
     <h3 id="modalStudentName">O'quvchi Ismi</h3>
@@ -344,6 +345,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     <div id="modalBadgeContainer" style="margin:6px 0;display:flex;justify-content:center;gap:6px;flex-wrap:wrap"></div>
     
+    <!-- O'sish Grafik Dinamikasi -->
     <div style="text-align:left; margin-top:8px; border-top:1px solid var(--border); padding-top:8px;">
       <span class="label" style="margin-top:0">📈 O'sish Grafik Dinamikasi:</span>
       <div style="background:var(--accent-soft);padding:10px;border-radius:12px;display:flex;justify-content:space-around;align-items:flex-end;height:80px;margin-top:6px;">
@@ -468,10 +470,10 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     return "🌱 Boshlang'ich";
   }
 
-  // Sinf mosligini aniqlovchi yordamchi funksiya
+  // Tanlangan filtr (sinf yoki parallel) taymer/e'lon doirasiga mos kelishini tekshirish
   function isScopeMatchedForFilter(scope, filterVal) {
     if (scope === "SCHOOL") return true;
-    if (filterVal === "ALL") return true; // Agar barcha sinflar tanlangan bo'lsa, umumiy ko'rinish
+    if (filterVal === "ALL") return false; // Agar "Barcha sinflar" tanlangan bo'lsa, faqat SCHOOL ko'rinadi
     if (filterVal === scope) return true;
     if (scope.startsWith("GRADE_") && filterVal.startsWith("GRADE_") && scope === filterVal) return true;
     if (scope.startsWith("GRADE_") && !filterVal.startsWith("GRADE_")) {
@@ -492,7 +494,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
     
-    // Agar to'garaklar tabida bo'lsa yoki tanlangan sinf taymer mo'ljallangan sinfga mos kelmasa, ko'rsatilmaydi
+    // Agar to'garaklar tabida bo'lsa yoki tanlangan sinf taymer mo'ljallangan sinfga mos kelmasa, yashiriladi
     if (currentMainTab === 'club' || !isScopeMatchedForFilter(timerData.scope, filterVal)) {
       timerBox.style.display = "none";
       return;
@@ -621,7 +623,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     if(!box || !banner) return;
     
-    // Faqat joriy filtrga (sinfga) mos keladigan sovrinlarni filtrlab chiqarish
     const matchedTargets = customTargets.filter(t => isScopeMatchedForFilter(t.scope, filterVal));
 
     if(currentMainTab === 'club' || matchedTargets.length === 0) {
