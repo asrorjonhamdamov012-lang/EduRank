@@ -90,13 +90,15 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   <div class="top-bar">
     <div class="logo" id="logo">EduRank Pro 🚀</div>
     <div class="header-actions">
+      <!-- Til almashtirish tugmasi -->
+      <button class="action-icon-btn" onclick="openLangModal()" title="Tilni o'zgartirish">🌐</button>
       <button class="action-icon-btn" onclick="openParentReadModal()" title="Ota-ona uchun kuzatish">👁️‍🗨️</button>
       <button class="action-icon-btn" onclick="openHelpModal()" title="Yo'riqnoma">?</button>
       <button class="action-icon-btn" id="themeBtn" onclick="toggleTheme()" title="Tungi rejim">🌙</button>
       <button class="action-icon-btn" onclick="openTeacherLogin()" title="Ustoz paneli">👨‍🏫</button>
     </div>
   </div>
-  <div class="subtitle">33-Maktab Reyting va Motivatsiya Tizimi</div>
+  <div class="subtitle" id="txtSubtitle">33-Maktab Reyting va Motivatsiya Tizimi</div>
 </header>
 
 <div class="tabs">
@@ -113,14 +115,12 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 <div class="container">
   <div id="viewLeaderboard">
     
-    <!-- Taymer faqat mos sinf yoki parallel tanlanganda chiqadi -->
     <div class="timer-box" id="timerBox" style="display:none;">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.9" id="timerTitleDisplay">🏆 Liderlik uchun kurash</div>
       <div class="timer-digits" id="timerDigitsDisplay">00 kun, 00 soat, 00 minut</div>
       <div class="timer-subtext" id="timerSubtextDisplay">Shuncha vaqtingiz qoldi, davom eting! 🚀</div>
     </div>
     
-    <!-- E'lonlar taxtasi ham faqat mos sinfga yozilganda chiqadi -->
     <div class="notice-board" id="noticeBoardBanner" style="display:none;">
       <h4>📢 Maktab E'lonlar Taxtasi</h4>
       <p id="noticeBoardText" style="font-size:13px;font-weight:700;margin-top:4px;"></p>
@@ -152,7 +152,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     </div>
 
     <div class="teacher-card">
-      <h3>⏳ Liderlik Taymerini Sozlash (Maktab yoki Har bir sinf uchun)</h3>
+      <h3>⏳ Liderlik Taymerini Sozlash</h3>
       <span class="label">Taymer qaysi qatlam uchun mo'ljallanganini tanlang:</span>
       <select id="timerScope" style="margin-bottom:8px"></select>
       <span class="label">Taymer sarlavhasi:</span>
@@ -198,7 +198,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     </div>
 
     <div class="teacher-card">
-      <h3>✨ Ball va Rag'bat Qo'shish (Ustoz ID: <span id="currentTeacherNameTag"></span>)</h3>
+      <h3>✨ Ball va Rag'bat Qo'shish (Ustoz: <span id="currentTeacherNameTag"></span>)</h3>
       <span class="label">O'quvchini qidirish va tanlash:</span>
       <input type="text" id="studentSearchInput" placeholder="🔍 Ism yoki sinf bo'yicha topish..." oninput="populateSelect()" style="margin-bottom:8px" />
       <select id="studentSelect" onchange="updatePraiseStatus()"></select>
@@ -272,13 +272,33 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 </div>
 
 <!-- MODALLAR -->
+
+<!-- O'qituvchilar uchun qulay ism tanlash va qidirish bilan kirish oynasi -->
 <div class="modal" id="loginModal">
   <div class="modal-content">
     <h3>🔐 Ustoz Sifatida Kirish</h3>
-    <input type="text" id="teacherNameInput" placeholder="Ustozning Ism-sharifi (Masalan: Olimov T.)" style="margin-bottom:10px" />
+    <span class="label" style="text-align:left">Ism-sharifingizni ro'yxatdan tanlang:</span>
+    <input type="text" id="teacherSearchBox" placeholder="🔍 Ism bo'yicha qidirish..." oninput="filterTeacherDropdown()" style="margin-bottom:6px" />
+    <select id="teacherNameSelect" style="margin-bottom:10px; font-size:14px; padding:12px; border-radius:14px;">
+      <!-- JavaScript orqali 66 ta ustoz nomi tushadi -->
+    </select>
     <input type="password" id="teacherPass" placeholder="Parolni kiriting" style="margin-bottom:10px" />
     <button class="modal-btn" onclick="verifyTeacher()">Kirish</button>
     <button class="modal-btn" style="background:var(--muted);margin-top:6px" onclick="closeTeacherLogin()">Bekor qilish</button>
+  </div>
+</div>
+
+<!-- Til almashtirish modali -->
+<div class="modal" id="langModal">
+  <div class="modal-content">
+    <h3>🌐 Tilni Tanlang / Язык / Language</h3>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+      <button class="act-btn btn-part" onclick="changeLanguage('uz_lat')">O'zbekcha (Lotin)</button>
+      <button class="act-btn btn-att" onclick="changeLanguage('uz_kir')">Ўзбекча (Кирилл)</button>
+      <button class="act-btn btn-event" onclick="changeLanguage('ru')">Русский</button>
+      <button class="act-btn btn-danger" onclick="changeLanguage('en')">English</button>
+    </div>
+    <button class="modal-btn" style="background:var(--muted);margin-top:14px" onclick="closeLangModal()">Yopish</button>
   </div>
 </div>
 
@@ -326,7 +346,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   </div>
 </div>
 
-<!-- O'quvchi profili modal oynasi -->
 <div class="modal" id="studentModal">
   <div class="modal-content">
     <h3 id="modalStudentName">O'quvchi Ismi</h3>
@@ -345,7 +364,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     <div id="modalBadgeContainer" style="margin:6px 0;display:flex;justify-content:center;gap:6px;flex-wrap:wrap"></div>
     
-    <!-- O'sish Grafik Dinamikasi -->
     <div style="text-align:left; margin-top:8px; border-top:1px solid var(--border); padding-top:8px;">
       <span class="label" style="margin-top:0">📈 O'sish Grafik Dinamikasi:</span>
       <div style="background:var(--accent-soft);padding:10px;border-radius:12px;display:flex;justify-content:space-around;align-items:flex-end;height:80px;margin-top:6px;">
@@ -400,6 +418,27 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   const SUPER_PIN = "";
   const todayStr = new Date().toISOString().slice(0, 10);
   
+  // 66 ta o'qituvchining tozalangan ism va familiyasi ro'yxati
+  const teachersList = [
+    "Bekzodjon Abdullayev", "Shoxista Abdurayimova", "Nilufarxon Abdurashidova", "To'tixon Abdusalomova",
+    "Feruza Abduvaxobova", "Nilufar Axmadaliyeva", "Iroda Axmedova", "Durdonaxon A'zamova",
+    "Gulira'no Berdiyeva", "Qahramonjon Bo'riyev", "Munira Bo'riyeva", "Barnoxon Djurayeva",
+    "Xolida Egamova", "Axadjon Erkaboyev", "Faridaxon Erkaboyeva", "Mashrabxon Erkaboyeva",
+    "Go'zal Esonaliyeva", "Irodaxon G'aniyeva", "Muhayyo Hamdamova", "Sevaraxon Inomova",
+    "Madina Jo'raboyeva", "Umidaxon Jo'rayeva", "Iroda Karimova", "Dilshunosxon Mamadaliyeva",
+    "Kanizaxon Mamadaliyeva", "Umida Maqqulova", "Mexrinsa Ma'rufjonova", "Nilufar Maxmudova",
+    "To'labek Muratov", "To'rabek Murotov", "Dilfuzaxon Nazarova", "Islomjon Nazirov",
+    "Umidaxon Odilova", "Jasurbek Olimov", "Zuhra Olimova", "Xayotxon Po'latova",
+    "Rapiqjon Qodirov", "Rustamjon Qodirov", "Ziyoda Qodirova", "Yulduz Qoraboyeva",
+    "Lochinbek Rajabov", "Soxibaxon Rajabova", "Shaxzoda Rasuljonova", "Abdug'ofurjon Raxmonov",
+    "Risolatxon Saydaxmedova", "Shaxzoda Sobirova", "Gulhayo Sultonova", "Roziyaxon To'g'onboyeva",
+    "Yulduz Tolipova", "Baxodir To'ychiyev", "Nigora Turanova", "Jamolidin Umarov",
+    "Sarvinoz Umarova", "Xayotxon Usmonova", "Nargiza Xatamova", "Shaxnoza Xaydarova",
+    "Rayhonoy Xidirova", "Dilnoza Xo'jamurodova", "Gulasal Xo'jaqulova", "Dilnoza Xoliqova",
+    "Qurbonoy Xolmatova", "Ilhomjon Yulchiyev", "Zulfiyaxon Yusupova", "Odina Sharipova",
+    "Muxriddin Sharobidinov", "Nigora Shokirova"
+  ];
+
   const allClasses = [];
   for (let i = 1; i <= 11; i++) {
     allClasses.push(`${i}-A`, `${i}-B`, `${i}-C`, `${i}-D`);
@@ -411,9 +450,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     { id: 1, name: "Lobar Karimova", cls: "9-A", club: "Matematika", pointsWeek: 12, pointsMonth: 35, pointsYear: 120, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "" },
     { id: 2, name: "Behruz Alimov", cls: "9-D", club: "IT va Dasturlash", pointsWeek: 10, pointsMonth: 28, pointsYear: 95, praiseRecords: {}, quickCounts: {}, rewards: [], anonPraise: "" }
   ];
-  let customTargets = [
-    { id: 1, scope: "SCHOOL", title: "Maktab Super Chempioni 🏆", points: 100 }
-  ];
+  let customTargets = [{ id: 1, scope: "SCHOOL", title: "Maktab Super Chempioni 🏆", points: 100 }];
   let requests = [];
   let logs = ["Lobar Karimova — Vazifa a'lo (+5 ball)"];
   let noticeBoardData = { scope: "SCHOOL", text: "" }; 
@@ -449,9 +486,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     localStorage.setItem("edurank_pro_notice", JSON.stringify(noticeBoardData));
     localStorage.setItem("edurank_pro_timer", JSON.stringify(timerData));
 
-    db.ref("edurank_data").set({
-      students, clubs, targets: customTargets, requests, logs, notice: noticeBoardData, timer: timerData
-    });
+    db.ref("edurank_data").set({ students, clubs, targets: customTargets, requests, logs, notice: noticeBoardData, timer: timerData });
   }
 
   function showToast(msg) {
@@ -470,10 +505,42 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     return "🌱 Boshlang'ich";
   }
 
-  // Tanlangan filtr (sinf yoki parallel) taymer/e'lon doirasiga mos kelishini tekshirish
+  // Tilni almashtirish funksiyasi (Lotin, Kirill, Ruscha, Inglizcha)
+  function changeLanguage(lang) {
+    closeLangModal();
+    if(lang === 'uz_lat') {
+      $("txtSubtitle").textContent = "33-Maktab Reyting va Motivatsiya Tizimi";
+      showToast("O'zbekcha (Lotin) tanlandi ✅");
+    } else if(lang === 'uz_kir') {
+      $("txtSubtitle").textContent = "33-Мактаб Рейтинг ва Мотивация Тизими";
+      showToast("Ўзбекча (Кирилл) танланди ✅");
+    } else if(lang === 'ru') {
+      $("txtSubtitle").textContent = "Школьная система рейтинга и мотивации №33";
+      showToast("Русский язык выбран ✅");
+    } else if(lang === 'en') {
+      $("txtSubtitle").textContent = "School Rating & Motivation System #33";
+      showToast("English selected ✅");
+    }
+  }
+
+  function openLangModal() { $("langModal").classList.add("open"); }
+  function closeLangModal() { $("langModal").classList.remove("open"); }
+
+  function populateTeacherDropdown(filterQuery = "") {
+    const sel = $("teacherNameSelect");
+    if(!sel) return;
+    const filtered = filterQuery ? teachersList.filter(t => t.toLowerCase().includes(filterQuery.toLowerCase())) : teachersList;
+    sel.innerHTML = filtered.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
+  }
+
+  function filterTeacherDropdown() {
+    const q = $("teacherSearchBox").value.trim();
+    populateTeacherDropdown(q);
+  }
+
   function isScopeMatchedForFilter(scope, filterVal) {
     if (scope === "SCHOOL") return true;
-    if (filterVal === "ALL") return false; // Agar "Barcha sinflar" tanlangan bo'lsa, faqat SCHOOL ko'rinadi
+    if (filterVal === "ALL") return false;
     if (filterVal === scope) return true;
     if (scope.startsWith("GRADE_") && filterVal.startsWith("GRADE_") && scope === filterVal) return true;
     if (scope.startsWith("GRADE_") && !filterVal.startsWith("GRADE_")) {
@@ -486,36 +553,23 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function updateTimerDisplay() {
     const timerBox = $("timerBox");
     if(!timerBox) return;
-
-    if (!timerData.endTime) {
-      timerBox.style.display = "none";
-      return;
-    }
-
+    if (!timerData.endTime) { timerBox.style.display = "none"; return; }
     const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
-    
-    // Agar to'garaklar tabida bo'lsa yoki tanlangan sinf taymer mo'ljallangan sinfga mos kelmasa, yashiriladi
     if (currentMainTab === 'club' || !isScopeMatchedForFilter(timerData.scope, filterVal)) {
       timerBox.style.display = "none";
       return;
     }
-
     timerBox.style.display = "block";
     if($("timerTitleDisplay")) $("timerTitleDisplay").textContent = timerData.title || "🏆 Liderlik uchun kurash";
     if($("timerSubtextDisplay")) $("timerSubtextDisplay").textContent = timerData.subtext || "Shuncha vaqtingiz qoldi, davom eting! 🚀";
 
     const now = new Date().getTime();
     const distance = timerData.endTime - now;
-
-    if (distance < 0) {
-      $("timerDigitsDisplay").textContent = "Vaqt tugadi!";
-      return;
-    }
+    if (distance < 0) { $("timerDigitsDisplay").textContent = "Vaqt tugadi!"; return; }
 
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
     $("timerDigitsDisplay").textContent = `${days} kun, ${hours} soat, ${minutes} minut`;
   }
   setInterval(updateTimerDisplay, 1000);
@@ -525,32 +579,19 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const title = $("timerTitleInput").value.trim();
     const subtext = $("timerSubtextInput").value.trim();
     const val = $("teacherTimerInput").value;
-    
     if(!val) return showToast("Tugash sanasi va vaqtini tanlang!");
-    
-    timerData = { 
-      scope, 
-      title: title || "🏆 Liderlik uchun kurash", 
-      subtext: subtext || "Shuncha vaqtingiz qoldi, davom eting! 🚀", 
-      endTime: new Date(val).getTime() 
-    };
-    
-    saveData();
-    updateTimerDisplay();
-    showToast("Liderlik taymeri ishga tushirildi! ⏰");
+    timerData = { scope, title: title || "🏆 Liderlik uchun kurash", subtext: subtext || "Shuncha vaqtingiz qoldi, davom eting! 🚀", endTime: new Date(val).getTime() };
+    saveData(); updateTimerDisplay(); showToast("Liderlik taymeri ishga tushirildi! ⏰");
   }
 
   function stopTeacherTimer() {
     timerData = { scope: "SCHOOL", title: "", subtext: "", endTime: null };
-    saveData();
-    updateTimerDisplay();
-    showToast("Liderlik taymeri o'chirildi! ❌");
+    saveData(); updateTimerDisplay(); showToast("Liderlik taymeri o'chirildi! ❌");
   }
 
   function populateDropdowns() {
     const classOpts = allClasses.map(c => `<option value="${c}">${c} sinf</option>`).join("");
     const clubOpts = `<option value="NONE">To'garaksiz (Faqat maktab)</option>` + clubs.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
-    
     const scopeOptions = `
       <option value="SCHOOL">Butun Maktab miqyosida</option>
       <optgroup label="📊 Parallellar">
@@ -565,10 +606,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if($("noticeScope")) $("noticeScope").innerHTML = scopeOptions;
     if($("timerScope")) $("timerScope").innerHTML = scopeOptions;
     if($("bulkClassTarget")) $("bulkClassTarget").innerHTML = `<option value="SCHOOL">Butun Maktab</option>` + classOpts;
-
     if($("newClass")) $("newClass").innerHTML = classOpts;
     if($("newClub")) $("newClub").innerHTML = clubOpts;
-    
     populateAnonSelect();
   }
 
@@ -586,21 +625,15 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const points = Number($("targetRewardPoints").value);
     if (!title || !points) return showToast("Sovrin nomi va ballni kiriting!");
     customTargets.push({ id: Date.now(), scope, title, points });
-    $("targetRewardTitle").value = "";
-    $("targetRewardPoints").value = "";
-    saveData();
-    renderTeacherTargets();
-    renderActiveRewardsBanner();
+    $("targetRewardTitle").value = ""; $("targetRewardPoints").value = "";
+    saveData(); renderTeacherTargets(); renderActiveRewardsBanner();
     showToast("Maxsus marra va o'yin qo'shildi! 🎯");
   }
 
   function renderTeacherTargets() {
     const box = $("teacherTargetsList");
     if (!box) return;
-    if (customTargets.length === 0) {
-      box.innerHTML = `<div style="font-size:12px;color:var(--muted)">Marralar yo'q</div>`;
-      return;
-    }
+    if (customTargets.length === 0) { box.innerHTML = `<div style="font-size:12px;color:var(--muted)">Marralar yo'q</div>`; return; }
     box.innerHTML = customTargets.map(t => `
       <div class="manage-item">
         <div><strong>${esc(t.title)}</strong> (${esc(t.scope)}) — <b>${t.points} ball</b></div>
@@ -610,9 +643,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
   function deleteTarget(id) {
     customTargets = customTargets.filter(t => t.id !== id);
-    saveData();
-    renderTeacherTargets();
-    renderActiveRewardsBanner();
+    saveData(); renderTeacherTargets(); renderActiveRewardsBanner();
     showToast("Marra o'chirildi.");
   }
 
@@ -620,22 +651,11 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const box = $("rewardsBroadcastList");
     const banner = $("activeRewardsBanner");
     const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
-
     if(!box || !banner) return;
-    
     const matchedTargets = customTargets.filter(t => isScopeMatchedForFilter(t.scope, filterVal));
-
-    if(currentMainTab === 'club' || matchedTargets.length === 0) {
-      banner.style.display = "none";
-      return;
-    }
+    if(currentMainTab === 'club' || matchedTargets.length === 0) { banner.style.display = "none"; return; }
     banner.style.display = "block";
-    box.innerHTML = matchedTargets.map(t => `
-      <div class="reward-item-row">
-        <span>🏆 ${esc(t.title)} (${esc(t.scope)})</span>
-        <span>🎯 ${t.points} ball</span>
-      </div>
-    `).join("");
+    box.innerHTML = matchedTargets.map(t => `<div class="reward-item-row"><span>🏆 ${esc(t.title)} (${esc(t.scope)})</span><span>🎯 ${t.points} ball</span></div>`).join("");
   }
 
   function publishNotice() {
@@ -643,8 +663,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const text = $("noticeInputText").value.trim();
     noticeBoardData = { scope, text }; 
     $("noticeInputText").value = "";
-    saveData();
-    renderNoticeBoard();
+    saveData(); renderNoticeBoard();
     if(text) showToast("E'lon muvaffaqiyatli chiqarildi! 📢");
     else showToast("E'lon taxtasi tozalandi va yopildi.");
   }
@@ -653,10 +672,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const banner = $("noticeBoardBanner");
     const textElem = $("noticeBoardText");
     const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
-
     if(!banner || !textElem) return;
-    
-    // Agar matn bo'sh bo'lsa yoki tanlangan sinf e'lon doirasiga to'g'ri kelmasa yashiriladi
     if(!noticeBoardData || !noticeBoardData.text || noticeBoardData.text.trim() === "" || currentMainTab === 'club' || !isScopeMatchedForFilter(noticeBoardData.scope, filterVal)) {
       banner.style.display = "none";
       return;
@@ -672,26 +688,17 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     
     const classPointsMap = {};
     allClasses.forEach(c => classPointsMap[c] = 0);
-    students.forEach(s => {
-      if(s.cls && classPointsMap[s.cls] !== undefined) {
-        classPointsMap[s.cls] += (Number(s.pointsMonth) || 0);
-      }
-    });
+    students.forEach(s => { if(s.cls && classPointsMap[s.cls] !== undefined) classPointsMap[s.cls] += (Number(s.pointsMonth) || 0); });
 
     const classEntries = Object.entries(classPointsMap);
     classEntries.sort((a, b) => b[1] - a[1]);
-
     const bestClass = classEntries.length > 0 && classEntries[0][1] > 0 ? `${classEntries[0][0]} (${classEntries[0][1]}b)` : "Ma'lumot yo'q";
-    const activeClasses = classEntries.filter(item => item[1] >= 10);
-    const worstClass = activeClasses.length > 0 ? `${activeClasses[activeClasses.length - 1][0]} (${activeClasses[activeClasses.length - 1][1]}b)` : "Passiv sinf yo'q (hali 10+ ball yig'ilmagan)";
 
     $("reportContent").innerHTML = `
       <b>Jami o'quvchilar soni:</b> ${totalStudents} ta<br>
       <b>Oylik lider o'quvchi:</b> ${topName}<br>
       <b>🔥 Eng faol sinf:</b> ${bestClass}<br>
-      <b>💤 Eng passiv sinf (10+ balli):</b> ${worstClass}<br>
       <b>Faol to'garaklar soni:</b> ${clubs.length} ta<br>
-      <b>Aktiv e'lon qilingan sovrinlar:</b> ${customTargets.length} ta<br>
       <b>Tizim holati:</b> Mukammal ishlamoqda ✅
     `;
     $("reportModal").classList.add("open");
@@ -704,11 +711,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       let currentPoints = currentTimeTab === 'week' ? (st.pointsWeek || 0) : currentTimeTab === 'month' ? (st.pointsMonth || 0) : (st.pointsYear || 0);
       let scopeMatched = false;
       if (t.scope === 'SCHOOL') scopeMatched = true;
-      else if (t.scope.startsWith('GRADE_')) {
-        if (st.cls && st.cls.startsWith(t.scope.replace('GRADE_', ''))) scopeMatched = true;
-      } else if (t.scope === st.cls) {
-        scopeMatched = true;
-      }
+      else if (t.scope.startsWith('GRADE_')) { if (st.cls && st.cls.startsWith(t.scope.replace('GRADE_', ''))) scopeMatched = true; }
+      else if (t.scope === st.cls) { scopeMatched = true; }
 
       if (scopeMatched && currentPoints >= t.points && !st.rewards.includes(t.title)) {
         st.rewards.push(t.title);
@@ -718,17 +722,13 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     });
   }
 
-  function acceptCongrats() {
-    $("congratsModal").classList.remove("open");
-    saveData();
-  }
+  function acceptCongrats() { $("congratsModal").classList.remove("open"); saveData(); }
 
   function switchMainTab(tab) {
     currentMainTab = tab;
     $("tabSchool").classList.toggle("active", tab === 'school');
     $("tabClub").classList.toggle("active", tab === 'club');
-    updateFilterOptions();
-    renderLeaderboard();
+    updateFilterOptions(); renderLeaderboard();
   }
 
   function switchTimeTab(timeTab) {
@@ -750,20 +750,9 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if (!f) return;
     if (currentMainTab === 'school') {
       let parallelOpts = "";
-      for (let i = 1; i <= 11; i++) {
-        parallelOpts += `<option value="GRADE_${i}">${i}-sinflar (A-D)</option>`;
-      }
+      for (let i = 1; i <= 11; i++) parallelOpts += `<option value="GRADE_${i}">${i}-sinflar (A-D)</option>`;
       const singleClassOpts = allClasses.map(c => `<option value="${c}">${c} sinf</option>`).join("");
-
-      f.innerHTML = `
-        <option value="ALL">🏫 Barcha sinflar</option>
-        <optgroup label="📊 Parallellar">
-          ${parallelOpts}
-        </optgroup>
-        <optgroup label="🎓 Alohida Sinflar">
-          ${singleClassOpts}
-        </optgroup>
-      `;
+      f.innerHTML = `<option value="ALL">🏫 Barcha sinflar</option><optgroup label="📊 Parallellar">${parallelOpts}</optgroup><optgroup label="🎓 Alohida Sinflar">${singleClassOpts}</optgroup>`;
       if($("bannerTitle")) $("bannerTitle").textContent = "🔥 Eng Katta O'sish";
     } else {
       f.innerHTML = `<option value="ALL">Barcha to'garaklar</option>` + clubs.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
@@ -786,16 +775,13 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       if (filterVal.startsWith("GRADE_")) {
         const gradeNum = filterVal.replace("GRADE_", "");
         filtered = filtered.filter(s => s.cls && s.cls.startsWith(`${gradeNum}-`));
-      } else if (filterVal !== "ALL") {
-        filtered = filtered.filter(s => s.cls === filterVal);
-      }
+      } else if (filterVal !== "ALL") { filtered = filtered.filter(s => s.cls === filterVal); }
     } else {
       filtered = filtered.filter(s => s.club && s.club !== "NONE");
       if (filterVal !== "ALL") filtered = filtered.filter(s => s.club === filterVal);
     }
 
     if (query) filtered = filtered.filter(s => (s.name || "").toLowerCase().includes(query) || (s.cls || "").toLowerCase().includes(query));
-    
     filtered.sort((a, b) => getStudentPoints(b) - getStudentPoints(a));
 
     if (filtered.length > 0) {
@@ -808,16 +794,11 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       if($("topGrowthVal")) $("topGrowthVal").textContent = "0 ball";
     }
 
-    renderActiveRewardsBanner();
-    renderNoticeBoard();
-    updateTimerDisplay();
+    renderActiveRewardsBanner(); renderNoticeBoard(); updateTimerDisplay();
 
     const list = $("leaderboardList");
     if (!list) return;
-    if (filtered.length === 0) {
-      list.innerHTML = `<div style="text-align:center;color:var(--muted);padding:30px;font-size:13px">O'quvchi topilmadi.</div>`;
-      return;
-    }
+    if (filtered.length === 0) { list.innerHTML = `<div style="text-align:center;color:var(--muted);padding:30px;font-size:13px">O'quvchi topilmadi.</div>`; return; }
     list.innerHTML = filtered.map((s, idx) => {
       const rClass = idx === 0 ? "rank-1" : idx === 1 ? "rank-2" : idx === 2 ? "rank-3" : "";
       const crown = idx === 0 ? "👑" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : "";
@@ -843,16 +824,12 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if (!s) return;
     activeStudentIdModal = id;
     $("modalStudentName").textContent = s.name || "";
-    $("modalStudentDetails").innerHTML = `
-      <b>Sinf:</b> ${esc(s.cls)} | <b>To'garak:</b> ${s.club && s.club !== "NONE" ? esc(s.club) : "Yo'q"}<br>
-      <b>Haftalik:</b> ${s.pointsWeek || 0} | <b>Oylik:</b> ${s.pointsMonth || 0} | <b>Yillik:</b> ${s.pointsYear || 0}`;
+    $("modalStudentDetails").innerHTML = `<b>Sinf:</b> ${esc(s.cls)} | <b>To'garak:</b> ${s.club && s.club !== "NONE" ? esc(s.club) : "Yo'q"}<br><b>Haftalik:</b> ${s.pointsWeek || 0} | <b>Oylik:</b> ${s.pointsMonth || 0} | <b>Yillik:</b> ${s.pointsYear || 0}`;
     
     const schoolSorted = [...students].sort((a,b) => getStudentPoints(b) - getStudentPoints(a));
     const schoolRank = schoolSorted.findIndex(st => st.id === s.id) + 1;
-
     const classStudents = students.filter(st => st.cls === s.cls).sort((a,b) => getStudentPoints(b) - getStudentPoints(a));
     const classRank = classStudents.findIndex(st => st.id === s.id) + 1;
-
     const parallelNum = s.cls ? s.cls.split('-')[0] : "";
     const parallelStudents = students.filter(st => st.cls && st.cls.startsWith(parallelNum + '-')).sort((a,b) => getStudentPoints(b) - getStudentPoints(a));
     const parallelRank = parallelStudents.findIndex(st => st.id === s.id) + 1;
@@ -862,12 +839,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     $("statParallelRank").textContent = `${parallelRank}-o'rin (${parallelNum}-parallel)`;
 
     const anonBox = $("studentAnonPraiseBox");
-    if(s.anonPraise) {
-      anonBox.style.display = "block";
-      $("studentAnonPraiseText").textContent = s.anonPraise;
-    } else {
-      anonBox.style.display = "none";
-    }
+    if(s.anonPraise) { anonBox.style.display = "block"; $("studentAnonPraiseText").textContent = s.anonPraise; }
+    else { anonBox.style.display = "none"; }
 
     $("modalBadgeContainer").innerHTML = `<span class="badge-tag" style="font-size:13px;padding:6px 12px">${getBadge(s.pointsMonth || 0)}</span>`;
     
@@ -878,25 +851,14 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     if(s.rewards && s.rewards.length > 0) {
       $("modalUnlockedRewards").innerHTML = s.rewards.map(rw => `<span class="badge-tag" style="background:var(--mint);color:var(--mint-text);margin-right:4px;">🎁 ${esc(rw)}</span>`).join("");
-    } else {
-      $("modalUnlockedRewards").innerHTML = "Hozircha yutuqlar yo'q.";
-    }
+    } else { $("modalUnlockedRewards").innerHTML = "Hozircha yutuqlar yo'q."; }
 
-    const clubSel = $("modalClubSelect");
-    clubSel.innerHTML = clubs.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
-    
+    $("modalClubSelect").innerHTML = clubs.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
     $("studentModal").classList.add("open");
   }
-  function closeStudentModal() { 
-    $("studentModal").classList.remove("open"); 
-    activeStudentIdModal = null;
-  }
+  function closeStudentModal() { $("studentModal").classList.remove("open"); activeStudentIdModal = null; }
 
-  function openParentReadModal() {
-    $("parentSearchName").value = "";
-    $("parentStudentResult").innerHTML = "";
-    $("parentReadModal").classList.add("open");
-  }
+  function openParentReadModal() { $("parentSearchName").value = ""; $("parentStudentResult").innerHTML = ""; $("parentReadModal").classList.add("open"); }
   function closeParentReadModal() { $("parentReadModal").classList.remove("open"); }
 
   function searchParentStudent() {
@@ -904,15 +866,11 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const resBox = $("parentStudentResult");
     if(!q) { resBox.innerHTML = ""; return; }
     const matches = students.filter(s => (s.name || "").toLowerCase().includes(q) || (s.cls || "").toLowerCase().includes(q));
-    if(matches.length === 0) {
-      resBox.innerHTML = `<div style="font-size:12px;color:var(--muted)">Topilmadi</div>`;
-      return;
-    }
+    if(matches.length === 0) { resBox.innerHTML = `<div style="font-size:12px;color:var(--muted)">Topilmadi</div>`; return; }
     resBox.innerHTML = matches.map(s => `
       <div style="background:var(--card);border:1px solid var(--border);padding:10px;border-radius:12px;margin-bottom:6px;font-size:13px">
         <strong>${esc(s.name)} (${esc(s.cls)})</strong><br>
-        Haftalik: <b>${s.pointsWeek || 0}</b> | Oylik: <b>${s.pointsMonth || 0}</b> | Yillik: <b>${s.pointsYear || 0}</b><br>
-        Yutuqlar: ${s.rewards && s.rewards.length > 0 ? s.rewards.join(", ") : "Hozircha yo'q"}
+        Haftalik: <b>${s.pointsWeek || 0}</b> | Oylik: <b>${s.pointsMonth || 0}</b> | Yillik: <b>${s.pointsYear || 0}</b>
       </div>`).join("");
   }
 
@@ -921,38 +879,37 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const chosenClub = $("modalClubSelect").value;
     if (!s) return;
     if (s.club === chosenClub) return showToast("Siz allaqachon bu to'garakdasiz!");
-
-    if (requests.some(r => r.studentId === s.id && r.club === chosenClub)) {
-      return showToast("Bu to'garakka allaqachon ariza yuborilgan!");
-    }
-
+    if (requests.some(r => r.studentId === s.id && r.club === chosenClub)) return showToast("Bu to'garakka allaqachon ariza yuborilgan!");
     requests.push({ id: Date.now(), studentId: s.id, studentName: s.name, cls: s.cls, club: chosenClub });
-    saveData();
-    closeStudentModal();
-    showToast("To'garakka qo'shilish uchun ariza yuborildi! 📨");
+    saveData(); closeStudentModal(); showToast("To'garakka qo'shilish uchun ariza yuborildi! 📨");
   }
 
   function getTeacherCode() { return localStorage.getItem("edurank_teacher_code") || "3333"; }
 
   function openTeacherLogin() {
-    if (isTeacherLoggedIn) showView('teacher');
-    else $("loginModal").classList.add("open");
+    if (isTeacherLoggedIn) { showView('teacher'); }
+    else {
+      $("teacherSearchBox").value = "";
+      populateTeacherDropdown();
+      $("loginModal").classList.add("open");
+    }
   }
   function closeTeacherLogin() { $("loginModal").classList.remove("open"); }
 
   function verifyTeacher() {
-    const tName = $("teacherNameInput").value.trim();
-    if(!tName) return showToast("Ustoz Ism-sharifini kiriting!");
-    if ($("teacherPass").value === getTeacherCode()) {
+    const tName = $("teacherNameSelect").value;
+    const tPass = $("teacherPass").value;
+    if(!tName) return showToast("O'qituvchini tanlang!");
+    if (tPass === getTeacherCode()) {
       isTeacherLoggedIn = true;
       currentTeacherName = tName;
       $("currentTeacherNameTag").textContent = currentTeacherName;
       closeTeacherLogin();
       $("teacherPass").value = "";
-      $("teacherNameInput").value = "";
+      $("teacherSearchBox").value = "";
       showView('teacher');
       showToast(`Xush kelibsiz, ${currentTeacherName}! 👨‍🏫`);
-    } else showToast("Parol noto'g'ri!");
+    } else { showToast("Parol noto'g'ri!"); }
   }
 
   function teacherLogout() {
@@ -967,18 +924,13 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     tapCount++;
     clearTimeout(tapTimer);
     tapTimer = setTimeout(() => { tapCount = 0; }, 1500);
-    if (tapCount >= 5) {
-      tapCount = 0;
-      $("adminModal").classList.add("open");
-    }
+    if (tapCount >= 5) { tapCount = 0; $("adminModal").classList.add("open"); }
   });
 
   function verifyAdmin() {
     if (!SUPER_PIN) return showToast("PIN kiritilmagan!");
-    if ($("adminPin").value === SUPER_PIN) {
-      $("adminStep1").classList.add("hidden");
-      $("adminStep2").classList.remove("hidden");
-    } else showToast("PIN noto'g'ri!");
+    if ($("adminPin").value === SUPER_PIN) { $("adminStep1").classList.add("hidden"); $("adminStep2").classList.remove("hidden"); }
+    else { showToast("PIN noto'g'ri!"); }
   }
 
   function saveTeacherCode() {
@@ -992,10 +944,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
   function closeAdmin() {
     $("adminModal").classList.remove("open");
-    $("adminPin").value = "";
-    $("newTeacherCode").value = "";
-    $("adminStep1").classList.remove("hidden");
-    $("adminStep2").classList.add("hidden");
+    $("adminPin").value = ""; $("newTeacherCode").value = "";
+    $("adminStep1").classList.remove("hidden"); $("adminStep2").classList.add("hidden");
   }
 
   function showView(view) {
@@ -1027,7 +977,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const st = students.find(s => s.id === Number($("studentSelect").value));
     const btns = document.querySelectorAll(".star-btn");
     const label = $("praiseLabel");
-    
     if(!st) return;
     if(!st.praiseRecords) st.praiseRecords = {};
     if(!st.quickCounts) st.quickCounts = {};
@@ -1057,9 +1006,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const key = `${currentTeacherName}_${type}`;
     const currentCount = st.quickCounts[key] || 0;
 
-    if(currentCount >= 2) {
-      return showToast("Siz bu o'quvchiga bu turdagi tezkor ballarni berish limitidan oshdingiz (Maks 2 marta)!");
-    }
+    if(currentCount >= 2) return showToast("Siz bu o'quvchiga bu turdagi tezkor ballarni berish limitidan oshdingiz (Maks 2 marta)!");
 
     st.quickCounts[key] = currentCount + 1;
     st.pointsWeek = (Number(st.pointsWeek) || 0) + pts;
@@ -1077,7 +1024,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if (!st) return;
     if(!st.praiseRecords) st.praiseRecords = {};
     const teacherPraiseKey = `${currentTeacherName}_${todayStr}`;
-
     if (st.praiseRecords[teacherPraiseKey]) return;
 
     const note = $("praiseNote").value.trim() || "Ustoz maqtovi";
@@ -1097,7 +1043,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const targetCls = $("bulkClassTarget").value;
     const pts = Number($("bulkClassPointsVal").value);
     const reason = $("bulkClassReason").value.trim() || "Ommaviy ball";
-
     if(!pts) return showToast("Beriladigan ballni kiriting!");
     
     let count = 0;
@@ -1111,8 +1056,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       }
     });
 
-    $("bulkClassPointsVal").value = "";
-    $("bulkClassReason").value = "";
+    $("bulkClassPointsVal").value = ""; $("bulkClassReason").value = "";
     logs.unshift(`${currentTeacherName}: ${targetCls} sinfga ommaviy +${pts} ball (${reason})`);
     saveData(); renderManageList(); renderLogs();
     showToast(`${count} ta o'quvchiga ball qo'shildi! ⚡`);
@@ -1124,12 +1068,9 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const text = $("anonPraiseText").value.trim();
     if(!st) return showToast("O'quvchini tanlang!");
     if(!text) return showToast("Maqtov matnini kiriting!");
-
     st.anonPraise = text;
-    $("anonPraiseText").value = "";
-    $("anonStudentSearch").value = "";
-    populateAnonSelect();
-    saveData();
+    $("anonPraiseText").value = ""; $("anonStudentSearch").value = "";
+    populateAnonSelect(); saveData();
     showToast(`${st.name}ga anonim maqtov yuborildi! 💌`);
   }
 
@@ -1145,10 +1086,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function renderRequests() {
     const box = $("requestsList");
     if (!box) return;
-    if (requests.length === 0) {
-      box.innerHTML = `<div style="font-size:12px;color:var(--muted)">Hozircha arizalar yo'q.</div>`;
-      return;
-    }
+    if (requests.length === 0) { box.innerHTML = `<div style="font-size:12px;color:var(--muted)">Hozircha arizalar yo'q.</div>`; return; }
     box.innerHTML = requests.map(r => `
       <div class="manage-item">
         <div><strong>${esc(r.studentName)}</strong> (${esc(r.cls)}) ➔ <b>${esc(r.club)}</b></div>
@@ -1163,10 +1101,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     const req = requests.find(r => r.id === reqId);
     if (!req) return;
     const st = students.find(s => s.id === req.studentId);
-    if (st) {
-      st.club = req.club;
-      logs.unshift(`${st.name} — ${req.club} to'garagiga qabul qilindi ✅`);
-    }
+    if (st) { st.club = req.club; logs.unshift(`${st.name} — ${req.club} to'garagiga qabul qilindi ✅`); }
     requests = requests.filter(r => r.id !== reqId);
     saveData(); renderRequests(); renderManageList(); populateSelect(); populateAnonSelect();
     showToast("Ariza tasdiqlandi! 🎉");
@@ -1181,10 +1116,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function renderManageList() {
     const box = $("manageList");
     if (!box) return;
-    if (students.length === 0) {
-      box.innerHTML = `<div style="font-size:12px;color:var(--muted)">Ro'yxat bo'sh</div>`;
-      return;
-    }
+    if (students.length === 0) { box.innerHTML = `<div style="font-size:12px;color:var(--muted)">Ro'yxat bo'sh</div>`; return; }
     box.innerHTML = students.map(s => `
       <div class="manage-item">
         <div><strong>${esc(s.name)}</strong> (${esc(s.cls)} • ${s.pointsMonth || 0}b)</div>
@@ -1200,7 +1132,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if (!st) return;
     const n = prompt("Yangi ismni kiriting:", st.name);
     if (n === null) return;
-    
     let c = prompt(`To'garakni o'zgartirish:`, st.club || "NONE");
     if (c !== null) {
       st.name = n.trim() || st.name;
@@ -1230,9 +1161,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function renderLogs() {
-    if($("activityLog")) {
-      $("activityLog").innerHTML = logs.slice(0, 8).map(l => `<div class="log-item">${esc(l)}</div>`).join("");
-    }
+    if($("activityLog")) { $("activityLog").innerHTML = logs.slice(0, 8).map(l => `<div class="log-item">${esc(l)}</div>`).join(""); }
   }
 
   db.ref("edurank_data").once("value", (snapshot) => {
@@ -1246,11 +1175,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       if (data.notice) noticeBoardData = data.notice;
       if (data.timer) timerData = data.timer;
     }
-    updateFilterOptions();
-    renderLeaderboard();
-    renderActiveRewardsBanner();
-    renderNoticeBoard();
-    updateTimerDisplay();
+    updateFilterOptions(); renderLeaderboard(); renderActiveRewardsBanner(); renderNoticeBoard(); updateTimerDisplay();
   });
 </script>
 </body>
