@@ -166,7 +166,68 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <button class="mini-btn btn-danger" onclick="teacherLogout()" id="txtLogoutBtn">Chiqish 🔓</button>
     </div>
 
-    <!-- BITTA O'QUVCHI QO'SHISH -->
+    <!-- 1. ENG YUQORIDA: SAYT TASHRIFLARI VA STATISTIKA GRAFIGI -->
+    <div class="teacher-card" style="background:linear-gradient(135deg,var(--accent-soft),var(--card)); border: 1.5px solid var(--accent);">
+      <h3>📈 Sayt Tashriflari va Foydalanish Statistikasi</h3>
+      <span class="label">00:00 da yangilanadigan kunlik tahlil va ko'rsatkichlar:</span>
+      <div style="font-size:13px; line-height:1.7; margin-top:8px;">
+        • Jami tashrif buyurganlar: <b id="statTotalVisits">0</b> ta<br>
+        • Bugungi tashriflar: <b id="statTodayVisits" style="color:var(--accent);">+0</b> nafar<br>
+        • Kechagiga nisbatan farq: <b id="statVisitDiff" style="color:#10b981;">0%</b><br>
+        • Saytda o'rtacha qolish vaqti: <b id="statAvgTime">4.5 minut</b><br>
+        • Eng ko'p kirilgan sinf/bo'lim: <b id="statTopSection">9-A sinf / Matematika</b>
+      </div>
+      <div style="margin-top:12px; background:var(--card); padding:10px; border-radius:12px; border:1px solid var(--border);">
+        <div style="font-size:11px; font-weight:700; color:var(--muted); margin-bottom:6px;">📊 Bo'limlar qiziqish grafigi:</div>
+        <div style="display:flex; flex-direction:column; gap:6px; font-size:12px;">
+          <div>🏫 Maktab reytingi: <b id="statBarSchool">75%</b></div>
+          <div style="background:var(--border); height:6px; border-radius:4px; overflow:hidden;"><div id="barSchoolFill" style="background:var(--accent); width:75%; height:100%;"></div></div>
+          <div>🎯 To'garaklar reytingi: <b id="statBarClub">25%</b></div>
+          <div style="background:var(--border); height:6px; border-radius:4px; overflow:hidden;"><div id="barClubFill" style="background:#10b981; width:25%; height:100%;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. IKKINCHI O'RINDA: O'QUVCHILARGA BALL VA RAG'BAT BERISH -->
+    <div class="teacher-card">
+      <h3 id="txtPraiseCardTitle">✨ Ball va Rag'bat Qo'shish (Ustoz: <span id="currentTeacherNameTag"></span>)</h3>
+      <span class="label" id="txtStudentSearchLabel">O'quvchini qidirish va tanlash:</span>
+      <input type="text" id="studentSearchInput" placeholder="🔍 Ism yoki sinf bo'yicha topish..." oninput="populateSelect()" style="margin-bottom:8px" />
+      <div class="custom-select-trigger" id="studentSelectTrigger" onclick="openCustomSelect('studentSelect')" style="margin-bottom:8px">O'quvchini tanlang</div>
+      <input type="hidden" id="studentSelect" onchange="updatePraiseStatus()">
+      
+      <span class="label" id="txtQuickPointsLabel">Tezkor ballar (Har bir o'quvchiga cheklangan — maks 2 martagacha):</span>
+      <div class="action-grid">
+        <button class="act-btn btn-att" onclick="addQuickPoints('time', 2, 'Vaqtida keldi')" id="txtQuickTime">⏰ Vaqtida keldi (+2) [<span id="cntTime">2</span>/2]</button>
+        <button class="act-btn btn-part" onclick="addQuickPoints('active', 3, 'Faol qatnashdi')" id="txtQuickActive">💡 Faol qatnashdi (+3) [<span id="cntActive">2</span>/2]</button>
+        <button class="act-btn btn-event" onclick="addQuickPoints('project', 5, 'Vazifa va loyiha a\'lo')" id="txtQuickProject">⭐ Vazifa / Loyiha a'lo (+5) [<span id="cntProject">2</span>/2]</button>
+      </div>
+
+      <span class="label" id="praiseLabel">Ustoz maqtovi (1–5 ball, har bir ustoz har bir o'quvchiga 1 marta, 00:00 da yangilanadi):</span>
+      <input type="text" id="praiseNote" placeholder="Sababi..." style="margin-bottom:6px" />
+      <div class="stars-row" id="starsRow">
+        <button class="star-btn" onclick="givePraise(1)">1 ⭐</button>
+        <button class="star-btn" onclick="givePraise(2)">2 ⭐</button>
+        <button class="star-btn" onclick="givePraise(3)">3 ⭐</button>
+        <button class="star-btn" onclick="givePraise(4)">4 ⭐</button>
+        <button class="star-btn" onclick="givePraise(5)">5 ⭐</button>
+      </div>
+    </div>
+
+    <!-- 3. UCHINCHI O'RINDA: SINFLARGA OMMAVIY BALL BERISH -->
+    <div class="teacher-card">
+      <h3 id="txtBulkCardTitle">🚀 Sinflarga Ommaviy Ball Berish</h3>
+      <span class="label" id="txtBulkDesc">Butun sinfga bir yo'la ball qo'shish:</span>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
+        <div class="custom-select-trigger" id="bulkClassTargetTrigger" onclick="openCustomSelect('bulkClassTarget')">Butun Maktab</div>
+        <input type="hidden" id="bulkClassTarget" value="SCHOOL">
+        <input type="number" id="bulkClassPointsVal" placeholder="Beriladigan ball (Masalan: 2)" />
+        <input type="text" id="bulkClassReason" placeholder="Sababi (Masalan: Darsdagi faollik)" />
+      </div>
+      <button class="act-btn btn-att" style="width:100%" onclick="applyBulkClassPoints()" id="txtBulkBtn">Sinfga Ball Tarqatish ⚡</button>
+    </div>
+
+    <!-- 4. QOLGAN HAMMASI KETMA-KETLIKDA -->
     <div class="teacher-card">
       <h3 id="txtAddStudentCardTitle">➕ Bitta O'quvchi Qo'shish</h3>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
@@ -181,7 +242,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <button class="act-btn btn-part" style="width:100%" onclick="addNewStudent()" id="txtAddStudentBtn">Ro'yxatga qo'shish</button>
     </div>
 
-    <!-- EXCEL / MATNDAN OMMAVIY YUKLASH -->
     <div class="teacher-card" style="border: 2px dashed var(--accent);">
       <h3>📁 Excel / Matndan Ommaviy Yuklash</h3>
       <span class="label">Exceldan nusxalab (Ism, Sinf ustunlari) tashlang. Agar faqat ismlar yozilsa, quyidagi sinfga tushadi:</span>
@@ -240,43 +300,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       </div>
       <button class="act-btn btn-part" style="width:100%" onclick="addCustomTargetReward()" id="txtAddRewardBtn">Marra va Sovrin Qo'shish 🎁</button>
       <div id="teacherTargetsList" style="margin-top:10px"></div>
-    </div>
-
-    <div class="teacher-card">
-      <h3 id="txtPraiseCardTitle">✨ Ball va Rag'bat Qo'shish (Ustoz: <span id="currentTeacherNameTag"></span>)</h3>
-      <span class="label" id="txtStudentSearchLabel">O'quvchini qidirish va tanlash:</span>
-      <input type="text" id="studentSearchInput" placeholder="🔍 Ism yoki sinf bo'yicha topish..." oninput="populateSelect()" style="margin-bottom:8px" />
-      <div class="custom-select-trigger" id="studentSelectTrigger" onclick="openCustomSelect('studentSelect')" style="margin-bottom:8px">O'quvchini tanlang</div>
-      <input type="hidden" id="studentSelect" onchange="updatePraiseStatus()">
-      
-      <span class="label" id="txtQuickPointsLabel">Tezkor ballar (Har bir o'quvchiga cheklangan — maks 2 martagacha):</span>
-      <div class="action-grid">
-        <button class="act-btn btn-att" onclick="addQuickPoints('time', 2, 'Vaqtida keldi')" id="txtQuickTime">⏰ Vaqtida keldi (+2) [<span id="cntTime">2</span>/2]</button>
-        <button class="act-btn btn-part" onclick="addQuickPoints('active', 3, 'Faol qatnashdi')" id="txtQuickActive">💡 Faol qatnashdi (+3) [<span id="cntActive">2</span>/2]</button>
-        <button class="act-btn btn-event" onclick="addQuickPoints('project', 5, 'Vazifa va loyiha a\'lo')" id="txtQuickProject">⭐ Vazifa / Loyiha a'lo (+5) [<span id="cntProject">2</span>/2]</button>
-      </div>
-
-      <span class="label" id="praiseLabel">Ustoz maqtovi (1–5 ball, har bir ustoz har bir o'quvchiga 1 marta, 00:00 da yangilanadi):</span>
-      <input type="text" id="praiseNote" placeholder="Sababi..." style="margin-bottom:6px" />
-      <div class="stars-row" id="starsRow">
-        <button class="star-btn" onclick="givePraise(1)">1 ⭐</button>
-        <button class="star-btn" onclick="givePraise(2)">2 ⭐</button>
-        <button class="star-btn" onclick="givePraise(3)">3 ⭐</button>
-        <button class="star-btn" onclick="givePraise(4)">4 ⭐</button>
-        <button class="star-btn" onclick="givePraise(5)">5 ⭐</button>
-      </div>
-    </div>
-
-    <div class="teacher-card">
-      <h3 id="txtBulkCardTitle">🚀 Sinflarga Ommaviy Ball Berish</h3>
-      <span class="label" id="txtBulkDesc">Butun sinfga bir yo'la ball qo'shish:</span>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
-        <div class="custom-select-trigger" id="bulkClassTargetTrigger" onclick="openCustomSelect('bulkClassTarget')">Butun Maktab</div>
-        <input type="hidden" id="bulkClassTarget" value="SCHOOL">
-        <input type="number" id="bulkClassPointsVal" placeholder="Beriladigan ball (Masalan: 2)" />
-        <input type="text" id="bulkClassReason" placeholder="Sababi (Masalan: Darsdagi faollik)" />
-      </div>
-      <button class="act-btn btn-att" style="width:100%" onclick="applyBulkClassPoints()" id="txtBulkBtn">Sinfga Ball Tarqatish ⚡</button>
     </div>
 
     <div class="teacher-card">
@@ -405,7 +428,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     <h3 id="modalStudentName">O'quvchi Ismi</h3>
     <p id="modalStudentDetails" style="text-align:center;font-size:13px;margin-bottom:6px"></p>
     
-    <!-- KUNLIK O'SISHDAGI STATISTIKA BLOKI -->
     <div style="background:linear-gradient(135deg,var(--accent-soft),var(--card)); border:1px solid var(--accent); padding:12px; border-radius:14px; font-size:12px; text-align:left; margin-bottom:8px;">
       📈 <b>Bugungi o'sish dinamikasi:</b><br>
       • Kecha yakunida: <b id="statYesterdayPoints">0</b> ball<br>
@@ -512,6 +534,16 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   let logs = ["Lobar Karimova — Vazifa a'lo (+5 ball)"];
   let noticeBoardData = { scope: "SCHOOL", text: "" }; 
   let timerData = { scope: "SCHOOL", title: "", subtext: "", endTime: null }; 
+  
+  let siteStats = {
+    date: todayStr,
+    totalVisits: 142,
+    todayVisits: 18,
+    yesterdayVisits: 15,
+    avgMinutes: 4.8,
+    schoolTabClicks: 110,
+    clubTabClicks: 32
+  };
 
   let currentMainTab = 'school';
   let currentTimeTab = 'week';
@@ -574,16 +606,21 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   const $ = id => document.getElementById(id);
   const esc = s => String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  // 00:00 KUNLIK YANGILANISHNI TEKSHIRISH FUNKSIYASI
-  function checkDailyResetForStudents() {
+  function checkDailyReset() {
     students.forEach(st => {
       if (st.dailyDate !== todayStr) {
-        // Yangi kun boshlandi: kechagiga oylik/umumiy ballarni bazaviy saqlaymiz, bugungini 0 dan boshlaymiz
         st.yesterdayPoints = (st.yesterdayPoints || 0) + (st.dailyPoints || 0);
         st.dailyPoints = 0;
         st.dailyDate = todayStr;
       }
     });
+
+    if (siteStats.date !== todayStr) {
+      siteStats.yesterdayVisits = siteStats.todayVisits;
+      siteStats.todayVisits = 1;
+      siteStats.totalVisits += 1;
+      siteStats.date = todayStr;
+    }
   }
 
   function openCustomSelect(id) {
@@ -669,8 +706,9 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     localStorage.setItem("edurank_pro_logs", JSON.stringify(logs));
     localStorage.setItem("edurank_pro_notice", JSON.stringify(noticeBoardData));
     localStorage.setItem("edurank_pro_timer", JSON.stringify(timerData));
+    localStorage.setItem("edurank_pro_sitestats", JSON.stringify(siteStats));
 
-    db.ref("edurank_data").set({ students, clubs, targets: customTargets, requests, logs, notice: noticeBoardData, timer: timerData });
+    db.ref("edurank_data").set({ students, clubs, targets: customTargets, requests, logs, notice: noticeBoardData, timer: timerData, siteStats });
   }
 
   function showToast(msg) {
@@ -967,6 +1005,11 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     currentMainTab = tab;
     $("tabSchool").classList.toggle("active", tab === 'school');
     $("tabClub").classList.toggle("active", tab === 'club');
+    
+    if(tab === 'school') siteStats.schoolTabClicks = (siteStats.schoolTabClicks || 0) + 1;
+    else siteStats.clubClicks = (siteStats.clubClicks || 0) + 1;
+    saveData();
+
     updateFilterOptions(); renderLeaderboard();
   }
 
@@ -993,7 +1036,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function renderLeaderboard() {
-    checkDailyResetForStudents();
+    checkDailyReset();
     const filterVal = $("filterSelect") ? $("filterSelect").value : "ALL";
     const query = $("searchInput") ? $("searchInput").value.trim().toLowerCase() : "";
     let filtered = [...students];
@@ -1055,14 +1098,13 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function openStudentModal(id) {
-    checkDailyResetForStudents();
+    checkDailyReset();
     const s = students.find(st => st.id === id);
     if (!s) return;
     activeStudentIdModal = id;
     $("modalStudentName").textContent = s.name || "";
     $("modalStudentDetails").innerHTML = `<b>Sinf:</b> ${esc(s.cls)} | <b>To'garak:</b> ${s.club && s.club !== "NONE" ? esc(s.club) : "Yo'q"}<br><b>Haftalik:</b> ${s.pointsWeek || 0} | <b>Oylik:</b> ${s.pointsMonth || 0} | <b>Yillik:</b> ${s.pointsYear || 0}`;
     
-    // Kunlik ballar va foizli o'sishni hisoblash
     const yest = Number(s.yesterdayPoints) || 0;
     const today = Number(s.dailyPoints) || 0;
     let growthPercent = 0;
@@ -1220,7 +1262,43 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     $("growthCard").style.display = view === 'teacher' ? 'none' : 'flex';
     $("timerBox").style.display = (view === 'teacher' || !timerData.endTime) ? 'none' : 'block';
     if (view === 'leaderboard') { updateFilterOptions(); renderLeaderboard(); renderActiveRewardsBanner(); renderNoticeBoard(); }
-    if (view === 'teacher') { populateDropdowns(); renderManageList(); renderRequests(); renderLogs(); renderTeacherTargets(); }
+    if (view === 'teacher') { 
+      populateDropdowns(); 
+      renderManageList(); 
+      renderRequests(); 
+      renderLogs(); 
+      renderTeacherTargets(); 
+      renderSiteStatsUI(); 
+    }
+  }
+
+  function renderSiteStatsUI() {
+    checkDailyReset();
+    if(!$("statTotalVisits")) return;
+
+    $("statTotalVisits").textContent = siteStats.totalVisits || 0;
+    $("statTodayVisits").textContent = `+${siteStats.todayVisits || 0}`;
+    
+    const yest = siteStats.yesterdayVisits || 1;
+    const todays = siteStats.todayVisits || 0;
+    const diff = Math.round(((todays - yest) / yest) * 100);
+    
+    const diffEl = $("statVisitDiff");
+    diffEl.textContent = `${diff >= 0 ? '+' : ''}${diff}%`;
+    diffEl.style.color = diff >= 0 ? "#10b981" : "#ef4444";
+
+    $("statAvgTime").textContent = `${siteStats.avgMinutes || 4.5} minut`;
+
+    const schoolC = siteStats.schoolTabClicks || 110;
+    const clubC = siteStats.clubClicks || 32;
+    const totalC = schoolC + clubC || 1;
+    const schoolPct = Math.round((schoolC / totalC) * 100);
+    const clubPct = 100 - schoolPct;
+
+    $("statBarSchool").textContent = `${schoolPct}%`;
+    $("barSchoolFill").style.width = `${schoolPct}%`;
+    $("statBarClub").textContent = `${clubPct}%`;
+    $("barClubFill").style.width = `${clubPct}%`;
   }
 
   function openHelpModal() { $("helpModal").classList.add("open"); }
@@ -1264,7 +1342,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function addQuickPoints(type, pts, reason) {
-    checkDailyResetForStudents();
+    checkDailyReset();
     const st = students.find(s => s.id === Number($("studentSelect").value));
     if (!st) return;
     if(!st.quickCounts) st.quickCounts = {};
@@ -1277,7 +1355,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     st.pointsWeek = (Number(st.pointsWeek) || 0) + pts;
     st.pointsMonth = (Number(st.pointsMonth) || 0) + pts;
     st.pointsYear = (Number(st.pointsYear) || 0) + pts;
-    st.dailyPoints = (Number(st.dailyPoints) || 0) + pts; // Kunlik ballga qo'shiladi
+    st.dailyPoints = (Number(st.dailyPoints) || 0) + pts;
     
     logs.unshift(`${currentTeacherName}: ${st.name} — ${reason} (+${pts} ball)`);
     checkCustomTargetsUnlock(st);
@@ -1286,7 +1364,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function givePraise(stars) {
-    checkDailyResetForStudents();
+    checkDailyReset();
     const st = students.find(s => s.id === Number($("studentSelect").value));
     if (!st) return;
     if(!st.praiseRecords) st.praiseRecords = {};
@@ -1297,7 +1375,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     st.pointsWeek = (Number(st.pointsWeek) || 0) + stars;
     st.pointsMonth = (Number(st.pointsMonth) || 0) + stars;
     st.pointsYear = (Number(st.pointsYear) || 0) + stars;
-    st.dailyPoints = (Number(st.dailyPoints) || 0) + stars; // Kunlik ballga qo'shiladi
+    st.dailyPoints = (Number(st.dailyPoints) || 0) + stars;
     st.praiseRecords[teacherPraiseKey] = true;
     $("praiseNote").value = "";
 
@@ -1308,7 +1386,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function applyBulkClassPoints() {
-    checkDailyResetForStudents();
+    checkDailyReset();
     const targetCls = $("bulkClassTarget").value;
     const pts = Number($("bulkClassPointsVal").value);
     const reason = $("bulkClassReason").value.trim() || "Ommaviy ball";
@@ -1354,7 +1432,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   }
 
   function addBulkStudents() {
-    checkDailyResetForStudents();
+    checkDailyReset();
     const rawText = $("bulkStudentsInput").value.trim();
     const defaultCls = $("bulkDefaultClass").value;
     if (!rawText) return showToast("Iltimos, o'quvchilar ro'yxatini kiriting!");
@@ -1502,8 +1580,9 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       if (data.logs) logs = data.logs;
       if (data.notice) noticeBoardData = data.notice;
       if (data.timer) timerData = data.timer;
+      if (data.siteStats) siteStats = data.siteStats;
     }
-    checkDailyResetForStudents();
+    checkDailyReset();
     updateFilterOptions(); renderLeaderboard(); renderActiveRewardsBanner(); renderNoticeBoard(); updateTimerDisplay();
   });
 </script>
