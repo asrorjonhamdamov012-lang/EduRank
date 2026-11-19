@@ -436,7 +436,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  const SUPER_PIN = "1234"; // Super admin uchun maxsus PIN kod
+  const SUPER_PIN = "1234";
   const todayStr = new Date().toISOString().slice(0, 10);
   
   const teachersList = [
@@ -959,7 +959,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     showToast("Paneldan chiqildi.");
   }
 
-  // Logo ustiga 5 marta bosganda Super Admin ochilishi
   let tapCount = 0, tapTimer;
   function handleLogoClick() {
     tapCount++;
