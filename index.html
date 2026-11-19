@@ -166,29 +166,18 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <button class="mini-btn btn-danger" onclick="teacherLogout()" id="txtLogoutBtn">Chiqish 🔓</button>
     </div>
 
-    <!-- 1. ENG YUQORIDA: SAYT TASHRIFLARI VA STATISTIKA GRAFIGI -->
     <div class="teacher-card" style="background:linear-gradient(135deg,var(--accent-soft),var(--card)); border: 1.5px solid var(--accent);">
-      <h3>📈 Sayt Tashriflari va Foydalanish Statistikasi</h3>
-      <span class="label">00:00 da yangilanadigan kunlik tahlil va ko'rsatkichlar:</span>
+      <h3 id="txtStatsHeader">📈 Sayt Tashriflari va Foydalanish Statistikasi</h3>
+      <span class="label" id="txtStatsSub">00:00 da yangilanadigan kunlik tahlil va ko'rsatkichlar:</span>
       <div style="font-size:13px; line-height:1.7; margin-top:8px;">
-        • Jami tashrif buyurganlar: <b id="statTotalVisits">0</b> ta<br>
-        • Bugungi tashriflar: <b id="statTodayVisits" style="color:var(--accent);">+0</b> nafar<br>
-        • Kechagiga nisbatan farq: <b id="statVisitDiff" style="color:#10b981;">0%</b><br>
-        • Saytda o'rtacha qolish vaqti: <b id="statAvgTime">4.5 minut</b><br>
-        • Eng ko'p kirilgan sinf/bo'lim: <b id="statTopSection">9-A sinf / Matematika</b>
-      </div>
-      <div style="margin-top:12px; background:var(--card); padding:10px; border-radius:12px; border:1px solid var(--border);">
-        <div style="font-size:11px; font-weight:700; color:var(--muted); margin-bottom:6px;">📊 Bo'limlar qiziqish grafigi:</div>
-        <div style="display:flex; flex-direction:column; gap:6px; font-size:12px;">
-          <div>🏫 Maktab reytingi: <b id="statBarSchool">75%</b></div>
-          <div style="background:var(--border); height:6px; border-radius:4px; overflow:hidden;"><div id="barSchoolFill" style="background:var(--accent); width:75%; height:100%;"></div></div>
-          <div>🎯 To'garaklar reytingi: <b id="statBarClub">25%</b></div>
-          <div style="background:var(--border); height:6px; border-radius:4px; overflow:hidden;"><div id="barClubFill" style="background:#10b981; width:25%; height:100%;"></div></div>
-        </div>
+        • <span id="txtStat1">Jami tashrif buyurganlar</span>: <b id="statTotalVisits">0</b> ta<br>
+        • <span id="txtStat2">Bugungi tashriflar</span>: <b id="statTodayVisits" style="color:var(--accent);">+0</b> nafar<br>
+        • <span id="txtStat3">Kechagiga nisbatan farq</span>: <b id="statVisitDiff" style="color:#10b981;">0%</b><br>
+        • <span id="txtStat4">Saytda o'rtacha qolish vaqti</span>: <b id="statAvgTime">4.5 minut</b><br>
+        • <span id="txtStat5">Eng ko'p kirilgan sinf/bo'lim</span>: <b id="statTopSection">9-A sinf / Matematika</b>
       </div>
     </div>
 
-    <!-- 2. IKKINCHI O'RINDA: O'QUVCHILARGA BALL VA RAG'BAT BERISH -->
     <div class="teacher-card">
       <h3 id="txtPraiseCardTitle">✨ Ball va Rag'bat Qo'shish (Ustoz: <span id="currentTeacherNameTag"></span>)</h3>
       <span class="label" id="txtStudentSearchLabel">O'quvchini qidirish va tanlash:</span>
@@ -214,7 +203,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       </div>
     </div>
 
-    <!-- 3. UCHINCHI O'RINDA: SINFLARGA OMMAVIY BALL BERISH -->
     <div class="teacher-card">
       <h3 id="txtBulkCardTitle">🚀 Sinflarga Ommaviy Ball Berish</h3>
       <span class="label" id="txtBulkDesc">Butun sinfga bir yo'la ball qo'shish:</span>
@@ -227,7 +215,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <button class="act-btn btn-att" style="width:100%" onclick="applyBulkClassPoints()" id="txtBulkBtn">Sinfga Ball Tarqatish ⚡</button>
     </div>
 
-    <!-- 4. QOLGAN HAMMASI KETMA-KETLIKDA -->
     <div class="teacher-card">
       <h3 id="txtAddStudentCardTitle">➕ Bitta O'quvchi Qo'shish</h3>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
@@ -243,14 +230,14 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     </div>
 
     <div class="teacher-card" style="border: 2px dashed var(--accent);">
-      <h3>📁 Excel / Matndan Ommaviy Yuklash</h3>
-      <span class="label">Exceldan nusxalab (Ism, Sinf ustunlari) tashlang. Agar faqat ismlar yozilsa, quyidagi sinfga tushadi:</span>
+      <h3 id="txtExcelTitle">📁 Excel / Matndan Ommaviy Yuklash</h3>
+      <span class="label" id="txtExcelSub">Exceldan nusxalab (Ism, Sinf ustunlari) tashlang. Agar faqat ismlar yozilsa, quyidagi sinfga tushadi:</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <div class="custom-select-trigger" id="bulkDefaultClassTrigger" onclick="openCustomSelect('bulkDefaultClass')">1-A sinf</div>
         <input type="hidden" id="bulkDefaultClass" value="1-A">
         <textarea id="bulkStudentsInput" placeholder="Karimov Anvar 9-A&#10;Tursunova Malika 9-D&#10;Bekzod Rahimov"></textarea>
       </div>
-      <button class="act-btn btn-att" style="width:100%; background:var(--mint); color:var(--mint-text);" onclick="addBulkStudents()">Ommaviy Qo'shish 🚀</button>
+      <button class="act-btn btn-att" style="width:100%; background:var(--mint); color:var(--mint-text);" onclick="addBulkStudents()" id="txtExcelBtn">Ommaviy Qo'shish 🚀</button>
     </div>
 
     <div class="teacher-card">
@@ -335,14 +322,8 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   <div class="modal-content" style="text-align:left">
     <h3>🏅 Maktab Unvonlari va Ballar</h3>
     <p style="margin-bottom:10px">Quyidagi ballarga yetib, yangi unvonlarni qo'lga kiriting:</p>
-    <div style="font-size:13px; line-height:1.7; color:var(--text);">
-      • <b>🌱 Boshlang'ich</b> — 0 balldan boshlanadi<br>
-      • <b>⭐ Faol ishtirokchi</b> — 20 ball<br>
-      • <b>💡 Iqtidorli</b> — 60 ball<br>
-      • <b>📈 Zukko O'quvchi</b> — 100 ball<br>
-      • <b>🔥 Fan bilimdoni</b> — 150 ball<br>
-      • <b>🚀 Maktab Lideri</b> — 200 ball<br>
-      • <b>👑 Super Chempion</b> — 300+ ball
+    <div id="badgesListContent" style="font-size:13px; line-height:1.7; color:var(--text);">
+      <!-- Dinamik yuklanadi -->
     </div>
     <button class="modal-btn" style="margin-top:14px" onclick="closeBadgesModal()">Tushunarli 👍</button>
   </div>
@@ -394,18 +375,45 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   </div>
 </div>
 
+<!-- SUPER ADMIN MODAL -->
 <div class="modal" id="adminModal">
-  <div class="modal-content">
+  <div class="modal-content" style="max-height:90vh; overflow-y:auto;">
     <h3>🛡️ Super Admin Boshqaruvi</h3>
     <div id="adminStep1">
       <p style="text-align:center;font-size:12px;margin-bottom:10px">Admin huquqi uchun PIN kodni kiriting:</p>
       <input type="password" id="adminPin" placeholder="Super admin PIN" style="margin-bottom:8px" />
       <button class="modal-btn" onclick="verifyAdmin()">Kirish</button>
     </div>
-    <div id="adminStep2" class="hidden">
+    <div id="adminStep2" class="hidden" style="text-align:left;">
       <span class="label" style="text-align:left">O'qituvchilar parol kodini o'zgartirish:</span>
       <input type="text" id="newTeacherCode" placeholder="Yangi o'qituvchi kodi (masalan: 3333)" style="margin-bottom:10px" />
-      <button class="modal-btn" onclick="saveTeacherCode()" style="margin-bottom:8px">Kodini Yangilash ✅</button>
+      <button class="modal-btn" onclick="saveTeacherCode()" style="margin-bottom:14px">Kodini Yangilash ✅</button>
+      
+      <h4 style="font-size:14px; margin-bottom:6px; color:var(--accent);">🏅 Unvonlar Ballarini Sozlash:</h4>
+      <div style="font-size:12px; color:var(--muted); margin-bottom:8px;">Har bir unvon uchun minimal ballarni belgilang:</div>
+      
+      <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:14px;">
+        <label style="font-size:12px; font-weight:700;">⭐ Faol ishtirokchi:</label>
+        <input type="number" id="badgeReq1" style="padding:8px;" />
+        
+        <label style="font-size:12px; font-weight:700;">💡 Iqtidorli:</label>
+        <input type="number" id="badgeReq2" style="padding:8px;" />
+        
+        <label style="font-size:12px; font-weight:700;">📈 Zukko O'quvchi:</label>
+        <input type="number" id="badgeReq3" style="padding:8px;" />
+        
+        <label style="font-size:12px; font-weight:700;">🔥 Fan bilimdoni:</label>
+        <input type="number" id="badgeReq4" style="padding:8px;" />
+        
+        <label style="font-size:12px; font-weight:700;">🚀 Maktab Lideri:</label>
+        <input type="number" id="badgeReq5" style="padding:8px;" />
+        
+        <label style="font-size:12px; font-weight:700;">👑 Super Chempion:</label>
+        <input type="number" id="badgeReq6" style="padding:8px;" />
+        
+        <button class="modal-btn" onclick="saveBadgeRequirements()" style="background:var(--mint); color:var(--mint-text);">Unvon Ballarini Saqlash 💾</button>
+      </div>
+
       <span class="label" style="text-align:left">Tezkor Boshqaruv:</span>
       <button class="modal-btn" style="background:#ef4444;margin-top:4px" onclick="adminResetAllPoints()">🔄 Barcha Ballarni Noldan Boshlash</button>
     </div>
@@ -422,7 +430,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   </div>
 </div>
 
-<!-- O'QUVCHI PROFILI MODAL (KUNLIK O'SISHI VA FOIZ BILAN) -->
 <div class="modal" id="studentModal">
   <div class="modal-content">
     <h3 id="modalStudentName">O'quvchi Ismi</h3>
@@ -498,6 +505,16 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   const SUPER_PIN = "Behruz_0911";
   const todayStr = new Date().toISOString().slice(0, 10);
   
+  // Standart unvon ballari chegaralari
+  let badgeReqs = {
+    active: 20,
+    talented: 60,
+    smart: 100,
+    expert: 150,
+    leader: 200,
+    champion: 300
+  };
+
   const teachersList = [
     "Bekzodjon Abdullayev", "Shoxista Abdurayimova", "Nilufarxon Abdurashidova", "To'tixon Abdusalomova",
     "Feruza Abduvaxobova", "Nilufar Axmadaliyeva", "Iroda Axmedova", "Durdonaxon A'zamova",
@@ -566,6 +583,13 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       rewardTitle: "🎁 E'lon qilingan Faol Sovrinlar & Marralar",
       teacherPanelTitle: "👨‍🏫 Ustoz Boshqaruv Paneli",
       logoutBtn: "Chiqish 🔓",
+      statsHeader: "📈 Sayt Tashriflari va Foydalanish Statistikasi",
+      statsSub: "00:00 da yangilanadigan kunlik tahlil va ko'rsatkichlar:",
+      stat1: "Jami tashrif buyurganlar",
+      stat2: "Bugungi tashriflar",
+      stat3: "Kechagiga nisbatan farq",
+      stat4: "Saytda o'rtacha qolish vaqti",
+      stat5: "Eng ko'p kirilgan sinf/bo'lim",
       timerCardTitle: "⏳ Liderlik Taymerini Sozlash",
       timerScopeLabel: "Taymer qaysi qatlam uchun mo'ljallanganini tanlang:",
       timerTitleLabel: "Taymer sarlavhasi:",
@@ -591,6 +615,9 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       bulkCardTitle: "🚀 Sinflarga Ommaviy Ball Berish",
       bulkDesc: "Butun sinfga bir yo'la ball qo'shish:",
       bulkBtn: "Sinfga Ball Tarqatish ⚡",
+      excelTitle: "📁 Excel / Matndan Ommaviy Yuklash",
+      excelSub: "Exceldan nusxalab (Ism, Sinf ustunlari) tashlang. Agar faqat ismlar yozilsa, quyidagi sinfga tushadi:",
+      excelBtn: "Ommaviy Qo'shish 🚀",
       anonCardTitle: "💌 O'quvchiga Anonim Maqtov Yuborish",
       anonDesc: "O'quvchini ism yoki sinf bo'yicha qidirib toping:",
       anonBtn: "Anonim Maqtov Yuborish 💌",
@@ -707,8 +734,9 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     localStorage.setItem("edurank_pro_notice", JSON.stringify(noticeBoardData));
     localStorage.setItem("edurank_pro_timer", JSON.stringify(timerData));
     localStorage.setItem("edurank_pro_sitestats", JSON.stringify(siteStats));
+    localStorage.setItem("edurank_pro_badgereqs", JSON.stringify(badgeReqs));
 
-    db.ref("edurank_data").set({ students, clubs, targets: customTargets, requests, logs, notice: noticeBoardData, timer: timerData, siteStats });
+    db.ref("edurank_data").set({ students, clubs, targets: customTargets, requests, logs, notice: noticeBoardData, timer: timerData, siteStats, badgeReqs });
   }
 
   function showToast(msg) {
@@ -721,12 +749,12 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function getBadgeAndCheckLevel(p, student) {
     const val = Number(p) || 0;
     let badgeName = "🌱 Boshlang'ich";
-    if (val >= 300) badgeName = "👑 Super Chempion";
-    else if (val >= 200) badgeName = "🚀 Maktab Lideri";
-    else if (val >= 150) badgeName = "🔥 Fan bilimdoni";
-    else if (val >= 100) badgeName = "📈 Zukko O'quvchi";
-    else if (val >= 60) badgeName = "💡 Iqtidorli";
-    else if (val >= 20) badgeName = "⭐ Faol ishtirokchi";
+    if (val >= badgeReqs.champion) badgeName = "👑 Super Chempion";
+    else if (val >= badgeReqs.leader) badgeName = "🚀 Maktab Lideri";
+    else if (val >= badgeReqs.expert) badgeName = "🔥 Fan bilimdoni";
+    else if (val >= badgeReqs.smart) badgeName = "📈 Zukko O'quvchi";
+    else if (val >= badgeReqs.talented) badgeName = "💡 Iqtidorli";
+    else if (val >= badgeReqs.active) badgeName = "⭐ Faol ishtirokchi";
 
     if (student && student.currentLevelBadge !== badgeName) {
       student.currentLevelBadge = badgeName;
@@ -738,16 +766,29 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
   function getBadge(p) {
     const val = Number(p) || 0;
-    if (val >= 300) return "👑 Super Chempion";
-    if (val >= 200) return "🚀 Maktab Lideri";
-    if (val >= 150) return "🔥 Fan bilimdoni";
-    if (val >= 100) return "📈 Zukko O'quvchi";
-    if (val >= 60) return "💡 Iqtidorli";
-    if (val >= 20) return "⭐ Faol ishtirokchi";
+    if (val >= badgeReqs.champion) return "👑 Super Chempion";
+    if (val >= badgeReqs.leader) return "🚀 Maktab Lideri";
+    if (val >= badgeReqs.expert) return "🔥 Fan bilimdoni";
+    if (val >= badgeReqs.smart) return "📈 Zukko O'quvchi";
+    if (val >= badgeReqs.talented) return "💡 Iqtidorli";
+    if (val >= badgeReqs.active) return "⭐ Faol ishtirokchi";
     return "🌱 Boshlang'ich";
   }
 
-  function openBadgesModal() { $("badgesModal").classList.add("open"); }
+  function openBadgesModal() {
+    // Unvonlar modalida admin belgilagan ballarni ko'rsatish
+    const content = `
+      • <b>🌱 Boshlang'ich</b> — 0 balldan boshlanadi<br>
+      • <b>⭐ Faol ishtirokchi</b> — ${badgeReqs.active} ball<br>
+      • <b>💡 Iqtidorli</b> — ${badgeReqs.talented} ball<br>
+      • <b>📈 Zukko O'quvchi</b> — ${badgeReqs.smart} ball<br>
+      • <b>🔥 Fan bilimdoni</b> — ${badgeReqs.expert} ball<br>
+      • <b>🚀 Maktab Lideri</b> — ${badgeReqs.leader} ball<br>
+      • <b>👑 Super Chempion</b> — ${badgeReqs.champion}+ ball
+    `;
+    $("badgesListContent").innerHTML = content;
+    $("badgesModal").classList.add("open");
+  }
   function closeBadgesModal() { $("badgesModal").classList.remove("open"); }
 
   function changeLanguage(lang) {
@@ -767,6 +808,14 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     if($("txtTeacherPanelTitle")) $("txtTeacherPanelTitle").textContent = t.teacherPanelTitle;
     if($("txtLogoutBtn")) $("txtLogoutBtn").textContent = t.logoutBtn;
+    if($("txtStatsHeader")) $("txtStatsHeader").textContent = t.statsHeader;
+    if($("txtStatsSub")) $("txtStatsSub").textContent = t.statsSub;
+    if($("txtStat1")) $("txtStat1").textContent = t.stat1;
+    if($("txtStat2")) $("txtStat2").textContent = t.stat2;
+    if($("txtStat3")) $("txtStat3").textContent = t.stat3;
+    if($("txtStat4")) $("txtStat4").textContent = t.stat4;
+    if($("txtStat5")) $("txtStat5").textContent = t.stat5;
+
     if($("txtTimerCardTitle")) $("txtTimerCardTitle").textContent = t.timerCardTitle;
     if($("txtTimerScopeLabel")) $("txtTimerScopeLabel").textContent = t.timerScopeLabel;
     if($("txtTimerTitleLabel")) $("txtTimerTitleLabel").textContent = t.timerTitleLabel;
@@ -792,6 +841,9 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if($("txtBulkCardTitle")) $("txtBulkCardTitle").textContent = t.bulkCardTitle;
     if($("txtBulkDesc")) $("txtBulkDesc").textContent = t.bulkDesc;
     if($("txtBulkBtn")) $("txtBulkBtn").textContent = t.bulkBtn;
+    if($("txtExcelTitle")) $("txtExcelTitle").textContent = t.excelTitle;
+    if($("txtExcelSub")) $("txtExcelSub").textContent = t.excelSub;
+    if($("txtExcelBtn")) $("txtExcelBtn").textContent = t.excelBtn;
     if($("txtAnonCardTitle")) $("txtAnonCardTitle").textContent = t.anonCardTitle;
     if($("txtAnonDesc")) $("txtAnonDesc").textContent = t.anonDesc;
     if($("txtAnonBtn")) $("txtAnonBtn").textContent = t.anonBtn;
@@ -1213,6 +1265,13 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     tapTimer = setTimeout(() => { tapCount = 0; }, 1500);
     if (tapCount >= 5) {
       tapCount = 0;
+      // Admin modal ochilganda inputlarga joriy qiymatlarni chiqarish
+      $("badgeReq1").value = badgeReqs.active;
+      $("badgeReq2").value = badgeReqs.talented;
+      $("badgeReq3").value = badgeReqs.smart;
+      $("badgeReq4").value = badgeReqs.expert;
+      $("badgeReq5").value = badgeReqs.leader;
+      $("badgeReq6").value = badgeReqs.champion;
       $("adminModal").classList.add("open");
     }
   }
@@ -1234,6 +1293,20 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     localStorage.setItem("edurank_teacher_code", c);
     closeAdmin();
     showToast("O'qituvchi kodi yangilandi ✅");
+  }
+
+  function saveBadgeRequirements() {
+    badgeReqs.active = Number($("badgeReq1").value) || 20;
+    badgeReqs.talented = Number($("badgeReq2").value) || 60;
+    badgeReqs.smart = Number($("badgeReq3").value) || 100;
+    badgeReqs.expert = Number($("badgeReq4").value) || 150;
+    badgeReqs.leader = Number($("badgeReq5").value) || 200;
+    badgeReqs.champion = Number($("badgeReq6").value) || 300;
+
+    saveData();
+    renderLeaderboard();
+    closeAdmin();
+    showToast("Unvon ballari muvaffaqiyatli yangilandi! 🏆");
   }
 
   function adminResetAllPoints() {
@@ -1288,17 +1361,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     diffEl.style.color = diff >= 0 ? "#10b981" : "#ef4444";
 
     $("statAvgTime").textContent = `${siteStats.avgMinutes || 4.5} minut`;
-
-    const schoolC = siteStats.schoolTabClicks || 110;
-    const clubC = siteStats.clubClicks || 32;
-    const totalC = schoolC + clubC || 1;
-    const schoolPct = Math.round((schoolC / totalC) * 100);
-    const clubPct = 100 - schoolPct;
-
-    $("statBarSchool").textContent = `${schoolPct}%`;
-    $("barSchoolFill").style.width = `${schoolPct}%`;
-    $("statBarClub").textContent = `${clubPct}%`;
-    $("barClubFill").style.width = `${clubPct}%`;
   }
 
   function openHelpModal() { $("helpModal").classList.add("open"); }
@@ -1581,6 +1643,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       if (data.notice) noticeBoardData = data.notice;
       if (data.timer) timerData = data.timer;
       if (data.siteStats) siteStats = data.siteStats;
+      if (data.badgeReqs) badgeReqs = data.badgeReqs;
     }
     checkDailyReset();
     updateFilterOptions(); renderLeaderboard(); renderActiveRewardsBanner(); renderNoticeBoard(); updateTimerDisplay();
