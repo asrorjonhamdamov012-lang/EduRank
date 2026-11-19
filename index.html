@@ -20,6 +20,9 @@ header{background:linear-gradient(135deg,#6366f1,#8b5cf6 50%,#ec4899);color:#fff
 .tabs{display:flex;gap:8px;padding:18px 16px 8px;max-width:540px;margin:0 auto}
 .tab-btn{flex:1;padding:12px;border:1px solid var(--border);border-radius:99px;font-weight:700;font-size:13px;background:var(--card);color:var(--muted);cursor:pointer;transition:.2s;text-align:center}
 .tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 15px rgba(79,70,229,.3)}
+.sub-tabs{display:flex;gap:6px;padding:0 16px 12px;max-width:540px;margin:0 auto}
+.sub-tab-btn{flex:1;padding:8px;border:1px solid var(--border);border-radius:12px;font-weight:700;font-size:11px;background:var(--card);color:var(--muted);cursor:pointer;transition:.2s;text-align:center}
+.sub-tab-btn.active{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 .container{padding:10px 16px;max-width:540px;margin:0 auto}
 .filter-box{display:grid;grid-template-columns:1.1fr 1fr;gap:8px;margin-bottom:14px}
 select,input,textarea{width:100%;padding:12px 14px;border-radius:16px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;font-weight:600;outline:none}
@@ -91,6 +94,13 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   <button class="tab-btn" id="tabClub" onclick="switchMainTab('club')">🎯 To'garaklar Reytingi</button>
 </div>
 
+<!-- VAQT ORALIG'I SUB-TABLARI -->
+<div class="sub-tabs">
+  <button class="sub-tab-btn active" id="subWeek" onclick="switchTimeTab('week')">📅 Haftalik</button>
+  <button class="sub-tab-btn" id="subMonth" onclick="switchTimeTab('month')">🗓️ Oylik</button>
+  <button class="sub-tab-btn" id="subYear" onclick="switchTimeTab('year')">📊 Yillik</button>
+</div>
+
 <div class="container">
   <div id="viewLeaderboard">
     <div class="filter-box">
@@ -99,7 +109,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     </div>
     <div class="growth-banner" id="growthCard">
       <div>
-        <h4 id="bannerTitle">🔥 Maktabning Eng Katta O'sishi</h4>
+        <h4 id="bannerTitle">🔥 Eng Katta O'sish</h4>
         <p id="topGrowthName">—</p>
       </div>
       <div class="growth-pill" id="topGrowthVal">+0 ball</div>
@@ -111,6 +121,33 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
       <h3 style="font-size:16px;font-weight:800">👨‍🏫 Ustoz Boshqaruv Paneli</h3>
       <button class="mini-btn btn-danger" onclick="teacherLogout()">Chiqish 🔓</button>
+    </div>
+
+    <!-- UMUMIY BAHOLASH TIZIMI -->
+    <div class="teacher-card">
+      <h3>📊 Umumiy Baholash va Nazorat</h3>
+      <span class="label">Maktab yoki sinflar bo'yicha umumiy o'quv faolligi tahlili. O'quvchilarga tezkor ballar ulashing.</span>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="act-btn btn-att" style="width:100%" onclick="showToast('Umumiy baholash hisoboti tayyor!')">📊 Hisobotni ko'rish</button>
+      </div>
+    </div>
+
+    <!-- MAQSADLI SOVRIN / MARRA TIZIMI -->
+    <div class="teacher-card">
+      <h3>🎯 Maxsus Sovrin va Marra Belgilash</h3>
+      <span class="label">Xohlagan miqyosda (Maktab, Parallel, Sinf) ball marrasini va sovg'ani belgilang:</span>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
+        <select id="targetScope">
+          <option value="SCHOOL">Butun Maktab miqyosida</option>
+          <option value="GRADE_5">5-sinflar paralleli</option>
+          <option value="GRADE_9">9-sinflar paralleli</option>
+          <option value="9-A">Alohida sinf (9-A)</option>
+        </select>
+        <input type="text" id="targetRewardTitle" placeholder="Sovrin nomi (Masalan: Kitob yoki 5-baho)" />
+        <input type="number" id="targetRewardPoints" placeholder="Kerakli ball (Masalan: 50)" />
+      </div>
+      <button class="act-btn btn-part" style="width:100%" onclick="addCustomTargetReward()">Marra va Sovrin Qo'shish 🎁</button>
+      <div id="teacherTargetsList" style="margin-top:10px"></div>
     </div>
 
     <div class="teacher-card">
@@ -135,18 +172,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       </div>
     </div>
 
-    <!-- BONUS DO'KONI USTOZ BOSHQARUVI -->
-    <div class="teacher-card">
-      <h3>🎁 Bonus Do'koni Mukofotlarini Boshqarish</h3>
-      <span class="label">Yangi mukofot qo'shish:</span>
-      <div style="display:flex;gap:8px;margin-bottom:8px">
-        <input type="text" id="rewardTitleInput" placeholder="Masalan: Maqtov yorlig'i" />
-        <input type="number" id="rewardCostInput" placeholder="Ball" style="width:90px" />
-      </div>
-      <button class="act-btn btn-att" style="width:100%" onclick="addRewardOption()">Mukofot Qo'shish ⭐</button>
-      <div id="teacherRewardsList" style="margin-top:10px"></div>
-    </div>
-
     <div class="teacher-card">
       <h3>📥 To'garakka Kelib Tushgan Arizalar</h3>
       <div id="requestsList"><div style="font-size:12px;color:var(--muted)">Hozircha arizalar yo'q.</div></div>
@@ -166,7 +191,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
     <div class="teacher-card" style="border:2px dashed var(--accent)">
       <h3>📂 Excel / Matndan Ommaviy Yuklash</h3>
-      <span class="label">Exceldan nusxalab (Ism, Sinf ustunlari) tashlang. Faqat ismlar yozilsa, quyidagi sinfga tushadi:</span>
+      <span class="label">Exceldan nusxalab (Ism, Sinf ustunlari) tashlang:</span>
       <div style="display:flex;gap:8px;margin-bottom:8px">
         <select id="bulkClub" style="width:100%"></select>
       </div>
@@ -187,7 +212,7 @@ Tursunova Malika	9-D"></textarea>
     <div class="teacher-card">
       <h3>⚙️ O'quvchilarni Boshqarish</h3>
       <div id="manageList" style="margin-bottom:14px"></div>
-      <button class="act-btn btn-danger" style="width:100%" onclick="resetMonthlyGrowth()">🔄 Oylik va Umumiy Ballarni Nollash</button>
+      <button class="act-btn btn-danger" style="width:100%" onclick="resetMonthlyGrowth()">🔄 Ballarni Nollash</button>
     </div>
 
     <div class="teacher-card">
@@ -201,7 +226,6 @@ Tursunova Malika	9-D"></textarea>
 <div class="modal" id="loginModal">
   <div class="modal-content">
     <h3>🔐 Ustoz Parolini Kiriting</h3>
-    <p>Bu bo'lim faqat o'qituvchilar uchun mo'ljallangan.</p>
     <input type="password" id="teacherPass" placeholder="Parol" style="margin-bottom:10px" />
     <button class="modal-btn" onclick="verifyTeacher()">Kirish</button>
     <button class="modal-btn" style="background:var(--muted);margin-top:6px" onclick="closeTeacherLogin()">Bekor qilish</button>
@@ -211,8 +235,8 @@ Tursunova Malika	9-D"></textarea>
 <!-- OTA-ONA READ KABINET MODALI -->
 <div class="modal" id="parentReadModal">
   <div class="modal-content" style="text-align:left">
-    <h3>👁️‍🗨️ Ota-onauchun Farzandni Kuzatish</h3>
-    <p>Farzandingizning ismini kiriting va uning natijalarini kuzating:</p>
+    <h3>👁️‍🗨️ Ota-ona uchun Farzandni Kuzatish</h3>
+    <p>Farzandingizning ismini kiriting:</p>
     <input type="text" id="parentSearchName" placeholder="Masalan: Lobar Karimova" style="margin-bottom:10px" oninput="searchParentStudent()" />
     <div id="parentStudentResult" style="max-height:200px;overflow-y:auto;margin-top:8px"></div>
     <button class="modal-btn" style="background:var(--muted);margin-top:10px" onclick="closeParentReadModal()">Yopish</button>
@@ -227,7 +251,6 @@ Tursunova Malika	9-D"></textarea>
       <button class="modal-btn" onclick="verifyAdmin()">Kirish</button>
     </div>
     <div id="adminStep2" class="hidden">
-      <p>Yangi o'qituvchi kodini kiriting:</p>
       <input type="text" id="newTeacherCode" placeholder="Yangi o'qituvchi kodi" />
       <button class="modal-btn" onclick="saveTeacherCode()">Saqlash</button>
     </div>
@@ -238,8 +261,8 @@ Tursunova Malika	9-D"></textarea>
 <div class="modal" id="helpModal">
   <div class="modal-content" style="text-align:left">
     <h3>📖 EduRank Pro Haqida</h3>
-    <p><b>1. Shaxsiy Profil va O'sish:</b> O'quvchi ustiga bosib uning yutuqlari, bosqichi va to'plagan mukofotlarini ko'rish mumkin.</p>
-    <p><b>2. Ota-ona Kuzatuvi:</b> Yuqoridagi ko'z tugmasi orqali ota-onalar farzandining natijalarini to'g'ridan-to'g'ri kuzatib boradi.</p>
+    <p><b>1. Vaqt oralig'i:</b> Haftalik, oylik va yillik reytinglar orqali o'quvchilar faolligini kuzating.</p>
+    <p><b>2. Maqsadli marralar:</b> Ustozlar belgilagan ballarga yetgan o'quvchilarga maxsus sovrinlar beriladi.</p>
     <button class="modal-btn" onclick="closeHelpModal()">Tushunarli 👍</button>
   </div>
 </div>
@@ -249,19 +272,15 @@ Tursunova Malika	9-D"></textarea>
     <h3 id="modalStudentName">O'quvchi Ismi</h3>
     <p id="modalStudentDetails" style="text-align:center;font-size:14px;margin-bottom:10px"></p>
     <div id="modalBadgeContainer" style="margin:10px 0;display:flex;justify-content:center;gap:6px;flex-wrap:wrap"></div>
-    
-    <!-- Yutuqlar bo'limi -->
     <div style="text-align:left; margin-top:10px; border-top:1px solid var(--border); padding-top:10px;">
       <span class="label" style="margin-top:0">🏆 Shaxsiy Yutuqlar va Mukofotlar:</span>
       <div id="modalUnlockedRewards" style="font-size:12px; color:var(--muted); margin-bottom:8px;">Hozircha yutuqlar yo'q.</div>
     </div>
-
     <div id="studentRequestSection" style="margin-top:10px; border-top:1px solid var(--border); padding-top:10px; text-align:left">
       <span class="label" style="margin-top:0">🎯 To'garakka qo'shilish arizasi:</span>
       <select id="modalClubSelect" style="margin-bottom:8px"></select>
       <button class="act-btn btn-part" style="width:100%" onclick="sendClubRequest()">Ariza yuborish 📨</button>
     </div>
-
     <button class="modal-btn" style="margin-top:10px" onclick="closeStudentModal()">Yopish</button>
   </div>
 </div>
@@ -269,8 +288,8 @@ Tursunova Malika	9-D"></textarea>
 <!-- AVTOMATIK TABRIK MODALI -->
 <div class="modal" id="congratsModal">
   <div class="modal-content">
-    <h3 style="color:#f59e0b">🎉 TABRIKLaymiz!</h3>
-    <p id="congratsText" style="text-align:center">Siz yangi marraga erishdingiz!</p>
+    <h3 style="color:#f59e0b">🎉 TABRIKLAYMIZ!</h3>
+    <p id="congratsText" style="text-align:center">Siz marraga erishdingiz!</p>
     <button class="modal-btn" onclick="acceptCongrats()">Qabul qilish ✅</button>
   </div>
 </div>
@@ -305,21 +324,19 @@ Tursunova Malika	9-D"></textarea>
   const defaultClubs = ["Matematika", "Ingliz tili", "IT va Dasturlash", "Fizika"];
   let clubs = defaultClubs;
   let students = [
-    { id: 1, name: "Lobar Karimova", cls: "9-A", club: "Matematika", points: 52, monthGrowth: 24, lastPraiseDate: "", rewards: [] },
-    { id: 2, name: "Behruz Alimov", cls: "9-D", club: "IT va Dasturlash", points: 48, monthGrowth: 18, lastPraiseDate: "", rewards: [] }
+    { id: 1, name: "Lobar Karimova", cls: "9-A", club: "Matematika", pointsWeek: 12, pointsMonth: 35, pointsYear: 120, lastPraiseDate: "", rewards: [] },
+    { id: 2, name: "Behruz Alimov", cls: "9-D", club: "IT va Dasturlash", pointsWeek: 10, pointsMonth: 28, pointsYear: 95, lastPraiseDate: "", rewards: [] }
   ];
-  let rewardsList = [
-    { id: 1, title: "Maqtov yorlig'i 📜", cost: 30 },
-    { id: 2, title: "Kitob sovg'asi 📚", cost: 50 },
-    { id: 3, title: "Iftixor medali 🥇", cost: 80 }
+  let customTargets = [
+    { id: 1, scope: "SCHOOL", title: "Maktab Super Chempioni 🏆", points: 100 }
   ];
   let requests = [];
   let logs = ["Lobar Karimova — Vazifa a'lo (+5 ball)"];
 
   let currentMainTab = 'school';
+  let currentTimeTab = 'week';
   let isTeacherLoggedIn = false;
   let activeStudentIdModal = null;
-  let pendingRewardToUnlock = null;
 
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -339,14 +356,14 @@ Tursunova Malika	9-D"></textarea>
   function saveData() {
     localStorage.setItem("edurank_pro_students", JSON.stringify(students));
     localStorage.setItem("edurank_pro_clubs", JSON.stringify(clubs));
-    localStorage.setItem("edurank_pro_rewards", JSON.stringify(rewardsList));
+    localStorage.setItem("edurank_pro_targets", JSON.stringify(customTargets));
     localStorage.setItem("edurank_pro_requests", JSON.stringify(requests));
     localStorage.setItem("edurank_pro_logs", JSON.stringify(logs));
 
     db.ref("edurank_data").set({
       students: students,
       clubs: clubs,
-      rewards: rewardsList,
+      targets: customTargets,
       requests: requests,
       logs: logs
     });
@@ -360,8 +377,8 @@ Tursunova Malika	9-D"></textarea>
   }
 
   function getBadge(p) {
-    if (p >= 80) return "🌟 Maktab Lideri";
-    if (p >= 50) return "🔥 Zukko O'quvchi";
+    if (p >= 100) return "🌟 Maktab Lideri";
+    if (p >= 60) return "🔥 Zukko O'quvchi";
     if (p >= 30) return "💡 Iqtidorli";
     if (p >= 15) return "⭐ Faol ishtirokchi";
     return "🌱 Boshlang'ich";
@@ -387,46 +404,55 @@ Tursunova Malika	9-D"></textarea>
     showToast(`"${name}" to'garagi qo'shildi! 🎯`);
   }
 
-  function addRewardOption() {
-    const title = $("rewardTitleInput").value.trim();
-    const cost = Number($("rewardCostInput").value);
-    if (!title || !cost) return showToast("Mukofot nomi va ball miqdorini kiriting!");
-    rewardsList.push({ id: Date.now(), title, cost });
-    $("rewardTitleInput").value = "";
-    $("rewardCostInput").value = "";
+  function addCustomTargetReward() {
+    const scope = $("targetScope").value;
+    const title = $("targetRewardTitle").value.trim();
+    const points = Number($("targetRewardPoints").value);
+    if (!title || !points) return showToast("Sovrin nomi va ballni kiriting!");
+    customTargets.push({ id: Date.now(), scope, title, points });
+    $("targetRewardTitle").value = "";
+    $("targetRewardPoints").value = "";
     saveData();
-    renderTeacherRewards();
-    showToast("Yangi mukofot qo'shildi! 🎁");
+    renderTeacherTargets();
+    showToast("Maxsus marra qo'shildi! 🎯");
   }
 
-  function renderTeacherRewards() {
-    const box = $("teacherRewardsList");
+  function renderTeacherTargets() {
+    const box = $("teacherTargetsList");
     if (!box) return;
-    if (rewardsList.length === 0) {
-      box.innerHTML = `<div style="font-size:12px;color:var(--muted)">Mukofotlar yo'q</div>`;
+    if (customTargets.length === 0) {
+      box.innerHTML = `<div style="font-size:12px;color:var(--muted)">Marralar yo'q</div>`;
       return;
     }
-    box.innerHTML = rewardsList.map(r => `
+    box.innerHTML = customTargets.map(t => `
       <div class="manage-item">
-        <div><strong>${esc(r.title)}</strong> — <b>${r.cost} ball</b></div>
-        <button class="mini-btn btn-danger" onclick="deleteReward(${r.id})">🗑️</button>
+        <div><strong>${esc(t.title)}</strong> (${t.scope}) — <b>${t.points} ball</b></div>
+        <button class="mini-btn btn-danger" onclick="deleteTarget(${t.id})">🗑️</button>
       </div>`).join("");
   }
 
-  function deleteReward(id) {
-    rewardsList = rewardsList.filter(r => r.id !== id);
+  function deleteTarget(id) {
+    customTargets = customTargets.filter(t => t.id !== id);
     saveData();
-    renderTeacherRewards();
-    showToast("Mukofot o'chirildi.");
+    renderTeacherTargets();
+    showToast("Marra o'chirildi.");
   }
 
-  function checkRewardsUnlock(st) {
+  function checkCustomTargetsUnlock(st) {
     if(!st.rewards) st.rewards = [];
-    rewardsList.forEach(r => {
-      if(st.points >= r.cost && !st.rewards.includes(r.title)) {
-        st.rewards.push(r.title);
-        pendingRewardToUnlock = `${st.name}, Siz "${r.title}" mukofotiga ega bo'ldingiz! 🎉`;
-        $("congratsText").textContent = pendingRewardToUnlock;
+    customTargets.forEach(t => {
+      let currentPoints = currentTimeTab === 'week' ? st.pointsWeek : currentTimeTab === 'month' ? st.pointsMonth : st.pointsYear;
+      let scopeMatched = false;
+      if (t.scope === 'SCHOOL') scopeMatched = true;
+      else if (t.scope.startsWith('GRADE_')) {
+        if (st.cls.startsWith(t.scope.replace('GRADE_', ''))) scopeMatched = true;
+      } else if (t.scope === st.cls) {
+        scopeMatched = true;
+      }
+
+      if (scopeMatched && currentPoints >= t.points && !st.rewards.includes(t.title)) {
+        st.rewards.push(t.title);
+        $("congratsText").textContent = `${st.name}, Siz "${t.title}" marrasiga erishdingiz va sovrinni yutib oldingiz! 🎉`;
         $("congratsModal").classList.add("open");
       }
     });
@@ -445,6 +471,20 @@ Tursunova Malika	9-D"></textarea>
     renderLeaderboard();
   }
 
+  function switchTimeTab(timeTab) {
+    currentTimeTab = timeTab;
+    $("subWeek").classList.toggle("active", timeTab === 'week');
+    $("subMonth").classList.toggle("active", timeTab === 'month');
+    $("subYear").classList.toggle("active", timeTab === 'year');
+    renderLeaderboard();
+  }
+
+  function getStudentPoints(s) {
+    if (currentTimeTab === 'week') return s.pointsWeek;
+    if (currentTimeTab === 'month') return s.pointsMonth;
+    return s.pointsYear;
+  }
+
   function updateFilterOptions() {
     const f = $("filterSelect");
     if (!f) return;
@@ -457,7 +497,7 @@ Tursunova Malika	9-D"></textarea>
 
       f.innerHTML = `
         <option value="ALL">🏫 Barcha sinflar</option>
-        <optgroup label="📊 Parallellar Reytingi">
+        <optgroup label="📊 Parallellar">
           ${parallelOpts}
         </optgroup>
         <optgroup label="🎓 Alohida Sinflar">
@@ -467,7 +507,7 @@ Tursunova Malika	9-D"></textarea>
       if($("bannerTitle")) $("bannerTitle").textContent = "🔥 Eng Katta O'sish";
     } else {
       f.innerHTML = `<option value="ALL">Barcha to'garaklar</option>` + clubs.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
-      if($("bannerTitle")) $("bannerTitle").textContent = "🎯 To'garak Yulduzi (Eng Faol)";
+      if($("bannerTitle")) $("bannerTitle").textContent = "🎯 To'garak Yulduzi";
     }
   }
 
@@ -489,13 +529,14 @@ Tursunova Malika	9-D"></textarea>
     }
 
     if (query) filtered = filtered.filter(s => s.name.toLowerCase().includes(query) || s.cls.toLowerCase().includes(query));
-    filtered.sort((a, b) => b.points - a.points);
+    
+    filtered.sort((a, b) => getStudentPoints(b) - getStudentPoints(a));
 
     if (filtered.length > 0) {
-      const topG = [...filtered].sort((a, b) => b.monthGrowth - a.monthGrowth)[0];
+      const topG = filtered[0];
       const sub = currentMainTab === 'school' ? topG.cls : topG.club;
       if($("topGrowthName")) $("topGrowthName").textContent = `${topG.name} (${sub})`;
-      if($("topGrowthVal")) $("topGrowthVal")) $("topGrowthVal").textContent = `+${topG.monthGrowth} ball`;
+      if($("topGrowthVal")) $("topGrowthVal").textContent = `+${getStudentPoints(topG)} ball`;
     } else {
       if($("topGrowthName")) $("topGrowthName").textContent = "Ma'lumot yo'q";
       if($("topGrowthVal")) $("topGrowthVal").textContent = "0 ball";
@@ -511,16 +552,17 @@ Tursunova Malika	9-D"></textarea>
       const rClass = idx === 0 ? "rank-1" : idx === 1 ? "rank-2" : idx === 2 ? "rank-3" : "";
       const crown = idx === 0 ? "👑" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : "";
       const clubInfo = (s.club && s.club !== "NONE") ? ` • ${esc(s.club)}` : "";
+      const pts = getStudentPoints(s);
       return `
         <div class="card" onclick="openStudentModal(${s.id})">
           <div class="rank ${rClass}">${idx + 1}</div>
           <div class="student-info">
             <div class="student-name">${esc(s.name)} ${crown}</div>
-            <div class="student-meta"><span>${esc(s.cls)}${clubInfo}</span><span class="badge-tag">${getBadge(s.points)}</span></div>
+            <div class="student-meta"><span>${esc(s.cls)}${clubInfo}</span><span class="badge-tag">${getBadge(pts)}</span></div>
           </div>
           <div class="points">
-            <div class="points-val">${s.points}</div>
-            <div class="points-growth">▲ +${s.monthGrowth} oy</div>
+            <div class="points-val">${pts}</div>
+            <div class="points-growth">▲ ${currentTimeTab === 'week' ? 'haftalik' : currentTimeTab === 'month' ? 'oylik' : 'yillik'}</div>
           </div>
         </div>`;
     }).join("");
@@ -534,9 +576,9 @@ Tursunova Malika	9-D"></textarea>
     $("modalStudentDetails").innerHTML = `
       <b>Sinf:</b> ${esc(s.cls)} <br>
       <b>To'garak:</b> ${s.club && s.club !== "NONE" ? esc(s.club) : "To'garaksiz"} <br>
-      <b>Umumiy ball:</b> ${s.points} ball <br>
-      <b>Bosqich:</b> ${Math.floor(s.points / 15) + 1}-bosqich`;
-    $("modalBadgeContainer").innerHTML = `<span class="badge-tag" style="font-size:13px;padding:6px 12px">${getBadge(s.points)}</span>`;
+      <b>Haftalik ball:</b> ${s.pointsWeek} | <b>Oylik:</b> ${s.pointsMonth} | <b>Yillik:</b> ${s.pointsYear} <br>
+      <b>Bosqich:</b> ${Math.floor(s.pointsMonth / 15) + 1}-bosqich`;
+    $("modalBadgeContainer").innerHTML = `<span class="badge-tag" style="font-size:13px;padding:6px 12px">${getBadge(s.pointsMonth)}</span>`;
     
     if(s.rewards && s.rewards.length > 0) {
       $("modalUnlockedRewards").innerHTML = s.rewards.map(rw => `<span class="badge-tag" style="background:var(--mint);color:var(--mint-text);margin-right:4px;">🎁 ${esc(rw)}</span>`).join("");
@@ -578,7 +620,7 @@ Tursunova Malika	9-D"></textarea>
     resBox.innerHTML = matches.map(s => `
       <div style="background:var(--card);border:1px solid var(--border);padding:10px;border-radius:12px;margin-bottom:6px;font-size:13px">
         <strong>${esc(s.name)} (${esc(s.cls)})</strong><br>
-        Ball: <b>${s.points}</b> | Oylik o'sish: +${s.monthGrowth}<br>
+        Haftalik: <b>${s.pointsWeek}</b> | Oylik: <b>${s.pointsMonth}</b> | Yillik: <b>${s.pointsYear}</b><br>
         Yutuqlar: ${s.rewards && s.rewards.length > 0 ? s.rewards.join(", ") : "Hozircha yo'q"}
       </div>`).join("");
   }
@@ -663,9 +705,10 @@ Tursunova Malika	9-D"></textarea>
     $("viewLeaderboard").classList.toggle("hidden", view !== 'leaderboard');
     $("viewTeacher").classList.toggle("hidden", view !== 'teacher');
     document.querySelector(".tabs").style.display = view === 'teacher' ? 'none' : 'flex';
+    document.querySelector(".sub-tabs").style.display = view === 'teacher' ? 'none' : 'flex';
     $("growthCard").style.display = view === 'teacher' ? 'none' : 'flex';
     if (view === 'leaderboard') { updateFilterOptions(); renderLeaderboard(); }
-    if (view === 'teacher') { populateDropdowns(); populateSelect(); renderManageList(); renderRequests(); renderLogs(); renderTeacherRewards(); }
+    if (view === 'teacher') { populateDropdowns(); populateSelect(); renderManageList(); renderRequests(); renderLogs(); renderTeacherTargets(); }
   }
 
   function openHelpModal() { $("helpModal").classList.add("open"); }
@@ -677,7 +720,7 @@ Tursunova Malika	9-D"></textarea>
     const q = $("studentSearchInput").value.trim().toLowerCase();
     const prev = sel.value;
     const list = q ? students.filter(s => s.name.toLowerCase().includes(q) || s.cls.toLowerCase().includes(q)) : students;
-    sel.innerHTML = list.map(s => `<option value="${s.id}">${esc(s.name)} (${esc(s.cls)}) — ${s.points} ball</option>`).join("");
+    sel.innerHTML = list.map(s => `<option value="${s.id}">${esc(s.name)} (${esc(s.cls)}) — ${s.pointsMonth}b</option>`).join("");
     if (prev && list.some(s => String(s.id) === prev)) sel.value = prev;
     updatePraiseStatus();
   }
@@ -698,10 +741,11 @@ Tursunova Malika	9-D"></textarea>
   function addPoints(pts, reason) {
     const st = students.find(s => s.id === Number($("studentSelect").value));
     if (!st) return;
-    st.points += pts;
-    st.monthGrowth += pts;
+    st.pointsWeek += pts;
+    st.pointsMonth += pts;
+    st.pointsYear += pts;
     logs.unshift(`${st.name} — ${reason} (+${pts} ball)`);
-    checkRewardsUnlock(st);
+    checkCustomTargetsUnlock(st);
     saveData(); populateSelect(); renderManageList(); renderLogs();
     showToast(`${st.name}ga +${pts} ball qo'shildi! 🚀`);
   }
@@ -710,12 +754,13 @@ Tursunova Malika	9-D"></textarea>
     const st = students.find(s => s.id === Number($("studentSelect").value));
     if (!st || st.lastPraiseDate === todayStr) return;
     const note = $("praiseNote").value.trim() || "Ustoz maqtovi";
-    st.points += stars;
-    st.monthGrowth += stars;
+    st.pointsWeek += stars;
+    st.pointsMonth += stars;
+    st.pointsYear += stars;
     st.lastPraiseDate = todayStr;
     $("praiseNote").value = "";
     logs.unshift(`${st.name} — ⭐ ${note} (+${stars} ball)`);
-    checkRewardsUnlock(st);
+    checkCustomTargetsUnlock(st);
     saveData(); populateSelect(); renderManageList(); renderLogs();
     showToast(`${st.name}ga ${stars} ball maqtov berildi!`);
   }
@@ -723,7 +768,7 @@ Tursunova Malika	9-D"></textarea>
   function addNewStudent() {
     const name = $("newName").value.trim();
     if (!name) return showToast("O'quvchining ismini kiriting!");
-    students.push({ id: Date.now() + Math.random(), name, cls: $("newClass").value, club: $("newClub").value, points: 0, monthGrowth: 0, lastPraiseDate: "", rewards: [] });
+    students.push({ id: Date.now() + Math.random(), name, cls: $("newClass").value, club: $("newClub").value, pointsWeek: 0, pointsMonth: 0, pointsYear: 0, lastPraiseDate: "", rewards: [] });
     $("newName").value = "";
     saveData(); populateSelect(); renderManageList();
     showToast(`${name} ro'yxatga qo'shildi!`);
@@ -733,7 +778,7 @@ Tursunova Malika	9-D"></textarea>
     const raw = $("bulkNames").value.trim();
     const defCls = $("bulkClass").value;
     const club = $("bulkClub").value;
-    if (!raw) return showToast("Matn yoki Exceldan nusxalangan ma'lumotni kiriting!");
+    if (!raw) return showToast("Ma'lumotni kiriting!");
     let added = 0;
     raw.split("\n").forEach(line => {
       if (!line.trim()) return;
@@ -741,13 +786,13 @@ Tursunova Malika	9-D"></textarea>
       const name = parts[0] ? parts[0].trim() : "";
       const cls = parts[1] ? parts[1].trim() : defCls;
       if (name.length > 2) {
-        students.push({ id: Date.now() + Math.random(), name, cls: cls || defCls, club, points: 0, monthGrowth: 0, lastPraiseDate: "", rewards: [] });
+        students.push({ id: Date.now() + Math.random(), name, cls: cls || defCls, club, pointsWeek: 0, pointsMonth: 0, pointsYear: 0, lastPraiseDate: "", rewards: [] });
         added++;
       }
     });
     $("bulkNames").value = "";
     saveData(); populateSelect(); renderManageList();
-    showToast(`${added} ta o'quvchi muvaffaqiyatli qo'shildi! 🎉`);
+    showToast(`${added} ta o'quvchi qo'shildi! 🎉`);
   }
 
   function renderRequests() {
@@ -777,7 +822,7 @@ Tursunova Malika	9-D"></textarea>
     }
     requests = requests.filter(r => r.id !== reqId);
     saveData(); renderRequests(); renderManageList(); populateSelect();
-    showToast("Ariza tasdiqlandi va o'quvchi to'garakka qo'shildi! 🎉");
+    showToast("Ariza tasdiqlandi! 🎉");
   }
 
   function rejectRequest(reqId) {
@@ -795,7 +840,7 @@ Tursunova Malika	9-D"></textarea>
     }
     box.innerHTML = students.map(s => `
       <div class="manage-item">
-        <div><strong>${esc(s.name)}</strong> (${esc(s.cls)} • ${s.points}b)</div>
+        <div><strong>${esc(s.name)}</strong> (${esc(s.cls)} • ${s.pointsMonth}b)</div>
         <div class="manage-actions">
           <button class="mini-btn btn-part" onclick="editStudent(${s.id})">✏️</button>
           <button class="mini-btn btn-danger" onclick="deleteStudent(${s.id})">🗑️</button>
@@ -809,13 +854,12 @@ Tursunova Malika	9-D"></textarea>
     const n = prompt("Yangi ismni kiriting:", st.name);
     if (n === null) return;
     
-    let clubListStr = clubs.join(", ");
-    let c = prompt(`To'garakni o'zgartirish (Mavjudlar: NONE, ${clubListStr}):`, st.club || "NONE");
+    let c = prompt(`To'garakni o'zgartirish:`, st.club || "NONE");
     if (c !== null) {
       st.name = n.trim() || st.name;
       st.club = c.trim();
       saveData(); populateSelect(); renderManageList();
-      showToast("O'quvchi ma'lumotlari yangilandi! ✅");
+      showToast("Yangilandi! ✅");
     }
   }
 
@@ -825,16 +869,16 @@ Tursunova Malika	9-D"></textarea>
     if (confirm(`${st.name}ni o'chirmoqchimisiz?`)) {
       students = students.filter(s => s.id !== id);
       saveData(); populateSelect(); renderManageList();
-      showToast("O'quvchi o'chirildi");
+      showToast("O'chirildi");
     }
   }
 
   function resetMonthlyGrowth() {
-    if (confirm("Barcha o'quvchilarning oylik o'sishi va umumiy ballari 0 ga tushirilsinmi?")) {
-      students.forEach(s => { s.points = 0; s.monthGrowth = 0; s.lastPraiseDate = ""; s.rewards = []; });
-      logs.unshift("🔄 Barcha ballar va oylik o'sish nollashtirildi");
+    if (confirm("Barcha ballar noldan boshlansinmi?")) {
+      students.forEach(s => { s.pointsWeek = 0; s.pointsMonth = 0; s.pointsYear = 0; s.lastPraiseDate = ""; s.rewards = []; });
+      logs.unshift("🔄 Barcha ballar nollashtirildi");
       saveData(); populateSelect(); renderManageList(); renderLogs(); renderLeaderboard();
-      showToast("Barcha reyting va ballar noldan boshlandi!");
+      showToast("Ballar noldan boshlandi!");
     }
   }
 
@@ -849,7 +893,7 @@ Tursunova Malika	9-D"></textarea>
     if (data) {
       if (data.students) students = data.students;
       if (data.clubs) clubs = data.clubs;
-      if (data.rewards) rewardsList = data.rewards;
+      if (data.targets) customTargets = data.targets;
       if (data.requests) requests = data.requests;
       if (data.logs) logs = data.logs;
     }
