@@ -82,17 +82,18 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 .mini-btn{padding:5px 10px;border-radius:8px;border:none;font-size:12px;font-weight:700;cursor:pointer}
 .log-item{font-size:12px;padding:9px 0;border-bottom:1px solid var(--border);color:var(--muted)}
 
-/* Modal qatlamlari to'g'rilandi: z-index baland qilindi */
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:900;opacity:0;pointer-events:none;transition:.2s}
+/* Oddiy modallar */
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:.2s}
 .modal.open{opacity:1;pointer-events:auto}
 .modal-content{background:var(--card);width:90%;max-width:380px;padding:24px;border-radius:24px;box-shadow:0 20px 40px rgba(0,0,0,.3);position:relative;text-align:center}
 .modal-content h3{font-size:18px;font-weight:800;margin-bottom:10px;color:var(--accent)}
 .modal-content p{font-size:13px;line-height:1.5;color:var(--muted);margin-bottom:16px;text-align:left}
 .modal-btn{width:100%;margin-top:12px;background:var(--accent);color:#fff;padding:12px;border-radius:14px;border:none;font-weight:700;cursor:pointer}
 
-/* Maxsus Tanlash Oynasi (Custom Select Modal) boshqa modallardan ham ustun turishi uchun z-index oshirildi */
+/* Custom Select Modal eng tepada turishi shart */
 #customSelectModal {
-    z-index: 9999 !important;
+    z-index: 99999 !important;
+    background: rgba(0,0,0,0.75);
 }
 
 /* Custom Selection Sheet ichki ro'yxat stili */
@@ -101,7 +102,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 .select-sheet-item:hover{background:var(--accent-soft);color:var(--accent)}
 .select-sheet-item.selected{background:var(--accent);color:#fff}
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 22px;border-radius:99px;font-size:13px;font-weight:600;display:none;z-index:10000;box-shadow:0 10px 25px rgba(0,0,0,.25)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 22px;border-radius:99px;font-size:13px;font-weight:600;display:none;z-index:100000;box-shadow:0 10px 25px rgba(0,0,0,.25)}
 .hidden{display:none}
 </style>
 </head>
@@ -305,14 +306,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
 <!-- MODALLAR -->
 
-<div class="modal" id="customSelectModal">
-  <div class="modal-content">
-    <h3 id="customSelectTitle">Tanlang</h3>
-    <div class="select-sheet-list" id="customSelectListContent"></div>
-    <button class="modal-btn" style="background:var(--muted);margin-top:14px" onclick="closeCustomSelect()">Yopish</button>
-  </div>
-</div>
-
 <div class="modal" id="badgesModal">
   <div class="modal-content" style="text-align:left">
     <h3>🏅 Maktab Unvonlari va Ballar</h3>
@@ -453,6 +446,15 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     <h3 style="color:#f59e0b">🎉 TABRIKLAYMIZ!</h3>
     <p id="congratsText" style="text-align:center">Siz yangi bosqichga erishdingiz!</p>
     <button class="modal-btn" onclick="acceptCongrats()">Tushundim 👍</button>
+  </div>
+</div>
+
+<!-- ENG PASTGA KO'CHIRILGAN CUSTOM SELECT MODAL -->
+<div class="modal" id="customSelectModal">
+  <div class="modal-content">
+    <h3 id="customSelectTitle">Tanlang</h3>
+    <div class="select-sheet-list" id="customSelectListContent"></div>
+    <button class="modal-btn" style="background:var(--muted);margin-top:14px" onclick="closeCustomSelect()">Yopish</button>
   </div>
 </div>
 
