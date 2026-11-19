@@ -10,14 +10,14 @@
 body.dark{--bg:#0b0f19;--card:#131826;--text:#f8fafc;--muted:#94a3b8;--border:#1e293b;--accent:#6366f1;--accent-soft:#1e1b4b;--mint:#064e3b;--mint-text:#a7f3d0;--lavender:#4c1d95;--lavender-text:#e9d5ff;--shadow:0 10px 30px rgba(0,0,0,.4)}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans',sans-serif}
 body{background:var(--bg);color:var(--text);padding-bottom:60px;transition:.3s}
-header{background:linear-gradient(135deg,#6366f1,#8b5cf6 50%,#ec4899);color:#fff;padding:20px 16px 24px;border-radius:0 0 28px 28px;box-shadow:0 12px 35px rgba(99,102,241,.3)}
-.top-bar{display:flex;flex-direction:column;gap:12px}
-.header-top-row{display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:24px;font-weight:800;letter-spacing:-.5px;user-select:none;cursor:pointer}
-.header-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.action-icon-btn{width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:#fff;transition:.2s}
-.action-icon-btn:hover{background:rgba(255,255,255,.35);transform:scale(1.05)}
-.subtitle{font-size:13px;opacity:.9;font-weight:600}
+
+header{background:linear-gradient(135deg,#6366f1,#8b5cf6 50%,#ec4899);color:#fff;padding:22px 16px 26px;border-radius:0 0 32px 32px;box-shadow:0 12px 35px rgba(99,102,241,.3);text-align:center}
+.top-bar{display:flex;flex-direction:column;align-items:center;gap:14px}
+.logo{font-size:28px;font-weight:800;letter-spacing:-.5px;user-select:none;cursor:pointer}
+.header-actions{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:2px}
+.action-icon-btn{width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:#fff;transition:.2s}
+.action-icon-btn:hover{background:rgba(255,255,255,.35);transform:scale(1.08)}
+.subtitle{font-size:13px;opacity:.9;font-weight:600;margin-top:2px}
 
 .tabs{display:flex;gap:8px;padding:18px 16px 8px;max-width:540px;margin:0 auto}
 .tab-btn{flex:1;padding:12px;border:1px solid var(--border);border-radius:99px;font-weight:700;font-size:13px;background:var(--card);color:var(--muted);cursor:pointer;transition:.2s;text-align:center}
@@ -31,7 +31,6 @@ input,textarea{width:100%;padding:12px 14px;border-radius:16px;border:1px solid 
 input::placeholder,textarea::placeholder{color:var(--muted);font-weight:400}
 textarea{resize:vertical;min-height:80px}
 
-/* Custom Select Trigger Dizayni */
 .custom-select-trigger{width:100%;padding:12px 14px;border-radius:16px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
 .custom-select-trigger::after{content:'▼';font-size:10px;color:var(--muted);margin-left:6px}
 
@@ -82,7 +81,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 .mini-btn{padding:5px 10px;border-radius:8px;border:none;font-size:12px;font-weight:700;cursor:pointer}
 .log-item{font-size:12px;padding:9px 0;border-bottom:1px solid var(--border);color:var(--muted)}
 
-/* Umumiy modallar */
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:.2s}
 .modal.open{opacity:1;pointer-events:auto}
 .modal-content{background:var(--card);width:90%;max-width:380px;padding:24px;border-radius:24px;box-shadow:0 20px 40px rgba(0,0,0,.3);position:relative;text-align:center}
@@ -90,12 +88,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 .modal-content p{font-size:13px;line-height:1.5;color:var(--muted);margin-bottom:16px;text-align:left}
 .modal-btn{width:100%;margin-top:12px;background:var(--accent);color:#fff;padding:12px;border-radius:14px;border:none;font-weight:700;cursor:pointer}
 
-/* Custom Select Modal har qanday modal ustida turishi uchun */
-#customSelectModal {
-    z-index: 99999 !important;
-}
-
-/* Custom Selection Sheet ichki ro'yxat stili */
+#customSelectModal { z-index: 99999 !important; }
 .select-sheet-list{max-height:280px;overflow-y:auto;text-align:left;margin-top:10px}
 .select-sheet-item{padding:12px 14px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;transition:.15s;margin-bottom:4px;border:1px solid transparent}
 .select-sheet-item:hover{background:var(--accent-soft);color:var(--accent)}
@@ -109,16 +102,14 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
 <header>
   <div class="top-bar">
-    <div class="header-top-row">
-      <div class="logo" id="logo" onclick="handleLogoClick()">EduRank Pro 🚀</div>
-      <div class="header-actions">
-        <button class="action-icon-btn" onclick="openBadgesModal()" title="Unvonlar va Ballar">🏅</button>
-        <button class="action-icon-btn" onclick="openLangModal()" title="Tilni o'zgartirish">🌐</button>
-        <button class="action-icon-btn" onclick="openParentReadModal()" title="Ota-ona uchun kuzatish">👁️‍🗨️</button>
-        <button class="action-icon-btn" onclick="openHelpModal()" title="Yo'riqnoma">?</button>
-        <button class="action-icon-btn" id="themeBtn" onclick="toggleTheme()" title="Tungi rejim">🌙</button>
-        <button class="action-icon-btn" onclick="openTeacherLogin()" title="Ustoz paneli">👨‍🏫</button>
-      </div>
+    <div class="logo" id="logo" onclick="handleLogoClick()">EduRank Pro 🚀</div>
+    <div class="header-actions">
+      <button class="action-icon-btn" onclick="openBadgesModal()" title="Unvonlar va Ballar">🏅</button>
+      <button class="action-icon-btn" onclick="openLangModal()" title="Tilni o'zgartirish">🌐</button>
+      <button class="action-icon-btn" onclick="openParentReadModal()" title="Ota-ona uchun kuzatish">👁️‍🗨️</button>
+      <button class="action-icon-btn" onclick="openHelpModal()" title="Yo'riqnoma">?</button>
+      <button class="action-icon-btn" id="themeBtn" onclick="toggleTheme()" title="Tungi rejim">🌙</button>
+      <button class="action-icon-btn" onclick="openTeacherLogin()" title="Ustoz paneli">👨‍🏫</button>
     </div>
     <div class="subtitle" id="txtSubtitle">33-Maktab Reyting va Motivatsiya Tizimi</div>
   </div>
@@ -171,71 +162,71 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
 
   <div id="viewTeacher" class="hidden">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <h3 style="font-size:16px;font-weight:800">👨‍🏫 Ustoz Boshqaruv Paneli</h3>
-      <button class="mini-btn btn-danger" onclick="teacherLogout()">Chiqish 🔓</button>
+      <h3 style="font-size:16px;font-weight:800" id="txtTeacherPanelTitle">👨‍🏫 Ustoz Boshqaruv Paneli</h3>
+      <button class="mini-btn btn-danger" onclick="teacherLogout()" id="txtLogoutBtn">Chiqish 🔓</button>
     </div>
 
     <div class="teacher-card">
-      <h3>⏳ Liderlik Taymerini Sozlash</h3>
-      <span class="label">Taymer qaysi qatlam uchun mo'ljallanganini tanlang:</span>
+      <h3 id="txtTimerCardTitle">⏳ Liderlik Taymerini Sozlash</h3>
+      <span class="label" id="txtTimerScopeLabel">Taymer qaysi qatlam uchun mo'ljallanganini tanlang:</span>
       <div class="custom-select-trigger" id="timerScopeTrigger" onclick="openCustomSelect('timerScope')" style="margin-bottom:8px">Butun Maktab</div>
       <input type="hidden" id="timerScope" value="SCHOOL">
-      <span class="label">Taymer sarlavhasi:</span>
+      <span class="label" id="txtTimerTitleLabel">Taymer sarlavhasi:</span>
       <input type="text" id="timerTitleInput" placeholder="Masalan: 5-sinflar musobaqasi" style="margin-bottom:8px" />
-      <span class="label">Taymer tagidagi izoh / matn:</span>
+      <span class="label" id="txtTimerSubLabel">Taymer tagidagi izoh / matn:</span>
       <input type="text" id="timerSubtextInput" placeholder="Masalan: G'olibga maxsus sovg'a! 🎁" style="margin-bottom:8px" />
-      <span class="label">Tugash vaqtini belgilang:</span>
+      <span class="label" id="txtTimerDateLabel">Tugash vaqtini belgilang:</span>
       <input type="datetime-local" id="teacherTimerInput" style="margin-bottom:8px" />
       <div style="display:flex;gap:8px">
-        <button class="act-btn btn-part" style="flex:1" onclick="saveTeacherTimer()">Taymerni Ishga Tushirish ⏰</button>
-        <button class="act-btn btn-danger" style="flex:1" onclick="stopTeacherTimer()">Taymerni O'chirish ❌</button>
+        <button class="act-btn btn-part" style="flex:1" onclick="saveTeacherTimer()" id="txtStartTimerBtn">Taymerni Ishga Tushirish ⏰</button>
+        <button class="act-btn btn-danger" style="flex:1" onclick="stopTeacherTimer()" id="txtStopTimerBtn">Taymerni O'chirish ❌</button>
       </div>
     </div>
 
     <div class="teacher-card">
-      <h3>📊 Umumiy Baholash va Nazorat</h3>
-      <span class="label">Maktab yoki sinflar bo'yicha umumiy o'quv faolligi va statistika hisoboti.</span>
+      <h3 id="txtReportCardTitle">📊 Umumiy Baholash va Nazorat</h3>
+      <span class="label" id="txtReportDesc">Maktab yoki sinflar bo'yicha umumiy o'quv faolligi va statistika hisoboti.</span>
       <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="act-btn btn-att" style="width:100%" onclick="openReportModal()">📊 Hisobotni ko'rish</button>
+        <button class="act-btn btn-att" style="width:100%" onclick="openReportModal()" id="txtViewReportBtn">📊 Hisobotni ko'rish</button>
       </div>
     </div>
 
     <div class="teacher-card">
-      <h3>📢 E'lonlar Taxtasiga Yozish</h3>
-      <span class="label">Barcha o'quvchilarga yoki ma'lum sinfga e'lon qoldiring:</span>
+      <h3 id="txtNoticeCardTitle">📢 E'lonlar Taxtasiga Yozish</h3>
+      <span class="label" id="txtNoticeDesc">Barcha o'quvchilarga yoki ma'lum sinfga e'lon qoldiring:</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <div class="custom-select-trigger" id="noticeScopeTrigger" onclick="openCustomSelect('noticeScope')">Butun Maktab</div>
         <input type="hidden" id="noticeScope" value="SCHOOL">
         <textarea id="noticeInputText" placeholder="Masalan: Ertadan boshlab 5-sinflar uchun tanlov boshlanadi..."></textarea>
       </div>
-      <button class="act-btn btn-part" style="width:100%" onclick="publishNotice()">E'lonni chiqarish 🚀</button>
+      <button class="act-btn btn-part" style="width:100%" onclick="publishNotice()" id="txtPublishNoticeBtn">E'lonni chiqarish 🚀</button>
     </div>
 
     <div class="teacher-card">
-      <h3>🎯 Maxsus Sovrin va O'yin Belgilash</h3>
-      <span class="label">Sovrin qaysi sinf yoki qatlam uchun mo'ljallanganini tanlang:</span>
+      <h3 id="txtRewardCardTitle">🎯 Maxsus Sovrin va O'yin Belgilash</h3>
+      <span class="label" id="txtRewardScopeLabel">Sovrin qaysi sinf yoki qatlam uchun mo'ljallanganini tanlang:</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <div class="custom-select-trigger" id="targetScopeTrigger" onclick="openCustomSelect('targetScope')">Butun Maktab</div>
         <input type="hidden" id="targetScope" value="SCHOOL">
         <input type="text" id="targetRewardTitle" placeholder="Sovrin nomi (Masalan: Kitob)" />
         <input type="number" id="targetRewardPoints" placeholder="Kerakli ball (Masalan: 35)" />
       </div>
-      <button class="act-btn btn-part" style="width:100%" onclick="addCustomTargetReward()">Marra va Sovrin Qo'shish 🎁</button>
+      <button class="act-btn btn-part" style="width:100%" onclick="addCustomTargetReward()" id="txtAddRewardBtn">Marra va Sovrin Qo'shish 🎁</button>
       <div id="teacherTargetsList" style="margin-top:10px"></div>
     </div>
 
     <div class="teacher-card">
-      <h3>✨ Ball va Rag'bat Qo'shish (Ustoz: <span id="currentTeacherNameTag"></span>)</h3>
-      <span class="label">O'quvchini qidirish va tanlash:</span>
+      <h3 id="txtPraiseCardTitle">✨ Ball va Rag'bat Qo'shish (Ustoz: <span id="currentTeacherNameTag"></span>)</h3>
+      <span class="label" id="txtStudentSearchLabel">O'quvchini qidirish va tanlash:</span>
       <input type="text" id="studentSearchInput" placeholder="🔍 Ism yoki sinf bo'yicha topish..." oninput="populateSelect()" style="margin-bottom:8px" />
       <div class="custom-select-trigger" id="studentSelectTrigger" onclick="openCustomSelect('studentSelect')" style="margin-bottom:8px">O'quvchini tanlang</div>
       <input type="hidden" id="studentSelect" onchange="updatePraiseStatus()">
       
-      <span class="label">Tezkor ballar (Har bir o'quvchiga cheklangan — maks 2 martagacha):</span>
+      <span class="label" id="txtQuickPointsLabel">Tezkor ballar (Har bir o'quvchiga cheklangan — maks 2 martagacha):</span>
       <div class="action-grid">
-        <button class="act-btn btn-att" onclick="addQuickPoints('time', 2, 'Vaqtida keldi')">⏰ Vaqtida keldi (+2) [<span id="cntTime">2</span>/2]</button>
-        <button class="act-btn btn-part" onclick="addQuickPoints('active', 3, 'Faol qatnashdi')">💡 Faol qatnashdi (+3) [<span id="cntActive">2</span>/2]</button>
-        <button class="act-btn btn-event" onclick="addQuickPoints('project', 5, 'Vazifa va loyiha a\'lo')">⭐ Vazifa / Loyiha a'lo (+5) [<span id="cntProject">2</span>/2]</button>
+        <button class="act-btn btn-att" onclick="addQuickPoints('time', 2, 'Vaqtida keldi')" id="txtQuickTime">⏰ Vaqtida keldi (+2) [<span id="cntTime">2</span>/2]</button>
+        <button class="act-btn btn-part" onclick="addQuickPoints('active', 3, 'Faol qatnashdi')" id="txtQuickActive">💡 Faol qatnashdi (+3) [<span id="cntActive">2</span>/2]</button>
+        <button class="act-btn btn-event" onclick="addQuickPoints('project', 5, 'Vazifa va loyiha a\'lo')" id="txtQuickProject">⭐ Vazifa / Loyiha a'lo (+5) [<span id="cntProject">2</span>/2]</button>
       </div>
 
       <span class="label" id="praiseLabel">Ustoz maqtovi (1–5 ball, har bir ustoz har bir o'quvchiga 1 marta, 00:00 da yangilanadi):</span>
@@ -250,34 +241,34 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     </div>
 
     <div class="teacher-card">
-      <h3>🚀 Sinflarga Ommaviy Ball Berish</h3>
-      <span class="label">Butun sinfga bir yo'la ball qo'shish:</span>
+      <h3 id="txtBulkCardTitle">🚀 Sinflarga Ommaviy Ball Berish</h3>
+      <span class="label" id="txtBulkDesc">Butun sinfga bir yo'la ball qo'shish:</span>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
         <div class="custom-select-trigger" id="bulkClassTargetTrigger" onclick="openCustomSelect('bulkClassTarget')">Butun Maktab</div>
         <input type="hidden" id="bulkClassTarget" value="SCHOOL">
         <input type="number" id="bulkClassPointsVal" placeholder="Beriladigan ball (Masalan: 2)" />
         <input type="text" id="bulkClassReason" placeholder="Sababi (Masalan: Darsdagi faollik)" />
       </div>
-      <button class="act-btn btn-att" style="width:100%" onclick="applyBulkClassPoints()">Sinfga Ball Tarqatish ⚡</button>
+      <button class="act-btn btn-att" style="width:100%" onclick="applyBulkClassPoints()" id="txtBulkBtn">Sinfga Ball Tarqatish ⚡</button>
     </div>
 
     <div class="teacher-card">
-      <h3>💌 O'quvchiga Anonim Maqtov Yuborish</h3>
-      <span class="label">O'quvchini ism yoki sinf bo'yicha qidirib toping:</span>
+      <h3 id="txtAnonCardTitle">💌 O'quvchiga Anonim Maqtov Yuborish</h3>
+      <span class="label" id="txtAnonDesc">O'quvchini ism yoki sinf bo'yicha qidirib toping:</span>
       <input type="text" id="anonStudentSearch" placeholder="🔍 Ism yoki sinf yozib topish..." oninput="populateAnonSelect()" style="margin-bottom:8px" />
       <div class="custom-select-trigger" id="anonStudentSelectTrigger" onclick="openCustomSelect('anonStudentSelect')" style="margin-bottom:8px">O'quvchini tanlang</div>
       <input type="hidden" id="anonStudentSelect">
       <input type="text" id="anonPraiseText" placeholder="Masalan: Bugungi darsdagi harakatingiz tahsinga sazovor! 🌟" style="margin-bottom:8px" />
-      <button class="act-btn btn-part" style="width:100%" onclick="sendAnonymousPraise()">Anonim Maqtov Yuborish 💌</button>
+      <button class="act-btn btn-part" style="width:100%" onclick="sendAnonymousPraise()" id="txtAnonBtn">Anonim Maqtov Yuborish 💌</button>
     </div>
 
     <div class="teacher-card">
-      <h3>📥 To'garakka Kelib Tushgan Arizalar</h3>
+      <h3 id="txtRequestCardTitle">📥 To'garakka Kelib Tushgan Arizalar</h3>
       <div id="requestsList"><div style="font-size:12px;color:var(--muted)">Hozircha arizalar yo'q.</div></div>
     </div>
 
     <div class="teacher-card">
-      <h3>➕ Bitta O'quvchi Qo'shish</h3>
+      <h3 id="txtAddStudentCardTitle">➕ Bitta O'quvchi Qo'shish</h3>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
         <input type="text" id="newName" placeholder="To'liq ismi (Familiya Ism)" />
         <div style="display:flex;gap:8px">
@@ -287,24 +278,23 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
           <input type="hidden" id="newClub" value="Matematika">
         </div>
       </div>
-      <button class="act-btn btn-part" style="width:100%" onclick="addNewStudent()">Ro'yxatga qo'shish</button>
+      <button class="act-btn btn-part" style="width:100%" onclick="addNewStudent()" id="txtAddStudentBtn">Ro'yxatga qo'shish</button>
     </div>
 
     <div class="teacher-card">
-      <h3>⚙️ O'quvchilarni Boshqarish</h3>
+      <h3 id="txtManageCardTitle">⚙️ O'quvchilarni Boshqarish</h3>
       <div id="manageList" style="margin-bottom:14px"></div>
-      <button class="act-btn btn-danger" style="width:100%" onclick="resetMonthlyGrowth()">🔄 Ballarni Nollash</button>
+      <button class="act-btn btn-danger" style="width:100%" onclick="resetMonthlyGrowth()" id="txtResetBtn">🔄 Ballarni Nollash</button>
     </div>
 
     <div class="teacher-card">
-      <h3>📜 Oxirgi Harakatlar</h3>
+      <h3 id="txtLogCardTitle">📜 Oxirgi Harakatlar</h3>
       <div id="activityLog"></div>
     </div>
   </div>
 </div>
 
 <!-- MODALLAR -->
-
 <div class="modal" id="badgesModal">
   <div class="modal-content" style="text-align:left">
     <h3>🏅 Maktab Unvonlari va Ballar</h3>
@@ -380,7 +370,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       <span class="label" style="text-align:left">O'qituvchilar parol kodini o'zgartirish:</span>
       <input type="text" id="newTeacherCode" placeholder="Yangi o'qituvchi kodi (masalan: 3333)" style="margin-bottom:10px" />
       <button class="modal-btn" onclick="saveTeacherCode()" style="margin-bottom:8px">Kodini Yangilash ✅</button>
-      
       <span class="label" style="text-align:left">Tezkor Boshqaruv:</span>
       <button class="modal-btn" style="background:#ef4444;margin-top:4px" onclick="adminResetAllPoints()">🔄 Barcha Ballarni Noldan Boshlash</button>
     </div>
@@ -401,20 +390,16 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   <div class="modal-content">
     <h3 id="modalStudentName">O'quvchi Ismi</h3>
     <p id="modalStudentDetails" style="text-align:center;font-size:13px;margin-bottom:6px"></p>
-    
     <div style="background:var(--accent-soft);padding:10px;border-radius:12px;font-size:12px;text-align:left;margin-bottom:8px">
       📊 <b>Sizning o'rinlaringiz:</b><br>
       • Maktab bo'yicha o'rin: <b id="statSchoolRank">-</b><br>
       • Sinf bo'yicha o'rin: <b id="statClassRank">-</b><br>
       • Parallel bo'yicha o'rin: <b id="statParallelRank">-</b>
     </div>
-
     <div id="studentAnonPraiseBox" style="background:var(--mint);color:var(--mint-text);padding:10px;border-radius:12px;font-size:12px;text-align:left;margin-bottom:8px;display:none;">
       💌 <b>Ustozlardan anonim xabar:</b> <span id="studentAnonPraiseText"></span>
     </div>
-
     <div id="modalBadgeContainer" style="margin:6px 0;display:flex;justify-content:center;gap:6px;flex-wrap:wrap"></div>
-    
     <div style="text-align:left; margin-top:8px; border-top:1px solid var(--border); padding-top:8px;">
       <span class="label" style="margin-top:0">📈 O'sish Grafik Dinamikasi:</span>
       <div style="background:var(--accent-soft);padding:10px;border-radius:12px;display:flex;justify-content:space-around;align-items:flex-end;height:80px;margin-top:6px;">
@@ -423,19 +408,16 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
         <div style="text-align:center"><div id="barYear" style="background:#f59e0b;width:20px;border-radius:4px;height:60px;"></div><span style="font-size:10px;color:var(--muted)">Yil</span></div>
       </div>
     </div>
-
     <div style="text-align:left; margin-top:10px; border-top:1px solid var(--border); padding-top:8px;">
       <span class="label" style="margin-top:0">🏆 Shaxsiy Yutuqlar:</span>
       <div id="modalUnlockedRewards" style="font-size:12px; color:var(--muted); margin-bottom:6px;">Hozircha yutuqlar yo'q.</div>
     </div>
-    
     <div id="studentRequestSection" style="margin-top:8px; border-top:1px solid var(--border); padding-top:8px; text-align:left">
       <span class="label" style="margin-top:0">🎯 To'garakka qo'shilish arizasi:</span>
       <div class="custom-select-trigger" id="modalClubSelectTrigger" onclick="openCustomSelect('modalClubSelect')" style="margin-bottom:8px">To'garakni tanlang</div>
       <input type="hidden" id="modalClubSelect">
       <button class="act-btn btn-part" style="width:100%" onclick="sendClubRequest()">Ariza yuborish 📨</button>
     </div>
-    
     <button class="modal-btn" style="margin-top:8px" onclick="closeStudentModal()">Yopish</button>
   </div>
 </div>
@@ -448,7 +430,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   </div>
 </div>
 
-<!-- Custom Select Modal (Eng oxirida va eng baland z-index bilan) -->
 <div class="modal" id="customSelectModal">
   <div class="modal-content">
     <h3 id="customSelectTitle">Tanlang</h3>
@@ -523,6 +504,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   let activeStudentIdModal = null;
   let activeSelectId = null;
 
+  // TO'LIQ TARJIMALAR RO'YXATI (Ustoz paneli ham qo'shildi)
   const translations = {
     uz_lat: {
       subtitle: "33-Maktab Reyting va Motivatsiya Tizimi",
@@ -534,7 +516,43 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       searchPlaceholder: "🔍 Ism bo'yicha qidirish...",
       bannerTitle: "🔥 Eng Katta O'sish",
       noticeTitle: "📢 Maktab E'lonlar Taxtasi",
-      rewardTitle: "🎁 E'lon qilingan Faol Sovrinlar & Marralar"
+      rewardTitle: "🎁 E'lon qilingan Faol Sovrinlar & Marralar",
+      teacherPanelTitle: "👨‍🏫 Ustoz Boshqaruv Paneli",
+      logoutBtn: "Chiqish 🔓",
+      timerCardTitle: "⏳ Liderlik Taymerini Sozlash",
+      timerScopeLabel: "Taymer qaysi qatlam uchun mo'ljallanganini tanlang:",
+      timerTitleLabel: "Taymer sarlavhasi:",
+      timerSubLabel: "Taymer tagidagi izoh / matn:",
+      timerDateLabel: "Tugash vaqtini belgilang:",
+      startTimerBtn: "Taymerni Ishga Tushirish ⏰",
+      stopTimerBtn: "Taymerni O'chirish ❌",
+      reportCardTitle: "📊 Umumiy Baholash va Nazorat",
+      reportDesc: "Maktab yoki sinflar bo'yicha umumiy o'quv faolligi va statistika hisoboti.",
+      viewReportBtn: "📊 Hisobotni ko'rish",
+      noticeCardTitle: "📢 E'lonlar Taxtasiga Yozish",
+      noticeDesc: "Barcha o'quvchilarga yoki ma'lum sinfga e'lon qoldiring:",
+      publishNoticeBtn: "E'lonni chiqarish 🚀",
+      rewardCardTitle: "🎯 Maxsus Sovrin va O'yin Belgilash",
+      rewardScopeLabel: "Sovrin qaysi sinf yoki qatlam uchun mo'ljallanganini tanlang:",
+      addRewardBtn: "Marra va Sovrin Qo'shish 🎁",
+      praiseCardTitle: "✨ Ball va Rag'bat Qo'shish",
+      studentSearchLabel: "O'quvchini qidirish va tanlash:",
+      quickPointsLabel: "Tezkor ballar (Har bir o'quvchiga cheklangan — maks 2 martagacha):",
+      quickTime: "⏰ Vaqtida keldi (+2)",
+      quickActive: "💡 Faol qatnashdi (+3)",
+      quickProject: "⭐ Vazifa / Loyiha a'lo (+5)",
+      bulkCardTitle: "🚀 Sinflarga Ommaviy Ball Berish",
+      bulkDesc: "Butun sinfga bir yo'la ball qo'shish:",
+      bulkBtn: "Sinfga Ball Tarqatish ⚡",
+      anonCardTitle: "💌 O'quvchiga Anonim Maqtov Yuborish",
+      anonDesc: "O'quvchini ism yoki sinf bo'yicha qidirib toping:",
+      anonBtn: "Anonim Maqtov Yuborish 💌",
+      requestCardTitle: "📥 To'garakka Kelib Tushgan Arizalar",
+      addStudentCardTitle: "➕ Bitta O'quvchi Qo'shish",
+      addStudentBtn: "Ro'yxatga qo'shish",
+      manageCardTitle: "⚙️ O'quvchilarni Boshqarish",
+      resetBtn: "🔄 Ballarni Nollash",
+      logCardTitle: "📜 Oxirgi Harakatlar"
     },
     uz_kir: {
       subtitle: "33-Мактаб Рейтинг ва Мотивация Тизими",
@@ -546,7 +564,43 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       searchPlaceholder: "🔍 Исм бўйича қидириш...",
       bannerTitle: "🔥 Энг Катта Ўсиш",
       noticeTitle: "📢 Мактаб Эълонлар Тахтаси",
-      rewardTitle: "🎁 Эълон қилинган Фаол Совринлар & Марралар"
+      rewardTitle: "🎁 Эълон қилинган Фаол Совринлар & Марралар",
+      teacherPanelTitle: "👨‍🏫 Устоз Бошқарув Панели",
+      logoutBtn: "Чиқиш 🔓",
+      timerCardTitle: "⏳ Лидерлик Таймерини Созлаш",
+      timerScopeLabel: "Таймер қайси қатлам учун мўлжалланганини танланг:",
+      timerTitleLabel: "Таймер сарлавҳаси:",
+      timerSubLabel: "Таймер тагидаги изоҳ / матн:",
+      timerDateLabel: "Тугаш вақтини белгиланг:",
+      startTimerBtn: "Таймерни Ишга Тушириш ⏰",
+      stopTimerBtn: "Таймерни Ўчириш ❌",
+      reportCardTitle: "📊 Умумий Баҳолаш ва Назорат",
+      reportDesc: "Мактаб ёки синфлар бўйича умумий ўқув фаоллиги ва статистика ҳисоботи.",
+      viewReportBtn: "📊 Ҳисоботни кўриш",
+      noticeCardTitle: "📢 Эълонлар Тахтасига Ёзиш",
+      noticeDesc: "Барча ўқувчиларга ёки маълум синфга эълон қолдиринг:",
+      publishNoticeBtn: "Эълонни чиқариш 🚀",
+      rewardCardTitle: "🎯 Махсус Соврин ва Ўйин Белгилаш",
+      rewardScopeLabel: "Соврин қайси синф ёки қатлам учун мўлжалланганини танланг:",
+      addRewardBtn: "Марра ва Соврин Қўшиш 🎁",
+      praiseCardTitle: "✨ Балл ва Рағбат Қўшиш",
+      studentSearchLabel: "Ўқувчини қидириш ва танлаш:",
+      quickPointsLabel: "Тезкор баллар (Ҳар бир ўқувчига чекланган — макс 2 мартагача):",
+      quickTime: "⏰ Вақтида келди (+2)",
+      quickActive: "💡 Фаол қатнашди (+3)",
+      quickProject: "⭐ Вазифа / Лойиҳа аъло (+5)",
+      bulkCardTitle: "🚀 Синфларга Оммавий Балл Бериш",
+      bulkDesc: "Бутун синфга бир йўла балл қўшиш:",
+      bulkBtn: "Синфга Балл Тарқатиш ⚡",
+      anonCardTitle: "💌 Ўқувчига Аноним Мақтов Юбориш",
+      anonDesc: "Ўқувчини исм ёки синф бўйича қидириб топинг:",
+      anonBtn: "Аноним Мақтов Юбориш 💌",
+      requestCardTitle: "📥 Тўгаракка Келиб Тушган Аризалар",
+      addStudentCardTitle: "➕ Битта Ўқувчи Қўшиш",
+      addStudentBtn: "Рўйхатга қўшиш",
+      manageCardTitle: "⚙️ Ўқувчиларни Бошқариш",
+      resetBtn: "🔄 Балларни Ноллаш",
+      logCardTitle: "📜 Охирги Ҳаракатлар"
     },
     ru: {
       subtitle: "Школьная система рейтинга и мотивации №33",
@@ -558,7 +612,43 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       searchPlaceholder: "🔍 Поиск по имени...",
       bannerTitle: "🔥 Наибольший рост",
       noticeTitle: "📢 Школьная доска объявлений",
-      rewardTitle: "🎁 Активные приграми и цели"
+      rewardTitle: "🎁 Активные призы и цели",
+      teacherPanelTitle: "👨‍🏫 Панель управления учителя",
+      logoutBtn: "Выйти 🔓",
+      timerCardTitle: "⏳ Настройка таймера лидерства",
+      timerScopeLabel: "Выберите категорию для таймера:",
+      timerTitleLabel: "Заголовок таймера:",
+      timerSubLabel: "Текст / подпись под таймером:",
+      timerDateLabel: "Установите время окончания:",
+      startTimerBtn: "Запустить таймер ⏰",
+      stopTimerBtn: "Удалить таймер ❌",
+      reportCardTitle: "📊 Общая оценка и контроль",
+      reportDesc: "Отчет по общей активности учащихся и статистике.",
+      viewReportBtn: "📊 Посмотреть отчет",
+      noticeCardTitle: "📢 Написать на доску объявлений",
+      noticeDesc: "Оставьте объявление для всех или определенного класса:",
+      publishNoticeBtn: "Опубликовать объявление 🚀",
+      rewardCardTitle: "🎯 Назначить специальный приз и цель",
+      rewardScopeLabel: "Выберите класс или категорию для приза:",
+      addRewardBtn: "Добавить цель и приз 🎁",
+      praiseCardTitle: "✨ Добавить баллы и похвалу",
+      studentSearchLabel: "Поиск и выбор ученика:",
+      quickPointsLabel: "Быстрые баллы (лимит — макс 2 раза на ученика):",
+      quickTime: "⏰ Вовремя (+2)",
+      quickActive: "💡 Активен (+3)",
+      quickProject: "⭐ Задание / Проект отличный (+5)",
+      bulkCardTitle: "🚀 Массовая выдача баллов классу",
+      bulkDesc: "Добавить баллы всему классу сразу:",
+      bulkBtn: "Раздать баллы классу ⚡",
+      anonCardTitle: "💌 Анонимная похвала ученику",
+      anonDesc: "Найдите ученика по имени или классу:",
+      anonBtn: "Отправить анонимную похвалу 💌",
+      requestCardTitle: "📥 Заявки в кружки",
+      addStudentCardTitle: "➕ Добавить ученика",
+      addStudentBtn: "Добавить в список",
+      manageCardTitle: "⚙️ Управление учениками",
+      resetBtn: "🔄 Обнулить баллы",
+      logCardTitle: "📜 Последние действия"
     },
     en: {
       subtitle: "School Rating & Motivation System #33",
@@ -570,7 +660,43 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
       searchPlaceholder: "🔍 Search by name...",
       bannerTitle: "🔥 Highest Growth",
       noticeTitle: "📢 School Notice Board",
-      rewardTitle: "🎁 Active Rewards & Milestones"
+      rewardTitle: "🎁 Active Rewards & Milestones",
+      teacherPanelTitle: "👨‍🏫 Teacher Dashboard",
+      logoutBtn: "Logout 🔓",
+      timerCardTitle: "⏳ Leaderboard Timer Setup",
+      timerScopeLabel: "Select target scope for timer:",
+      timerTitleLabel: "Timer Title:",
+      timerSubLabel: "Timer Subtext / Note:",
+      timerDateLabel: "Set End Time:",
+      startTimerBtn: "Start Timer ⏰",
+      stopTimerBtn: "Remove Timer ❌",
+      reportCardTitle: "📊 General Evaluation & Control",
+      reportDesc: "Activity report and statistics by school or classes.",
+      viewReportBtn: "📊 View Report",
+      noticeCardTitle: "📢 Write to Notice Board",
+      noticeDesc: "Leave an announcement for all or a specific class:",
+      publishNoticeBtn: "Publish Notice 🚀",
+      rewardCardTitle: "🎯 Set Special Reward & Milestone",
+      rewardScopeLabel: "Select target scope for reward:",
+      addRewardBtn: "Add Milestone & Reward 🎁",
+      praiseCardTitle: "✨ Add Points & Praise",
+      studentSearchLabel: "Search and select student:",
+      quickPointsLabel: "Quick points (limit — max 2 times per student):",
+      quickTime: "⏰ On Time (+2)",
+      quickActive: "💡 Active (+3)",
+      quickProject: "⭐ Project Excellent (+5)",
+      bulkCardTitle: "🚀 Bulk Points to Class",
+      bulkDesc: "Give points to the entire class at once:",
+      bulkBtn: "Distribute Points ⚡",
+      anonCardTitle: "💌 Send Anonymous Praise",
+      anonDesc: "Find student by name or class:",
+      anonBtn: "Send Anonymous Praise 💌",
+      requestCardTitle: "📥 Club Join Requests",
+      addStudentCardTitle: "➕ Add a Student",
+      addStudentBtn: "Add to List",
+      manageCardTitle: "⚙️ Manage Students",
+      resetBtn: "🔄 Reset Points",
+      logCardTitle: "📜 Recent Logs"
     }
   };
 
@@ -632,7 +758,6 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     hiddenInput.value = val;
     if(trigger) trigger.textContent = text;
     closeCustomSelect();
-    
     if(hiddenInput.onchange) hiddenInput.onchange();
   }
 
@@ -704,6 +829,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
   function openBadgesModal() { $("badgesModal").classList.add("open"); }
   function closeBadgesModal() { $("badgesModal").classList.remove("open"); }
 
+  // TILNI TO'LIQ O'ZGARTIRISH (Asosiy ekran + Ustoz paneli)
   function changeLanguage(lang) {
     closeLangModal();
     const t = translations[lang] || translations.uz_lat;
@@ -718,6 +844,44 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if($("bannerTitle")) $("bannerTitle").textContent = t.bannerTitle;
     if($("txtNoticeTitle")) $("txtNoticeTitle").textContent = t.noticeTitle;
     if($("txtRewardTitle")) $("txtRewardTitle").textContent = t.rewardTitle;
+
+    // Ustoz paneli tarjimalari
+    if($("txtTeacherPanelTitle")) $("txtTeacherPanelTitle").textContent = t.teacherPanelTitle;
+    if($("txtLogoutBtn")) $("txtLogoutBtn").textContent = t.logoutBtn;
+    if($("txtTimerCardTitle")) $("txtTimerCardTitle").textContent = t.timerCardTitle;
+    if($("txtTimerScopeLabel")) $("txtTimerScopeLabel").textContent = t.timerScopeLabel;
+    if($("txtTimerTitleLabel")) $("txtTimerTitleLabel").textContent = t.timerTitleLabel;
+    if($("txtTimerSubLabel")) $("txtTimerSubLabel").textContent = t.timerSubLabel;
+    if($("txtTimerDateLabel")) $("txtTimerDateLabel").textContent = t.timerDateLabel;
+    if($("txtStartTimerBtn")) $("txtStartTimerBtn").textContent = t.startTimerBtn;
+    if($("txtStopTimerBtn")) $("txtStopTimerBtn").textContent = t.stopTimerBtn;
+    if($("txtReportCardTitle")) $("txtReportCardTitle").textContent = t.reportCardTitle;
+    if($("txtReportDesc")) $("txtReportDesc").textContent = t.reportDesc;
+    if($("txtViewReportBtn")) $("txtViewReportBtn").textContent = t.viewReportBtn;
+    if($("txtNoticeCardTitle")) $("txtNoticeCardTitle").textContent = t.noticeCardTitle;
+    if($("txtNoticeDesc")) $("txtNoticeDesc").textContent = t.noticeDesc;
+    if($("txtPublishNoticeBtn")) $("txtPublishNoticeBtn").textContent = t.publishNoticeBtn;
+    if($("txtRewardCardTitle")) $("txtRewardCardTitle").textContent = t.rewardCardTitle;
+    if($("txtRewardScopeLabel")) $("txtRewardScopeLabel").textContent = t.rewardScopeLabel;
+    if($("txtAddRewardBtn")) $("txtAddRewardBtn").textContent = t.addRewardBtn;
+    if($("txtPraiseCardTitle")) $("txtPraiseCardTitle").innerHTML = `✨ ${t.praiseCardTitle} (Ustoz: <span id="currentTeacherNameTag">${esc(currentTeacherName)}</span>)`;
+    if($("txtStudentSearchLabel")) $("txtStudentSearchLabel").textContent = t.studentSearchLabel;
+    if($("txtQuickPointsLabel")) $("txtQuickPointsLabel").textContent = t.quickPointsLabel;
+    if($("txtQuickTime")) $("txtQuickTime").innerHTML = `${t.quickTime} [<span id="cntTime">2</span>/2]`;
+    if($("txtQuickActive")) $("txtQuickActive").innerHTML = `${t.quickActive} [<span id="cntActive">2</span>/2]`;
+    if($("txtQuickProject")) $("txtQuickProject").innerHTML = `${t.quickProject} [<span id="cntProject">2</span>/2]`;
+    if($("txtBulkCardTitle")) $("txtBulkCardTitle").textContent = t.bulkCardTitle;
+    if($("txtBulkDesc")) $("txtBulkDesc").textContent = t.bulkDesc;
+    if($("txtBulkBtn")) $("txtBulkBtn").textContent = t.bulkBtn;
+    if($("txtAnonCardTitle")) $("txtAnonCardTitle").textContent = t.anonCardTitle;
+    if($("txtAnonDesc")) $("txtAnonDesc").textContent = t.anonDesc;
+    if($("txtAnonBtn")) $("txtAnonBtn").textContent = t.anonBtn;
+    if($("txtRequestCardTitle")) $("txtRequestCardTitle").textContent = t.requestCardTitle;
+    if($("txtAddStudentCardTitle")) $("txtAddStudentCardTitle").textContent = t.addStudentCardTitle;
+    if($("txtAddStudentBtn")) $("txtAddStudentBtn").textContent = t.addStudentBtn;
+    if($("txtManageCardTitle")) $("txtManageCardTitle").textContent = t.manageCardTitle;
+    if($("txtResetBtn")) $("txtResetBtn").textContent = t.resetBtn;
+    if($("txtLogCardTitle")) $("txtLogCardTitle").textContent = t.logCardTitle;
 
     showToast("Til o'zgartirildi ✅");
   }
@@ -1089,7 +1253,7 @@ body.dark .star-btn{background:#422006;border-color:#78350f;color:#fde68a}
     if (tPass === getTeacherCode()) {
       isTeacherLoggedIn = true;
       currentTeacherName = tName;
-      $("currentTeacherNameTag").textContent = currentTeacherName;
+      if($("currentTeacherNameTag")) $("currentTeacherNameTag").textContent = currentTeacherName;
       closeTeacherLogin();
       $("teacherPass").value = "";
       $("teacherSearchBox").value = "";
